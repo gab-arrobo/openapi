@@ -134,31 +134,18 @@ type NrfCache struct {
 // handleLookup - Checks if the cache has nf cache entry corresponding to the parameters specified.
 // If entry does not exist, perform nrf discovery query. To avoid concurrency issues,
 // nrf discovery query is mutex protected.
-func (c *NrfCache) handleLookup(nrfUri string, targetNfType, requestNfType Nnrf_NFDiscovery.NFType, param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (Nnrf_NFDiscovery.SearchResult, error) {
-	var searchResult Nnrf_NFDiscovery.SearchResult
-	var err error
+func (c *NrfCache) handleLookup(param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (Nnrf_NFDiscovery.SearchResult, error) {
+	var nfInstancesStoreAPI Nnrf_NFDiscovery.NFInstancesStoreAPI
+	searchResult, response, err := nfInstancesStoreAPI.SearchNFInstancesExecute(*param)
 
-	c.mutex.RLock()
-	searchResult.NfInstances = c.get(param)
-	c.mutex.RUnlock()
+	if response.StatusCode != 200 {
+		logger.NrfcacheLog.Warnf("bad response [%s]", response.Status)
+	}
 
 	if len(searchResult.NfInstances) == 0 {
-		logger.NrfcacheLog.Warnf("cache miss for nftype %s", targetNfType)
-		c.mutex.Lock()
-		defer c.mutex.Unlock()
-		searchResult.NfInstances = c.get(param)
-		if len(searchResult.NfInstances) == 0 {
-			searchResult, err = c.nrfDiscoveryQueryCb(nrfUri, targetNfType, requestNfType, param)
-			if err != nil {
-				return searchResult, err
-			}
-
-			for i := 0; i < len(searchResult.NfInstances); i++ {
-				c.set(&searchResult.NfInstances[i], time.Duration(searchResult.ValidityPeriod))
-			}
-		}
+		logger.NrfcacheLog.Warnf("cache miss for request %v", param)
 	}
-	return searchResult, err
+	return *searchResult, err
 }
 
 // set - Adds nf profile entry to the map and the priority queue
@@ -176,30 +163,6 @@ func (c *NrfCache) set(nfProfile *Nnrf_NFDiscovery.NFProfile, ttl time.Duration)
 		c.cache[nfProfile.NfInstanceId] = newItem
 		c.priorityQ.push(newItem)
 	}
-}
-
-// get - checks if nf profile corresponding to the search opts exist in the cache.
-func (c *NrfCache) get(opts *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) []Nnrf_NFDiscovery.NFProfile {
-	var nfProfiles []Nnrf_NFDiscovery.NFProfile
-
-	for _, element := range c.cache {
-		if !element.isExpired() {
-			if opts != nil {
-				cb, ok := matchFilters[element.nfProfile.NfType]
-				if ok {
-					matchFound, err := cb(element.nfProfile, opts)
-					if err != nil {
-						logger.NrfcacheLog.Errorf("match filter returned error %v", err)
-					} else if matchFound {
-						nfProfiles = append(nfProfiles, *(element.nfProfile))
-					}
-				}
-			} else {
-				nfProfiles = append(nfProfiles, *(element.nfProfile))
-			}
-		}
-	}
-	return nfProfiles
 }
 
 // removeByNfInstanceId - removes nf profile with nfInstanceId from the cache and queue
