@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: 2022 Infosys Limited
 // SPDX-FileCopyrightText: 2024 Canonical Ltd.
+// SPDX-FileCopyrightText: 2024 Intel Corporation
 /*
  *  Match the NF profiles based on the parameters
  */
 
 // This file contains apis to match the nf profiles based on the parameters provided in the
-// Nnrf_NFDiscovery.SearchNFInstancesParamOpts. There is a match function provided for each NF type
+// Nnrf_NFDiscovery.ApiSearchNFInstancesRequest. There is a match function provided for each NF type
 // which must be updated with logic to compare profiles based on the applicable params in
-// Nnrf_NFDiscovery.SearchNFInstancesParamOpts
+// Nnrf_NFDiscovery.ApiSearchNFInstancesRequest
 
 package nrfcache
 
@@ -18,28 +19,27 @@ import (
 
 	"github.com/omec-project/openapi/Nnrf_NFDiscovery"
 	"github.com/omec-project/openapi/logger"
-	"github.com/omec-project/openapi/models"
 )
 
-type MatchFilter func(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (bool, error)
+type MatchFilter func(profile *Nnrf_NFDiscovery.NFProfile, opts *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (bool, error)
 
-type MatchFilters map[models.NfType]MatchFilter
+type MatchFilters map[Nnrf_NFDiscovery.NFType]MatchFilter
 
 var matchFilters = MatchFilters{
-	models.NfType_SMF:  MatchSmfProfile,
-	models.NfType_AUSF: MatchAusfProfile,
-	models.NfType_PCF:  MatchPcfProfile,
-	models.NfType_NSSF: MatchNssfProfile,
-	models.NfType_UDM:  MatchUdmProfile,
-	models.NfType_AMF:  MatchAmfProfile,
+	Nnrf_NFDiscovery.NFTYPE_SMF:  MatchSmfProfile,
+	Nnrf_NFDiscovery.NFTYPE_AUSF: MatchAusfProfile,
+	Nnrf_NFDiscovery.NFTYPE_PCF:  MatchPcfProfile,
+	Nnrf_NFDiscovery.NFTYPE_NSSF: MatchNssfProfile,
+	Nnrf_NFDiscovery.NFTYPE_UDM:  MatchUdmProfile,
+	Nnrf_NFDiscovery.NFTYPE_AMF:  MatchAmfProfile,
 }
 
-func MatchSmfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (bool, error) {
+func MatchSmfProfile(profile *Nnrf_NFDiscovery.NFProfile, opts *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (bool, error) {
 	if opts.ServiceNames.IsSet() {
-		reqServiceNames := opts.ServiceNames.Value().([]models.ServiceName)
+		reqServiceNames := opts.ServiceNames.Value().([]Nnrf_NFDiscovery.ServiceName)
 		matchCount := 0
 		for _, sn := range reqServiceNames {
-			for i := 0; i < len(*profile.NfServices); i++ {
+			for i := 0; i < len(profile.GetNfServiceList()); i++ {
 				if (*profile.NfServices)[i].ServiceName == sn {
 					matchCount++
 					break
@@ -57,7 +57,7 @@ func MatchSmfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFI
 		matchCount := 0
 
 		for _, reqSnssai := range reqSnssais {
-			var snssai models.Snssai
+			var snssai Nnrf_NFDiscovery.Snssai
 			err := json.Unmarshal([]byte(reqSnssai), &snssai)
 			if err != nil {
 				logger.NrfcacheLog.Errorf("error Unmarshaling nssai: %+v", err)
@@ -114,11 +114,11 @@ func MatchSmfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFI
 	return true, nil
 }
 
-func MatchSupiRange(supi string, supiRange []models.SupiRange) bool {
+func MatchSupiRange(supi string, supiRange []Nnrf_NFDiscovery.SupiRange) bool {
 	matchFound := false
 	for _, s := range supiRange {
-		if len(s.Pattern) > 0 {
-			r, err := regexp.Compile(s.Pattern)
+		if len(*s.Pattern) > 0 {
+			r, err := regexp.Compile(*s.Pattern)
 			if err != nil {
 				logger.NrfcacheLog.Errorf("parsing pattern error: %v", err)
 				return false
@@ -127,7 +127,7 @@ func MatchSupiRange(supi string, supiRange []models.SupiRange) bool {
 				matchFound = true
 				break
 			}
-		} else if s.Start <= supi && supi <= s.End {
+		} else if *s.Start <= supi && supi <= *s.End {
 			matchFound = true
 			break
 		}
@@ -136,7 +136,7 @@ func MatchSupiRange(supi string, supiRange []models.SupiRange) bool {
 	return matchFound
 }
 
-func MatchAusfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (bool, error) {
+func MatchAusfProfile(profile *Nnrf_NFDiscovery.NFProfile, opts *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (bool, error) {
 	matchFound := true
 	if opts.Supi.IsSet() {
 		if profile.AusfInfo != nil && len(profile.AusfInfo.SupiRanges) > 0 {
@@ -147,19 +147,19 @@ func MatchAusfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNF
 	return matchFound, nil
 }
 
-func MatchNssfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (bool, error) {
+func MatchNssfProfile(profile *Nnrf_NFDiscovery.NFProfile, opts *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (bool, error) {
 	logger.NrfcacheLog.Infoln("nssf match found")
 	return true, nil
 }
 
-func MatchAmfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (bool, error) {
+func MatchAmfProfile(profile *Nnrf_NFDiscovery.NFProfile, opts *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (bool, error) {
 	if opts.TargetPlmnList.IsSet() {
 		if profile.PlmnList != nil {
 			plmnMatchCount := 0
 
 			targetPlmnList := opts.TargetPlmnList.Value().([]string)
 			for _, targetPlmn := range targetPlmnList {
-				var plmn models.PlmnId
+				var plmn Nnrf_NFDiscovery.PlmnId
 				err := json.Unmarshal([]byte(targetPlmn), &plmn)
 				if err != nil {
 					logger.NrfcacheLog.Errorf("error Unmarshaling plmn: %+v", err)
@@ -186,7 +186,7 @@ func MatchAmfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFI
 
 				guamiList := opts.Guami.Value().([]string)
 				for _, guami := range guamiList {
-					var guamiOpt models.Guami
+					var guamiOpt Nnrf_NFDiscovery.Guami
 					err := json.Unmarshal([]byte(guami), &guamiOpt)
 					if err != nil {
 						logger.NrfcacheLog.Errorf("error Unmarshaling guami: %+v", err)
@@ -234,7 +234,7 @@ func MatchAmfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFI
 	return true, nil
 }
 
-func MatchPcfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (bool, error) {
+func MatchPcfProfile(profile *Nnrf_NFDiscovery.NFProfile, opts *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (bool, error) {
 	matchFound := true
 	if opts.Supi.IsSet() {
 		if profile.PcfInfo != nil && len(profile.PcfInfo.SupiRanges) > 0 {
@@ -245,7 +245,7 @@ func MatchPcfProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFI
 	return matchFound, nil
 }
 
-func MatchUdmProfile(profile *models.NfProfile, opts *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (bool, error) {
+func MatchUdmProfile(profile *Nnrf_NFDiscovery.NFProfile, opts *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (bool, error) {
 	matchFound := true
 	if opts.Supi.IsSet() {
 		if profile.UdmInfo != nil && len(profile.UdmInfo.SupiRanges) > 0 {

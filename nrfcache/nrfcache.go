@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: 2022 Infosys Limited
 // SPDX-FileCopyrightText: 2024 Canonical Ltd.
+// SPDX-FileCopyrightText: 2024 Intel Corporation
 /*
  *  NRF Caching library
  */
@@ -14,7 +15,6 @@ import (
 
 	"github.com/omec-project/openapi/Nnrf_NFDiscovery"
 	"github.com/omec-project/openapi/logger"
-	"github.com/omec-project/openapi/models"
 )
 
 const (
@@ -23,7 +23,7 @@ const (
 )
 
 type NfProfileItem struct {
-	nfProfile  *models.NfProfile
+	nfProfile  *Nnrf_NFDiscovery.NFProfile
 	expiryTime time.Time
 	ttl        time.Duration
 	index      int // index of the entry in the priority queue
@@ -39,7 +39,7 @@ func (item *NfProfileItem) updateExpiryTime() {
 	item.expiryTime = time.Now().Add(time.Second * item.ttl)
 }
 
-func newNfProfileItem(profile *models.NfProfile, ttl time.Duration) *NfProfileItem {
+func newNfProfileItem(profile *Nnrf_NFDiscovery.NFProfile, ttl time.Duration) *NfProfileItem {
 	item := &NfProfileItem{
 		nfProfile: profile,
 		ttl:       ttl,
@@ -82,7 +82,7 @@ func (npq *NfProfilePriorityQ) push(item interface{}) {
 }
 
 // update - update fields of existing entry. Invokes heap.Fix to re-establish the ordering.
-func (npq *NfProfilePriorityQ) update(item *NfProfileItem, value *models.NfProfile, ttl time.Duration) {
+func (npq *NfProfilePriorityQ) update(item *NfProfileItem, value *Nnrf_NFDiscovery.NFProfile, ttl time.Duration) {
 	item.nfProfile = value
 	item.ttl = ttl
 	item.updateExpiryTime()
@@ -122,26 +122,20 @@ func newNfProfilePriorityQ() *NfProfilePriorityQ {
 
 // NrfCache : cache of nf profiles
 type NrfCache struct {
-	cache map[string]*NfProfileItem // map[nf-instance-id] =*NfProfile
-
-	priorityQ *NfProfilePriorityQ // sorted by expiry time
-
-	evictionTicker *time.Ticker
-
-	done chan struct{}
-
+	cache               map[string]*NfProfileItem // map[nf-instance-id] =*NfProfile
+	priorityQ           *NfProfilePriorityQ       // sorted by expiry time
+	evictionTicker      *time.Ticker
+	done                chan struct{}
 	nrfDiscoveryQueryCb NrfDiscoveryQueryCb // nrf query callback
-
-	evictionInterval time.Duration // timer interval in which the cache is checked for eviction of expired entries
-
-	mutex sync.RWMutex
+	evictionInterval    time.Duration       // timer interval in which the cache is checked for eviction of expired entries
+	mutex               sync.RWMutex
 }
 
 // handleLookup - Checks if the cache has nf cache entry corresponding to the parameters specified.
 // If entry does not exist, perform nrf discovery query. To avoid concurrency issues,
 // nrf discovery query is mutex protected.
-func (c *NrfCache) handleLookup(nrfUri string, targetNfType, requestNfType models.NfType, param *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (models.SearchResult, error) {
-	var searchResult models.SearchResult
+func (c *NrfCache) handleLookup(nrfUri string, targetNfType, requestNfType Nnrf_NFDiscovery.NFType, param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (Nnrf_NFDiscovery.SearchResult, error) {
+	var searchResult Nnrf_NFDiscovery.SearchResult
 	var err error
 
 	c.mutex.RLock()
@@ -168,7 +162,7 @@ func (c *NrfCache) handleLookup(nrfUri string, targetNfType, requestNfType model
 }
 
 // set - Adds nf profile entry to the map and the priority queue
-func (c *NrfCache) set(nfProfile *models.NfProfile, ttl time.Duration) {
+func (c *NrfCache) set(nfProfile *Nnrf_NFDiscovery.NFProfile, ttl time.Duration) {
 	if ttl == 0 {
 		ttl = defaultNfProfileTTl
 	}
@@ -185,8 +179,8 @@ func (c *NrfCache) set(nfProfile *models.NfProfile, ttl time.Duration) {
 }
 
 // get - checks if nf profile corresponding to the search opts exist in the cache.
-func (c *NrfCache) get(opts *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) []models.NfProfile {
-	var nfProfiles []models.NfProfile
+func (c *NrfCache) get(opts *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) []Nnrf_NFDiscovery.NFProfile {
+	var nfProfiles []Nnrf_NFDiscovery.NFProfile
 
 	for _, element := range c.cache {
 		if !element.isExpired() {
@@ -270,7 +264,7 @@ func (c *NrfCache) startExpiryProcessing() {
 	}
 }
 
-func NewNrfCache(duration time.Duration, dbqueryCb NrfDiscoveryQueryCb) *NrfCache {
+func newNrfCache(duration time.Duration, dbqueryCb NrfDiscoveryQueryCb) *NrfCache {
 	cache := &NrfCache{
 		cache:               make(map[string]*NfProfileItem),
 		priorityQ:           newNfProfilePriorityQ(),
@@ -288,19 +282,19 @@ func NewNrfCache(duration time.Duration, dbqueryCb NrfDiscoveryQueryCb) *NrfCach
 
 type NrfMasterCache struct {
 	nrfDiscoveryQueryCb NrfDiscoveryQueryCb
-	nfTypeToCacheMap    map[models.NfType]*NrfCache
+	nfTypeToCacheMap    map[Nnrf_NFDiscovery.NFType]*NrfCache
 	evictionInterval    time.Duration
 	mutex               sync.Mutex
 }
 
-func (c *NrfMasterCache) GetNrfCacheInstance(targetNfType models.NfType) *NrfCache {
+func (c *NrfMasterCache) getNrfCacheInstance(targetNfType Nnrf_NFDiscovery.NFType) *NrfCache {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
 	cache, exists := c.nfTypeToCacheMap[targetNfType]
 	if !exists {
 		logger.NrfcacheLog.Infof("creating cache for nftype %v", targetNfType)
-		cache = NewNrfCache(c.evictionInterval, c.nrfDiscoveryQueryCb)
+		cache = newNrfCache(c.evictionInterval, c.nrfDiscoveryQueryCb)
 		c.nfTypeToCacheMap[targetNfType] = cache
 	}
 	return cache
@@ -331,11 +325,11 @@ func (c *NrfMasterCache) removeNfProfile(nfInstanceId string) bool {
 
 var masterCache *NrfMasterCache
 
-type NrfDiscoveryQueryCb func(nrfUri string, targetNfType, requestNfType models.NfType, param *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (models.SearchResult, error)
+type NrfDiscoveryQueryCb func(nrfUri string, targetNfType, requestNfType Nnrf_NFDiscovery.NFType, param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (Nnrf_NFDiscovery.SearchResult, error)
 
 func InitNrfCaching(interval time.Duration, cb NrfDiscoveryQueryCb) {
 	m := &NrfMasterCache{
-		nfTypeToCacheMap:    make(map[models.NfType]*NrfCache),
+		nfTypeToCacheMap:    make(map[Nnrf_NFDiscovery.NFType]*NrfCache),
 		evictionInterval:    interval,
 		nrfDiscoveryQueryCb: cb,
 	}
@@ -347,11 +341,11 @@ func disableNrfCaching() {
 	masterCache = nil
 }
 
-func SearchNFInstances(nrfUri string, targetNfType, requestNfType models.NfType, param *Nnrf_NFDiscovery.SearchNFInstancesParamOpts) (models.SearchResult, error) {
-	var searchResult models.SearchResult
+func SearchNFInstances(nrfUri string, targetNfType, requestNfType Nnrf_NFDiscovery.NFType, param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (Nnrf_NFDiscovery.SearchResult, error) {
+	var searchResult Nnrf_NFDiscovery.SearchResult
 	var err error
 
-	c := masterCache.GetNrfCacheInstance(targetNfType)
+	c := masterCache.getNrfCacheInstance(targetNfType)
 	if c != nil {
 		searchResult, err = c.handleLookup(nrfUri, targetNfType, requestNfType, param)
 	} else {
