@@ -10,6 +10,7 @@ package nrfcache
 
 import (
 	"container/heap"
+	"fmt"
 	"sync"
 	"time"
 
@@ -134,18 +135,39 @@ type NrfCache struct {
 // handleLookup - Checks if the cache has nf cache entry corresponding to the parameters specified.
 // If entry does not exist, perform nrf discovery query. To avoid concurrency issues,
 // nrf discovery query is mutex protected.
-func (c *NrfCache) handleLookup(param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (Nnrf_NFDiscovery.SearchResult, error) {
-	var nfInstancesStoreAPI Nnrf_NFDiscovery.NFInstancesStoreAPI
-	searchResult, response, err := nfInstancesStoreAPI.SearchNFInstancesExecute(*param)
-
-	if response.StatusCode != 200 {
-		logger.NrfcacheLog.Warnf("bad response [%s]", response.Status)
+func (c *NrfCache) handleLookup(nrfUri string, targetNfType, requestNfType Nnrf_NFDiscovery.NFType, param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (Nnrf_NFDiscovery.SearchResult, error) {
+	if param == nil {
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("param cannot be nil")
 	}
 
-	if len(searchResult.NfInstances) == 0 {
-		logger.NrfcacheLog.Warnf("cache miss for request %v", param)
+	if targetNfType == "" || !targetNfType.IsValid() {
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("invalid target NF type: %v", targetNfType)
 	}
-	return *searchResult, err
+
+	if requestNfType == "" || !requestNfType.IsValid() {
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("invalid requester NF type: %v", requestNfType)
+	}
+
+	var searchResult Nnrf_NFDiscovery.SearchResult
+	var err error
+	c.mutex.Lock()
+	defer c.mutex.Unlock() // Reacquiring lock to update cache
+	searchResult, err = c.nrfDiscoveryQueryCb(nrfUri, targetNfType, requestNfType, param)
+	if err != nil {
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("nrfDiscoveryQueryCb failed: %v", err)
+	}
+
+	if len(searchResult.NfInstances) > 0 {
+		for i := 0; i < len(searchResult.NfInstances); i++ {
+			ttl := time.Duration(searchResult.ValidityPeriod)
+			if ttl == 0 {
+				ttl = defaultNfProfileTTl
+			}
+			c.set(&searchResult.NfInstances[i], ttl)
+		}
+	}
+
+	return searchResult, err
 }
 
 // set - Adds nf profile entry to the map and the priority queue
@@ -305,18 +327,39 @@ func disableNrfCaching() {
 }
 
 func SearchNFInstances(nrfUri string, targetNfType, requestNfType Nnrf_NFDiscovery.NFType, param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (Nnrf_NFDiscovery.SearchResult, error) {
-	var searchResult Nnrf_NFDiscovery.SearchResult
-	var err error
-
-	c := masterCache.getNrfCacheInstance(targetNfType)
-	if c != nil {
-		searchResult, err = c.handleLookup(nrfUri, targetNfType, requestNfType, param)
-	} else {
-		logger.NrfcacheLog.Errorln("failed to find cache for nf type")
+	if !targetNfType.IsValid() {
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("invalid NFType: %v", targetNfType)
 	}
+	if param == nil {
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("param is nil")
+	}
+	var searchResult Nnrf_NFDiscovery.SearchResult
+
+	if masterCache == nil {
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("masterCache is not initialized")
+	}
+
+	cache := masterCache.getNrfCacheInstance(targetNfType)
+	if cache == nil {
+		logger.NrfcacheLog.Errorf("failed to find/create cache for nfType: %v", targetNfType)
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("unable to find/create cache for NF type: %v", targetNfType)
+	}
+
+	searchResult, err := cache.handleLookup(nrfUri, targetNfType, requestNfType, param)
+	if err != nil {
+		logger.NrfcacheLog.With("nfType", targetNfType, "param", param).Errorln("handleLookup failed:", err)
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("handleLookup for nfType %v failed: %w", targetNfType, err)
+	}
+
+	if len(searchResult.NfInstances) == 0 {
+		logger.NrfcacheLog.Debugln("No NF instances found in search result")
+		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("no NF instances found for NF type: %v", targetNfType)
+	}
+
 	for _, np := range searchResult.NfInstances {
 		logger.NrfcacheLog.Infof("%v", np)
 	}
+
 	return searchResult, err
 }
 

@@ -10,7 +10,6 @@ package nrfcache
 
 import (
 	"encoding/json"
-	"fmt"
 	"reflect"
 	"strings"
 	"sync"
@@ -457,21 +456,6 @@ func MarshToJsonString(v interface{}) (result []string) {
 		result = append(result, string(tmp))
 	}
 	return
-}
-
-func getNfProfile(key string) (Nnrf_NFDiscovery.NFProfile, error) {
-	var err error
-	var profile Nnrf_NFDiscovery.NFProfile
-
-	nfProfileStr, exists := nfProfilesDb[key]
-
-	if exists {
-		err = json.Unmarshal([]byte(nfProfileStr), &profile)
-	} else {
-		err = fmt.Errorf("failed to find nf profile for %s", key)
-	}
-
-	return profile, err
 }
 
 func getNfProfiles(targetNfType Nnrf_NFDiscovery.NFType) ([]Nnrf_NFDiscovery.NFProfile, error) {
