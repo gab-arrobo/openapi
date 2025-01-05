@@ -24,36 +24,63 @@ import (
 )
 
 // SynchronizationState Indicates the Synchronization State.
-type SynchronizationState struct {
-	String *string
+type SynchronizationState string
+
+// List of SynchronizationState
+const (
+	SYNCHRONIZATIONSTATE_LOCKED   SynchronizationState = "LOCKED"
+	SYNCHRONIZATIONSTATE_HOLDOVER SynchronizationState = "HOLDOVER"
+	SYNCHRONIZATIONSTATE_FREERUN  SynchronizationState = "FREERUN"
+)
+
+// All allowed values of SynchronizationState enum
+var AllowedSynchronizationStateEnumValues = []SynchronizationState{
+	"LOCKED",
+	"HOLDOVER",
+	"FREERUN",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SynchronizationState) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SynchronizationState) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SynchronizationState(value)
+	for _, existing := range AllowedSynchronizationStateEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SynchronizationState)")
+	return fmt.Errorf("%+v is not a valid SynchronizationState", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SynchronizationState) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSynchronizationStateFromValue returns a pointer to a valid SynchronizationState
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSynchronizationStateFromValue(v string) (*SynchronizationState, error) {
+	ev := SynchronizationState(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SynchronizationState: valid values are %v", v, AllowedSynchronizationStateEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SynchronizationState) IsValid() bool {
+	for _, existing := range AllowedSynchronizationStateEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SynchronizationState value
+func (v SynchronizationState) Ptr() *SynchronizationState {
+	return &v
 }
 
 type NullableSynchronizationState struct {

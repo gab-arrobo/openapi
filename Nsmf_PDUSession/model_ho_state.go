@@ -24,36 +24,67 @@ import (
 )
 
 // HoState Handover state. Possible values are - NONE - PREPARING - PREPARED - COMPLETED - CANCELLED
-type HoState struct {
-	String *string
+type HoState string
+
+// List of HoState
+const (
+	HOSTATE_NONE      HoState = "NONE"
+	HOSTATE_PREPARING HoState = "PREPARING"
+	HOSTATE_PREPARED  HoState = "PREPARED"
+	HOSTATE_COMPLETED HoState = "COMPLETED"
+	HOSTATE_CANCELLED HoState = "CANCELLED"
+)
+
+// All allowed values of HoState enum
+var AllowedHoStateEnumValues = []HoState{
+	"NONE",
+	"PREPARING",
+	"PREPARED",
+	"COMPLETED",
+	"CANCELLED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *HoState) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *HoState) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := HoState(value)
+	for _, existing := range AllowedHoStateEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(HoState)")
+	return fmt.Errorf("%+v is not a valid HoState", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *HoState) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewHoStateFromValue returns a pointer to a valid HoState
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewHoStateFromValue(v string) (*HoState, error) {
+	ev := HoState(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for HoState: valid values are %v", v, AllowedHoStateEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v HoState) IsValid() bool {
+	for _, existing := range AllowedHoStateEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to HoState value
+func (v HoState) Ptr() *HoState {
+	return &v
 }
 
 type NullableHoState struct {

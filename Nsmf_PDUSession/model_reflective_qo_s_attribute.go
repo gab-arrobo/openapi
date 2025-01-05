@@ -24,36 +24,61 @@ import (
 )
 
 // ReflectiveQoSAttribute The enumeration ReflectiveQosAttribute indicates whether certain traffic of the QoS flow may be subject to Reflective QoS (see clause 5.7.2.3 of 3GPP TS 23.501). It shall comply with the provisions defined in table 5.5.3.3-1.
-type ReflectiveQoSAttribute struct {
-	String *string
+type ReflectiveQoSAttribute string
+
+// List of ReflectiveQoSAttribute
+const (
+	REFLECTIVEQOSATTRIBUTE_RQOS    ReflectiveQoSAttribute = "RQOS"
+	REFLECTIVEQOSATTRIBUTE_NO_RQOS ReflectiveQoSAttribute = "NO_RQOS"
+)
+
+// All allowed values of ReflectiveQoSAttribute enum
+var AllowedReflectiveQoSAttributeEnumValues = []ReflectiveQoSAttribute{
+	"RQOS",
+	"NO_RQOS",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ReflectiveQoSAttribute) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ReflectiveQoSAttribute) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ReflectiveQoSAttribute(value)
+	for _, existing := range AllowedReflectiveQoSAttributeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ReflectiveQoSAttribute)")
+	return fmt.Errorf("%+v is not a valid ReflectiveQoSAttribute", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ReflectiveQoSAttribute) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewReflectiveQoSAttributeFromValue returns a pointer to a valid ReflectiveQoSAttribute
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewReflectiveQoSAttributeFromValue(v string) (*ReflectiveQoSAttribute, error) {
+	ev := ReflectiveQoSAttribute(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ReflectiveQoSAttribute: valid values are %v", v, AllowedReflectiveQoSAttributeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ReflectiveQoSAttribute) IsValid() bool {
+	for _, existing := range AllowedReflectiveQoSAttributeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ReflectiveQoSAttribute value
+func (v ReflectiveQoSAttribute) Ptr() *ReflectiveQoSAttribute {
+	return &v
 }
 
 type NullableReflectiveQoSAttribute struct {

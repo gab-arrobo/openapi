@@ -23,37 +23,76 @@ import (
 	"fmt"
 )
 
-// ExpecedUeBehaviourDataset struct for ExpecedUeBehaviourDataset
-type ExpecedUeBehaviourDataset struct {
-	String *string
+// ExpecedUeBehaviourDataset the model 'ExpecedUeBehaviourDataset'
+type ExpecedUeBehaviourDataset string
+
+// List of ExpecedUeBehaviourDataset
+const (
+	EXPECEDUEBEHAVIOURDATASET_STATIONARY_INDICATION        ExpecedUeBehaviourDataset = "STATIONARY_INDICATION"
+	EXPECEDUEBEHAVIOURDATASET_COMMUNICATION_DURATION_TIME  ExpecedUeBehaviourDataset = "COMMUNICATION_DURATION_TIME"
+	EXPECEDUEBEHAVIOURDATASET_PERIODIC_TIME                ExpecedUeBehaviourDataset = "PERIODIC_TIME"
+	EXPECEDUEBEHAVIOURDATASET_SCHEDULED_COMMUNICATION_TIME ExpecedUeBehaviourDataset = "SCHEDULED_COMMUNICATION_TIME"
+	EXPECEDUEBEHAVIOURDATASET_SCHEDULED_COMMUNICATION_TYPE ExpecedUeBehaviourDataset = "SCHEDULED_COMMUNICATION_TYPE"
+	EXPECEDUEBEHAVIOURDATASET_EXPECTED_UMTS                ExpecedUeBehaviourDataset = "EXPECTED_UMTS"
+	EXPECEDUEBEHAVIOURDATASET_TRAFFIC_PROFILE              ExpecedUeBehaviourDataset = "TRAFFIC_PROFILE"
+	EXPECEDUEBEHAVIOURDATASET_BATTERY_INDICATION           ExpecedUeBehaviourDataset = "BATTERY_INDICATION"
+	EXPECEDUEBEHAVIOURDATASET_EXPECTED_INACTIVITY_TIME     ExpecedUeBehaviourDataset = "EXPECTED_INACTIVITY_TIME"
+)
+
+// All allowed values of ExpecedUeBehaviourDataset enum
+var AllowedExpecedUeBehaviourDatasetEnumValues = []ExpecedUeBehaviourDataset{
+	"STATIONARY_INDICATION",
+	"COMMUNICATION_DURATION_TIME",
+	"PERIODIC_TIME",
+	"SCHEDULED_COMMUNICATION_TIME",
+	"SCHEDULED_COMMUNICATION_TYPE",
+	"EXPECTED_UMTS",
+	"TRAFFIC_PROFILE",
+	"BATTERY_INDICATION",
+	"EXPECTED_INACTIVITY_TIME",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ExpecedUeBehaviourDataset) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ExpecedUeBehaviourDataset) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ExpecedUeBehaviourDataset(value)
+	for _, existing := range AllowedExpecedUeBehaviourDatasetEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ExpecedUeBehaviourDataset)")
+	return fmt.Errorf("%+v is not a valid ExpecedUeBehaviourDataset", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ExpecedUeBehaviourDataset) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewExpecedUeBehaviourDatasetFromValue returns a pointer to a valid ExpecedUeBehaviourDataset
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewExpecedUeBehaviourDatasetFromValue(v string) (*ExpecedUeBehaviourDataset, error) {
+	ev := ExpecedUeBehaviourDataset(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ExpecedUeBehaviourDataset: valid values are %v", v, AllowedExpecedUeBehaviourDatasetEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ExpecedUeBehaviourDataset) IsValid() bool {
+	for _, existing := range AllowedExpecedUeBehaviourDatasetEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ExpecedUeBehaviourDataset value
+func (v ExpecedUeBehaviourDataset) Ptr() *ExpecedUeBehaviourDataset {
+	return &v
 }
 
 type NullableExpecedUeBehaviourDataset struct {

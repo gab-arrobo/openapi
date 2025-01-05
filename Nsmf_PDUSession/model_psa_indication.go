@@ -24,36 +24,65 @@ import (
 )
 
 // PsaIndication Indication of whether a PSA is inserted or removed. Possible values are   - PSA_INSERTED   - PSA_REMOVED   - PSA_INSERTED_ONLY   - PSA_REMOVED_ONLY
-type PsaIndication struct {
-	String *string
+type PsaIndication string
+
+// List of PsaIndication
+const (
+	PSAINDICATION_INSERTED      PsaIndication = "PSA_INSERTED"
+	PSAINDICATION_REMOVED       PsaIndication = "PSA_REMOVED"
+	PSAINDICATION_INSERTED_ONLY PsaIndication = "PSA_INSERTED_ONLY"
+	PSAINDICATION_REMOVED_ONLY  PsaIndication = "PSA_REMOVED_ONLY"
+)
+
+// All allowed values of PsaIndication enum
+var AllowedPsaIndicationEnumValues = []PsaIndication{
+	"PSA_INSERTED",
+	"PSA_REMOVED",
+	"PSA_INSERTED_ONLY",
+	"PSA_REMOVED_ONLY",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PsaIndication) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PsaIndication) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PsaIndication(value)
+	for _, existing := range AllowedPsaIndicationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PsaIndication)")
+	return fmt.Errorf("%+v is not a valid PsaIndication", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PsaIndication) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPsaIndicationFromValue returns a pointer to a valid PsaIndication
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPsaIndicationFromValue(v string) (*PsaIndication, error) {
+	ev := PsaIndication(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PsaIndication: valid values are %v", v, AllowedPsaIndicationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PsaIndication) IsValid() bool {
+	for _, existing := range AllowedPsaIndicationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PsaIndication value
+func (v PsaIndication) Ptr() *PsaIndication {
+	return &v
 }
 
 type NullablePsaIndication struct {

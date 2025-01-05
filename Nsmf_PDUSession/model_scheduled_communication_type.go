@@ -24,36 +24,63 @@ import (
 )
 
 // ScheduledCommunicationType Possible values are: -DOWNLINK_ONLY: Downlink only -UPLINK_ONLY: Uplink only -BIDIRECTIONA: Bi-directional
-type ScheduledCommunicationType struct {
-	String *string
+type ScheduledCommunicationType string
+
+// List of ScheduledCommunicationType
+const (
+	SCHEDULEDCOMMUNICATIONTYPE_DOWNLINK_ONLY ScheduledCommunicationType = "DOWNLINK_ONLY"
+	SCHEDULEDCOMMUNICATIONTYPE_UPLINK_ONLY   ScheduledCommunicationType = "UPLINK_ONLY"
+	SCHEDULEDCOMMUNICATIONTYPE_BIDIRECTIONAL ScheduledCommunicationType = "BIDIRECTIONAL"
+)
+
+// All allowed values of ScheduledCommunicationType enum
+var AllowedScheduledCommunicationTypeEnumValues = []ScheduledCommunicationType{
+	"DOWNLINK_ONLY",
+	"UPLINK_ONLY",
+	"BIDIRECTIONAL",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ScheduledCommunicationType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ScheduledCommunicationType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ScheduledCommunicationType(value)
+	for _, existing := range AllowedScheduledCommunicationTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ScheduledCommunicationType)")
+	return fmt.Errorf("%+v is not a valid ScheduledCommunicationType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ScheduledCommunicationType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewScheduledCommunicationTypeFromValue returns a pointer to a valid ScheduledCommunicationType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewScheduledCommunicationTypeFromValue(v string) (*ScheduledCommunicationType, error) {
+	ev := ScheduledCommunicationType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ScheduledCommunicationType: valid values are %v", v, AllowedScheduledCommunicationTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ScheduledCommunicationType) IsValid() bool {
+	for _, existing := range AllowedScheduledCommunicationTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ScheduledCommunicationType value
+func (v ScheduledCommunicationType) Ptr() *ScheduledCommunicationType {
+	return &v
 }
 
 type NullableScheduledCommunicationType struct {

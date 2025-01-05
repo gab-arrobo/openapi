@@ -24,36 +24,73 @@ import (
 )
 
 // RequestIndication Request Indication in Update (SM context) service operation. Possible values are - UE_REQ_PDU_SES_MOD - UE_REQ_PDU_SES_REL - PDU_SES_MOB - NW_REQ_PDU_SES_AUTH - NW_REQ_PDU_SES_MOD - NW_REQ_PDU_SES_REL - EBI_ASSIGNMENT_REQ - REL_DUE_TO_5G_AN_REQUEST
-type RequestIndication struct {
-	String *string
+type RequestIndication string
+
+// List of RequestIndication
+const (
+	REQUESTINDICATION_UE_REQ_PDU_SES_MOD        RequestIndication = "UE_REQ_PDU_SES_MOD"
+	REQUESTINDICATION_UE_REQ_PDU_SES_REL        RequestIndication = "UE_REQ_PDU_SES_REL"
+	REQUESTINDICATION_PDU_SES_MOB               RequestIndication = "PDU_SES_MOB"
+	REQUESTINDICATION_NW_REQ_PDU_SES_AUTH       RequestIndication = "NW_REQ_PDU_SES_AUTH"
+	REQUESTINDICATION_NW_REQ_PDU_SES_MOD        RequestIndication = "NW_REQ_PDU_SES_MOD"
+	REQUESTINDICATION_NW_REQ_PDU_SES_REL        RequestIndication = "NW_REQ_PDU_SES_REL"
+	REQUESTINDICATION_EBI_ASSIGNMENT_REQ        RequestIndication = "EBI_ASSIGNMENT_REQ"
+	REQUESTINDICATION_REL_DUE_TO_5_G_AN_REQUEST RequestIndication = "REL_DUE_TO_5G_AN_REQUEST"
+)
+
+// All allowed values of RequestIndication enum
+var AllowedRequestIndicationEnumValues = []RequestIndication{
+	"UE_REQ_PDU_SES_MOD",
+	"UE_REQ_PDU_SES_REL",
+	"PDU_SES_MOB",
+	"NW_REQ_PDU_SES_AUTH",
+	"NW_REQ_PDU_SES_MOD",
+	"NW_REQ_PDU_SES_REL",
+	"EBI_ASSIGNMENT_REQ",
+	"REL_DUE_TO_5G_AN_REQUEST",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RequestIndication) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RequestIndication) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RequestIndication(value)
+	for _, existing := range AllowedRequestIndicationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RequestIndication)")
+	return fmt.Errorf("%+v is not a valid RequestIndication", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RequestIndication) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRequestIndicationFromValue returns a pointer to a valid RequestIndication
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRequestIndicationFromValue(v string) (*RequestIndication, error) {
+	ev := RequestIndication(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RequestIndication: valid values are %v", v, AllowedRequestIndicationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RequestIndication) IsValid() bool {
+	for _, existing := range AllowedRequestIndicationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RequestIndication value
+func (v RequestIndication) Ptr() *RequestIndication {
+	return &v
 }
 
 type NullableRequestIndication struct {

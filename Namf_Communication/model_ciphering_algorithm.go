@@ -24,36 +24,65 @@ import (
 )
 
 // CipheringAlgorithm Indicates the supported Ciphering Algorithm
-type CipheringAlgorithm struct {
-	String *string
+type CipheringAlgorithm string
+
+// List of CipheringAlgorithm
+const (
+	CIPHERINGALGORITHM_NEA0 CipheringAlgorithm = "NEA0"
+	CIPHERINGALGORITHM_NEA1 CipheringAlgorithm = "NEA1"
+	CIPHERINGALGORITHM_NEA2 CipheringAlgorithm = "NEA2"
+	CIPHERINGALGORITHM_NEA3 CipheringAlgorithm = "NEA3"
+)
+
+// All allowed values of CipheringAlgorithm enum
+var AllowedCipheringAlgorithmEnumValues = []CipheringAlgorithm{
+	"NEA0",
+	"NEA1",
+	"NEA2",
+	"NEA3",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *CipheringAlgorithm) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *CipheringAlgorithm) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := CipheringAlgorithm(value)
+	for _, existing := range AllowedCipheringAlgorithmEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(CipheringAlgorithm)")
+	return fmt.Errorf("%+v is not a valid CipheringAlgorithm", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *CipheringAlgorithm) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewCipheringAlgorithmFromValue returns a pointer to a valid CipheringAlgorithm
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewCipheringAlgorithmFromValue(v string) (*CipheringAlgorithm, error) {
+	ev := CipheringAlgorithm(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for CipheringAlgorithm: valid values are %v", v, AllowedCipheringAlgorithmEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v CipheringAlgorithm) IsValid() bool {
+	for _, existing := range AllowedCipheringAlgorithmEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to CipheringAlgorithm value
+func (v CipheringAlgorithm) Ptr() *CipheringAlgorithm {
+	return &v
 }
 
 type NullableCipheringAlgorithm struct {

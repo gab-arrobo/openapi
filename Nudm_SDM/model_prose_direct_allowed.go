@@ -24,36 +24,89 @@ import (
 )
 
 // ProseDirectAllowed Indicates the 5G ProSe Direct services that can be authorised to  use in the given PLMN for the UE.
-type ProseDirectAllowed struct {
-	String *string
+type ProseDirectAllowed string
+
+// List of ProseDirectAllowed
+const (
+	PROSEDIRECTALLOWED_ANNOUNCE           ProseDirectAllowed = "ANNOUNCE"
+	PROSEDIRECTALLOWED_MONITOR            ProseDirectAllowed = "MONITOR"
+	PROSEDIRECTALLOWED_RESTRICTD_ANNOUNCE ProseDirectAllowed = "RESTRICTD_ANNOUNCE"
+	PROSEDIRECTALLOWED_RESTRICTD_MONITOR  ProseDirectAllowed = "RESTRICTD_MONITOR"
+	PROSEDIRECTALLOWED_DISCOVERER         ProseDirectAllowed = "DISCOVERER"
+	PROSEDIRECTALLOWED_DISCOVEREE         ProseDirectAllowed = "DISCOVEREE"
+	PROSEDIRECTALLOWED_BROADCAST          ProseDirectAllowed = "BROADCAST"
+	PROSEDIRECTALLOWED_GROUPCAST          ProseDirectAllowed = "GROUPCAST"
+	PROSEDIRECTALLOWED_UNICAST            ProseDirectAllowed = "UNICAST"
+	PROSEDIRECTALLOWED_LAYER2_RELAY       ProseDirectAllowed = "LAYER2_RELAY"
+	PROSEDIRECTALLOWED_LAYER3_RELAY       ProseDirectAllowed = "LAYER3_RELAY"
+	PROSEDIRECTALLOWED_LAYER3_REMOTE      ProseDirectAllowed = "LAYER3_REMOTE"
+	PROSEDIRECTALLOWED_LAYER2_UE_RELAY    ProseDirectAllowed = "LAYER2_UE_RELAY"
+	PROSEDIRECTALLOWED_LAYER3_UE_RELAY    ProseDirectAllowed = "LAYER3_UE_RELAY"
+	PROSEDIRECTALLOWED_LAYER2_END         ProseDirectAllowed = "LAYER2_END"
+	PROSEDIRECTALLOWED_LAYER3_END         ProseDirectAllowed = "LAYER3_END"
+)
+
+// All allowed values of ProseDirectAllowed enum
+var AllowedProseDirectAllowedEnumValues = []ProseDirectAllowed{
+	"ANNOUNCE",
+	"MONITOR",
+	"RESTRICTD_ANNOUNCE",
+	"RESTRICTD_MONITOR",
+	"DISCOVERER",
+	"DISCOVEREE",
+	"BROADCAST",
+	"GROUPCAST",
+	"UNICAST",
+	"LAYER2_RELAY",
+	"LAYER3_RELAY",
+	"LAYER3_REMOTE",
+	"LAYER2_UE_RELAY",
+	"LAYER3_UE_RELAY",
+	"LAYER2_END",
+	"LAYER3_END",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ProseDirectAllowed) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ProseDirectAllowed) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ProseDirectAllowed(value)
+	for _, existing := range AllowedProseDirectAllowedEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ProseDirectAllowed)")
+	return fmt.Errorf("%+v is not a valid ProseDirectAllowed", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ProseDirectAllowed) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewProseDirectAllowedFromValue returns a pointer to a valid ProseDirectAllowed
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewProseDirectAllowedFromValue(v string) (*ProseDirectAllowed, error) {
+	ev := ProseDirectAllowed(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ProseDirectAllowed: valid values are %v", v, AllowedProseDirectAllowedEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ProseDirectAllowed) IsValid() bool {
+	for _, existing := range AllowedProseDirectAllowedEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ProseDirectAllowed value
+func (v ProseDirectAllowed) Ptr() *ProseDirectAllowed {
+	return &v
 }
 
 type NullableProseDirectAllowed struct {

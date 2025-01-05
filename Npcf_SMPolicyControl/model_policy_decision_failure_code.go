@@ -24,36 +24,71 @@ import (
 )
 
 // PolicyDecisionFailureCode Indicates the type of the failed policy decision and/or condition data.
-type PolicyDecisionFailureCode struct {
-	String *string
+type PolicyDecisionFailureCode string
+
+// List of PolicyDecisionFailureCode
+const (
+	POLICYDECISIONFAILURECODE_TRA_CTRL_DECS_ERR PolicyDecisionFailureCode = "TRA_CTRL_DECS_ERR"
+	POLICYDECISIONFAILURECODE_QOS_DECS_ERR      PolicyDecisionFailureCode = "QOS_DECS_ERR"
+	POLICYDECISIONFAILURECODE_CHG_DECS_ERR      PolicyDecisionFailureCode = "CHG_DECS_ERR"
+	POLICYDECISIONFAILURECODE_USA_MON_DECS_ERR  PolicyDecisionFailureCode = "USA_MON_DECS_ERR"
+	POLICYDECISIONFAILURECODE_QOS_MON_DECS_ERR  PolicyDecisionFailureCode = "QOS_MON_DECS_ERR"
+	POLICYDECISIONFAILURECODE_CON_DATA_ERR      PolicyDecisionFailureCode = "CON_DATA_ERR"
+	POLICYDECISIONFAILURECODE_POLICY_PARAM_ERR  PolicyDecisionFailureCode = "POLICY_PARAM_ERR"
+)
+
+// All allowed values of PolicyDecisionFailureCode enum
+var AllowedPolicyDecisionFailureCodeEnumValues = []PolicyDecisionFailureCode{
+	"TRA_CTRL_DECS_ERR",
+	"QOS_DECS_ERR",
+	"CHG_DECS_ERR",
+	"USA_MON_DECS_ERR",
+	"QOS_MON_DECS_ERR",
+	"CON_DATA_ERR",
+	"POLICY_PARAM_ERR",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PolicyDecisionFailureCode) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PolicyDecisionFailureCode) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PolicyDecisionFailureCode(value)
+	for _, existing := range AllowedPolicyDecisionFailureCodeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PolicyDecisionFailureCode)")
+	return fmt.Errorf("%+v is not a valid PolicyDecisionFailureCode", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PolicyDecisionFailureCode) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPolicyDecisionFailureCodeFromValue returns a pointer to a valid PolicyDecisionFailureCode
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPolicyDecisionFailureCodeFromValue(v string) (*PolicyDecisionFailureCode, error) {
+	ev := PolicyDecisionFailureCode(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PolicyDecisionFailureCode: valid values are %v", v, AllowedPolicyDecisionFailureCodeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PolicyDecisionFailureCode) IsValid() bool {
+	for _, existing := range AllowedPolicyDecisionFailureCodeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PolicyDecisionFailureCode value
+func (v PolicyDecisionFailureCode) Ptr() *PolicyDecisionFailureCode {
+	return &v
 }
 
 type NullablePolicyDecisionFailureCode struct {

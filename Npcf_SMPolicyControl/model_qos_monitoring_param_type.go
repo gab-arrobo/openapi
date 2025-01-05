@@ -24,36 +24,63 @@ import (
 )
 
 // QosMonitoringParamType Indicates the QoS monitoring parameter type.   Possible values are: - PACKET_DELAY: Indicates that the QoS monitoring parameter to be measured is packet delay. - CONGESTION: Indicates that the QoS monitoring parameter to be measured is congestion. - DATA_RATE: Indicates that the QoS monitoring parameter to be measured is data rate.
-type QosMonitoringParamType struct {
-	String *string
+type QosMonitoringParamType string
+
+// List of QosMonitoringParamType
+const (
+	QOSMONITORINGPARAMTYPE_PACKET_DELAY QosMonitoringParamType = "PACKET_DELAY"
+	QOSMONITORINGPARAMTYPE_CONGESTION   QosMonitoringParamType = "CONGESTION"
+	QOSMONITORINGPARAMTYPE_DATA_RATE    QosMonitoringParamType = "DATA_RATE"
+)
+
+// All allowed values of QosMonitoringParamType enum
+var AllowedQosMonitoringParamTypeEnumValues = []QosMonitoringParamType{
+	"PACKET_DELAY",
+	"CONGESTION",
+	"DATA_RATE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *QosMonitoringParamType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *QosMonitoringParamType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := QosMonitoringParamType(value)
+	for _, existing := range AllowedQosMonitoringParamTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(QosMonitoringParamType)")
+	return fmt.Errorf("%+v is not a valid QosMonitoringParamType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *QosMonitoringParamType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewQosMonitoringParamTypeFromValue returns a pointer to a valid QosMonitoringParamType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewQosMonitoringParamTypeFromValue(v string) (*QosMonitoringParamType, error) {
+	ev := QosMonitoringParamType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for QosMonitoringParamType: valid values are %v", v, AllowedQosMonitoringParamTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v QosMonitoringParamType) IsValid() bool {
+	for _, existing := range AllowedQosMonitoringParamTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to QosMonitoringParamType value
+func (v QosMonitoringParamType) Ptr() *QosMonitoringParamType {
+	return &v
 }
 
 type NullableQosMonitoringParamType struct {

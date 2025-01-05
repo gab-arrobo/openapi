@@ -24,36 +24,61 @@ import (
 )
 
 // MaxIntegrityProtectedDataRate Maximum Integrity Protected Data Rate. Possible values are   - 64_KBPS   - MAX_UE_RATE
-type MaxIntegrityProtectedDataRate struct {
-	String *string
+type MaxIntegrityProtectedDataRate string
+
+// List of MaxIntegrityProtectedDataRate
+const (
+	MAXINTEGRITYPROTECTEDDATARATE__64_KBPS    MaxIntegrityProtectedDataRate = "64_KBPS"
+	MAXINTEGRITYPROTECTEDDATARATE_MAX_UE_RATE MaxIntegrityProtectedDataRate = "MAX_UE_RATE"
+)
+
+// All allowed values of MaxIntegrityProtectedDataRate enum
+var AllowedMaxIntegrityProtectedDataRateEnumValues = []MaxIntegrityProtectedDataRate{
+	"64_KBPS",
+	"MAX_UE_RATE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *MaxIntegrityProtectedDataRate) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *MaxIntegrityProtectedDataRate) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := MaxIntegrityProtectedDataRate(value)
+	for _, existing := range AllowedMaxIntegrityProtectedDataRateEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(MaxIntegrityProtectedDataRate)")
+	return fmt.Errorf("%+v is not a valid MaxIntegrityProtectedDataRate", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *MaxIntegrityProtectedDataRate) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewMaxIntegrityProtectedDataRateFromValue returns a pointer to a valid MaxIntegrityProtectedDataRate
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewMaxIntegrityProtectedDataRateFromValue(v string) (*MaxIntegrityProtectedDataRate, error) {
+	ev := MaxIntegrityProtectedDataRate(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for MaxIntegrityProtectedDataRate: valid values are %v", v, AllowedMaxIntegrityProtectedDataRateEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v MaxIntegrityProtectedDataRate) IsValid() bool {
+	for _, existing := range AllowedMaxIntegrityProtectedDataRateEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to MaxIntegrityProtectedDataRate value
+func (v MaxIntegrityProtectedDataRate) Ptr() *MaxIntegrityProtectedDataRate {
+	return &v
 }
 
 type NullableMaxIntegrityProtectedDataRate struct {

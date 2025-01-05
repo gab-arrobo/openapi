@@ -24,36 +24,65 @@ import (
 )
 
 // SharedDataTreatmentInstruction Indicates the presence of this attribute in the individual data. Otherwise, the individual data takes precedence, by default.
-type SharedDataTreatmentInstruction struct {
-	String *string
+type SharedDataTreatmentInstruction string
+
+// List of SharedDataTreatmentInstruction
+const (
+	SHAREDDATATREATMENTINSTRUCTION_USE_IF_NO_CLASH SharedDataTreatmentInstruction = "USE_IF_NO_CLASH"
+	SHAREDDATATREATMENTINSTRUCTION_OVERWRITE       SharedDataTreatmentInstruction = "OVERWRITE"
+	SHAREDDATATREATMENTINSTRUCTION_MAX             SharedDataTreatmentInstruction = "MAX"
+	SHAREDDATATREATMENTINSTRUCTION_MIN             SharedDataTreatmentInstruction = "MIN"
+)
+
+// All allowed values of SharedDataTreatmentInstruction enum
+var AllowedSharedDataTreatmentInstructionEnumValues = []SharedDataTreatmentInstruction{
+	"USE_IF_NO_CLASH",
+	"OVERWRITE",
+	"MAX",
+	"MIN",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SharedDataTreatmentInstruction) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SharedDataTreatmentInstruction) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SharedDataTreatmentInstruction(value)
+	for _, existing := range AllowedSharedDataTreatmentInstructionEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SharedDataTreatmentInstruction)")
+	return fmt.Errorf("%+v is not a valid SharedDataTreatmentInstruction", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SharedDataTreatmentInstruction) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSharedDataTreatmentInstructionFromValue returns a pointer to a valid SharedDataTreatmentInstruction
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSharedDataTreatmentInstructionFromValue(v string) (*SharedDataTreatmentInstruction, error) {
+	ev := SharedDataTreatmentInstruction(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SharedDataTreatmentInstruction: valid values are %v", v, AllowedSharedDataTreatmentInstructionEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SharedDataTreatmentInstruction) IsValid() bool {
+	for _, existing := range AllowedSharedDataTreatmentInstructionEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SharedDataTreatmentInstruction value
+func (v SharedDataTreatmentInstruction) Ptr() *SharedDataTreatmentInstruction {
+	return &v
 }
 
 type NullableSharedDataTreatmentInstruction struct {

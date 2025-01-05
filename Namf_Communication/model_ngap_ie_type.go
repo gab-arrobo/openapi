@@ -24,36 +24,93 @@ import (
 )
 
 // NgapIeType Indicates the supported NGAP IE types
-type NgapIeType struct {
-	String *string
+type NgapIeType string
+
+// List of NgapIeType
+const (
+	NGAPIETYPE_PDU_RES_SETUP_REQ              NgapIeType = "PDU_RES_SETUP_REQ"
+	NGAPIETYPE_PDU_RES_REL_CMD                NgapIeType = "PDU_RES_REL_CMD"
+	NGAPIETYPE_PDU_RES_MOD_REQ                NgapIeType = "PDU_RES_MOD_REQ"
+	NGAPIETYPE_HANDOVER_CMD                   NgapIeType = "HANDOVER_CMD"
+	NGAPIETYPE_HANDOVER_REQUIRED              NgapIeType = "HANDOVER_REQUIRED"
+	NGAPIETYPE_HANDOVER_PREP_FAIL             NgapIeType = "HANDOVER_PREP_FAIL"
+	NGAPIETYPE_SRC_TO_TAR_CONTAINER           NgapIeType = "SRC_TO_TAR_CONTAINER"
+	NGAPIETYPE_TAR_TO_SRC_CONTAINER           NgapIeType = "TAR_TO_SRC_CONTAINER"
+	NGAPIETYPE_TAR_TO_SRC_FAIL_CONTAINER      NgapIeType = "TAR_TO_SRC_FAIL_CONTAINER"
+	NGAPIETYPE_RAN_STATUS_TRANS_CONTAINER     NgapIeType = "RAN_STATUS_TRANS_CONTAINER"
+	NGAPIETYPE_SON_CONFIG_TRANSFER            NgapIeType = "SON_CONFIG_TRANSFER"
+	NGAPIETYPE_NRPPA_PDU                      NgapIeType = "NRPPA_PDU"
+	NGAPIETYPE_UE_RADIO_CAPABILITY            NgapIeType = "UE_RADIO_CAPABILITY"
+	NGAPIETYPE_RIM_INFO_TRANSFER              NgapIeType = "RIM_INFO_TRANSFER"
+	NGAPIETYPE_SECONDARY_RAT_USAGE            NgapIeType = "SECONDARY_RAT_USAGE"
+	NGAPIETYPE_PC5_QOS_PARA                   NgapIeType = "PC5_QOS_PARA"
+	NGAPIETYPE_EARLY_STATUS_TRANS_CONTAINER   NgapIeType = "EARLY_STATUS_TRANS_CONTAINER"
+	NGAPIETYPE_UE_RADIO_CAPABILITY_FOR_PAGING NgapIeType = "UE_RADIO_CAPABILITY_FOR_PAGING"
+)
+
+// All allowed values of NgapIeType enum
+var AllowedNgapIeTypeEnumValues = []NgapIeType{
+	"PDU_RES_SETUP_REQ",
+	"PDU_RES_REL_CMD",
+	"PDU_RES_MOD_REQ",
+	"HANDOVER_CMD",
+	"HANDOVER_REQUIRED",
+	"HANDOVER_PREP_FAIL",
+	"SRC_TO_TAR_CONTAINER",
+	"TAR_TO_SRC_CONTAINER",
+	"TAR_TO_SRC_FAIL_CONTAINER",
+	"RAN_STATUS_TRANS_CONTAINER",
+	"SON_CONFIG_TRANSFER",
+	"NRPPA_PDU",
+	"UE_RADIO_CAPABILITY",
+	"RIM_INFO_TRANSFER",
+	"SECONDARY_RAT_USAGE",
+	"PC5_QOS_PARA",
+	"EARLY_STATUS_TRANS_CONTAINER",
+	"UE_RADIO_CAPABILITY_FOR_PAGING",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *NgapIeType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *NgapIeType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := NgapIeType(value)
+	for _, existing := range AllowedNgapIeTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(NgapIeType)")
+	return fmt.Errorf("%+v is not a valid NgapIeType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *NgapIeType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewNgapIeTypeFromValue returns a pointer to a valid NgapIeType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewNgapIeTypeFromValue(v string) (*NgapIeType, error) {
+	ev := NgapIeType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for NgapIeType: valid values are %v", v, AllowedNgapIeTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v NgapIeType) IsValid() bool {
+	for _, existing := range AllowedNgapIeTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to NgapIeType value
+func (v NgapIeType) Ptr() *NgapIeType {
+	return &v
 }
 
 type NullableNgapIeType struct {

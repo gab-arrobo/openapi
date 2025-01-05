@@ -24,36 +24,65 @@ import (
 )
 
 // ReportingTrigger The enumeration ReportingTrigger defines Reporting Triggers for MDT in the trace. See 3GPP TS 32.42] for further  description of the values. It shall comply with the provisions defined in table 5.6.3.8-1.
-type ReportingTrigger struct {
-	String *string
+type ReportingTrigger string
+
+// List of ReportingTrigger
+const (
+	REPORTINGTRIGGER_PERIODICAL             ReportingTrigger = "PERIODICAL"
+	REPORTINGTRIGGER_EVENT_A2               ReportingTrigger = "EVENT_A2"
+	REPORTINGTRIGGER_EVENT_A2_PERIODIC      ReportingTrigger = "EVENT_A2_PERIODIC"
+	REPORTINGTRIGGER_ALL_RRM_EVENT_TRIGGERS ReportingTrigger = "ALL_RRM_EVENT_TRIGGERS"
+)
+
+// All allowed values of ReportingTrigger enum
+var AllowedReportingTriggerEnumValues = []ReportingTrigger{
+	"PERIODICAL",
+	"EVENT_A2",
+	"EVENT_A2_PERIODIC",
+	"ALL_RRM_EVENT_TRIGGERS",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ReportingTrigger) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ReportingTrigger) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ReportingTrigger(value)
+	for _, existing := range AllowedReportingTriggerEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ReportingTrigger)")
+	return fmt.Errorf("%+v is not a valid ReportingTrigger", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ReportingTrigger) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewReportingTriggerFromValue returns a pointer to a valid ReportingTrigger
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewReportingTriggerFromValue(v string) (*ReportingTrigger, error) {
+	ev := ReportingTrigger(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ReportingTrigger: valid values are %v", v, AllowedReportingTriggerEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ReportingTrigger) IsValid() bool {
+	for _, existing := range AllowedReportingTriggerEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ReportingTrigger value
+func (v ReportingTrigger) Ptr() *ReportingTrigger {
+	return &v
 }
 
 type NullableReportingTrigger struct {

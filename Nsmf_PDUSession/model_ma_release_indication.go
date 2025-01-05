@@ -24,36 +24,61 @@ import (
 )
 
 // MaReleaseIndication Multi-Access PDU session release Indication. Possible values are   - REL_MAPDU_OVER_3GPP   - REL_MAPDU_OVER_N3GPP
-type MaReleaseIndication struct {
-	String *string
+type MaReleaseIndication string
+
+// List of MaReleaseIndication
+const (
+	MARELEASEINDICATION__3_GPP MaReleaseIndication = "REL_MAPDU_OVER_3GPP"
+	MARELEASEINDICATION_N3_GPP MaReleaseIndication = "REL_MAPDU_OVER_N3GPP"
+)
+
+// All allowed values of MaReleaseIndication enum
+var AllowedMaReleaseIndicationEnumValues = []MaReleaseIndication{
+	"REL_MAPDU_OVER_3GPP",
+	"REL_MAPDU_OVER_N3GPP",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *MaReleaseIndication) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *MaReleaseIndication) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := MaReleaseIndication(value)
+	for _, existing := range AllowedMaReleaseIndicationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(MaReleaseIndication)")
+	return fmt.Errorf("%+v is not a valid MaReleaseIndication", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *MaReleaseIndication) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewMaReleaseIndicationFromValue returns a pointer to a valid MaReleaseIndication
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewMaReleaseIndicationFromValue(v string) (*MaReleaseIndication, error) {
+	ev := MaReleaseIndication(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for MaReleaseIndication: valid values are %v", v, AllowedMaReleaseIndicationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v MaReleaseIndication) IsValid() bool {
+	for _, existing := range AllowedMaReleaseIndicationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to MaReleaseIndication value
+func (v MaReleaseIndication) Ptr() *MaReleaseIndication {
+	return &v
 }
 
 type NullableMaReleaseIndication struct {

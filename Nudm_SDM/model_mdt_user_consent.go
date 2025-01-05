@@ -24,36 +24,61 @@ import (
 )
 
 // MdtUserConsent Indicates the user has given his consent for MDT activation.
-type MdtUserConsent struct {
-	String *string
+type MdtUserConsent string
+
+// List of MdtUserConsent
+const (
+	MDTUSERCONSENT_NOT_GIVEN MdtUserConsent = "CONSENT_NOT_GIVEN"
+	MDTUSERCONSENT_GIVEN     MdtUserConsent = "CONSENT_GIVEN"
+)
+
+// All allowed values of MdtUserConsent enum
+var AllowedMdtUserConsentEnumValues = []MdtUserConsent{
+	"CONSENT_NOT_GIVEN",
+	"CONSENT_GIVEN",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *MdtUserConsent) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *MdtUserConsent) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := MdtUserConsent(value)
+	for _, existing := range AllowedMdtUserConsentEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(MdtUserConsent)")
+	return fmt.Errorf("%+v is not a valid MdtUserConsent", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *MdtUserConsent) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewMdtUserConsentFromValue returns a pointer to a valid MdtUserConsent
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewMdtUserConsentFromValue(v string) (*MdtUserConsent, error) {
+	ev := MdtUserConsent(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for MdtUserConsent: valid values are %v", v, AllowedMdtUserConsentEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v MdtUserConsent) IsValid() bool {
+	for _, existing := range AllowedMdtUserConsentEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to MdtUserConsent value
+func (v MdtUserConsent) Ptr() *MdtUserConsent {
+	return &v
 }
 
 type NullableMdtUserConsent struct {

@@ -24,36 +24,63 @@ import (
 )
 
 // GpsiType Type of GPSI (MSISDN or External-ID)
-type GpsiType struct {
-	String *string
+type GpsiType string
+
+// List of GpsiType
+const (
+	GPSITYPE_MSISDN       GpsiType = "MSISDN"
+	GPSITYPE_EXT_ID       GpsiType = "EXT_ID"
+	GPSITYPE_EXT_GROUP_ID GpsiType = "EXT_GROUP_ID"
+)
+
+// All allowed values of GpsiType enum
+var AllowedGpsiTypeEnumValues = []GpsiType{
+	"MSISDN",
+	"EXT_ID",
+	"EXT_GROUP_ID",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *GpsiType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *GpsiType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := GpsiType(value)
+	for _, existing := range AllowedGpsiTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(GpsiType)")
+	return fmt.Errorf("%+v is not a valid GpsiType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *GpsiType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewGpsiTypeFromValue returns a pointer to a valid GpsiType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewGpsiTypeFromValue(v string) (*GpsiType, error) {
+	ev := GpsiType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for GpsiType: valid values are %v", v, AllowedGpsiTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v GpsiType) IsValid() bool {
+	for _, existing := range AllowedGpsiTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to GpsiType value
+func (v GpsiType) Ptr() *GpsiType {
+	return &v
 }
 
 type NullableGpsiType struct {

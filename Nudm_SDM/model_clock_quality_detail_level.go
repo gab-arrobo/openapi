@@ -24,36 +24,61 @@ import (
 )
 
 // ClockQualityDetailLevel Indicates the Clock Quality Detail Level.
-type ClockQualityDetailLevel struct {
-	String *string
+type ClockQualityDetailLevel string
+
+// List of ClockQualityDetailLevel
+const (
+	CLOCKQUALITYDETAILLEVEL_CLOCK_QUALITY_METRICS ClockQualityDetailLevel = "CLOCK_QUALITY_METRICS"
+	CLOCKQUALITYDETAILLEVEL_ACCEPT_INDICATION     ClockQualityDetailLevel = "ACCEPT_INDICATION"
+)
+
+// All allowed values of ClockQualityDetailLevel enum
+var AllowedClockQualityDetailLevelEnumValues = []ClockQualityDetailLevel{
+	"CLOCK_QUALITY_METRICS",
+	"ACCEPT_INDICATION",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ClockQualityDetailLevel) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ClockQualityDetailLevel) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ClockQualityDetailLevel(value)
+	for _, existing := range AllowedClockQualityDetailLevelEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ClockQualityDetailLevel)")
+	return fmt.Errorf("%+v is not a valid ClockQualityDetailLevel", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ClockQualityDetailLevel) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewClockQualityDetailLevelFromValue returns a pointer to a valid ClockQualityDetailLevel
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewClockQualityDetailLevelFromValue(v string) (*ClockQualityDetailLevel, error) {
+	ev := ClockQualityDetailLevel(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ClockQualityDetailLevel: valid values are %v", v, AllowedClockQualityDetailLevelEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ClockQualityDetailLevel) IsValid() bool {
+	for _, existing := range AllowedClockQualityDetailLevelEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ClockQualityDetailLevel value
+func (v ClockQualityDetailLevel) Ptr() *ClockQualityDetailLevel {
+	return &v
 }
 
 type NullableClockQualityDetailLevel struct {

@@ -24,36 +24,67 @@ import (
 )
 
 // PrivacyCheckRelatedAction Indicates actions related to privacy check.
-type PrivacyCheckRelatedAction struct {
-	String *string
+type PrivacyCheckRelatedAction string
+
+// List of PrivacyCheckRelatedAction
+const (
+	PRIVACYCHECKRELATEDACTION_NOT_ALLOWED                  PrivacyCheckRelatedAction = "LOCATION_NOT_ALLOWED"
+	PRIVACYCHECKRELATEDACTION_ALLOWED_WITH_NOTIFICATION    PrivacyCheckRelatedAction = "LOCATION_ALLOWED_WITH_NOTIFICATION"
+	PRIVACYCHECKRELATEDACTION_ALLOWED_WITHOUT_NOTIFICATION PrivacyCheckRelatedAction = "LOCATION_ALLOWED_WITHOUT_NOTIFICATION"
+	PRIVACYCHECKRELATEDACTION_ALLOWED_WITHOUT_RESPONSE     PrivacyCheckRelatedAction = "LOCATION_ALLOWED_WITHOUT_RESPONSE"
+	PRIVACYCHECKRELATEDACTION_RESTRICTED_WITHOUT_RESPONSE  PrivacyCheckRelatedAction = "LOCATION_RESTRICTED_WITHOUT_RESPONSE"
+)
+
+// All allowed values of PrivacyCheckRelatedAction enum
+var AllowedPrivacyCheckRelatedActionEnumValues = []PrivacyCheckRelatedAction{
+	"LOCATION_NOT_ALLOWED",
+	"LOCATION_ALLOWED_WITH_NOTIFICATION",
+	"LOCATION_ALLOWED_WITHOUT_NOTIFICATION",
+	"LOCATION_ALLOWED_WITHOUT_RESPONSE",
+	"LOCATION_RESTRICTED_WITHOUT_RESPONSE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PrivacyCheckRelatedAction) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PrivacyCheckRelatedAction) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PrivacyCheckRelatedAction(value)
+	for _, existing := range AllowedPrivacyCheckRelatedActionEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PrivacyCheckRelatedAction)")
+	return fmt.Errorf("%+v is not a valid PrivacyCheckRelatedAction", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PrivacyCheckRelatedAction) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPrivacyCheckRelatedActionFromValue returns a pointer to a valid PrivacyCheckRelatedAction
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPrivacyCheckRelatedActionFromValue(v string) (*PrivacyCheckRelatedAction, error) {
+	ev := PrivacyCheckRelatedAction(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PrivacyCheckRelatedAction: valid values are %v", v, AllowedPrivacyCheckRelatedActionEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PrivacyCheckRelatedAction) IsValid() bool {
+	for _, existing := range AllowedPrivacyCheckRelatedActionEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PrivacyCheckRelatedAction value
+func (v PrivacyCheckRelatedAction) Ptr() *PrivacyCheckRelatedAction {
+	return &v
 }
 
 type NullablePrivacyCheckRelatedAction struct {

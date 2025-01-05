@@ -24,36 +24,61 @@ import (
 )
 
 // PreemptionCapability The enumeration PreemptionCapability indicates the pre-emption capability of a request on other QoS flows. See clause 5.7.2.2 of 3GPP TS 23.501. It shall comply with the provisions defined in table 5.5.3.1-1.
-type PreemptionCapability struct {
-	String *string
+type PreemptionCapability string
+
+// List of PreemptionCapability
+const (
+	PREEMPTIONCAPABILITY_NOT_PREEMPT PreemptionCapability = "NOT_PREEMPT"
+	PREEMPTIONCAPABILITY_MAY_PREEMPT PreemptionCapability = "MAY_PREEMPT"
+)
+
+// All allowed values of PreemptionCapability enum
+var AllowedPreemptionCapabilityEnumValues = []PreemptionCapability{
+	"NOT_PREEMPT",
+	"MAY_PREEMPT",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PreemptionCapability) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PreemptionCapability) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PreemptionCapability(value)
+	for _, existing := range AllowedPreemptionCapabilityEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PreemptionCapability)")
+	return fmt.Errorf("%+v is not a valid PreemptionCapability", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PreemptionCapability) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPreemptionCapabilityFromValue returns a pointer to a valid PreemptionCapability
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPreemptionCapabilityFromValue(v string) (*PreemptionCapability, error) {
+	ev := PreemptionCapability(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PreemptionCapability: valid values are %v", v, AllowedPreemptionCapabilityEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PreemptionCapability) IsValid() bool {
+	for _, existing := range AllowedPreemptionCapabilityEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PreemptionCapability value
+func (v PreemptionCapability) Ptr() *PreemptionCapability {
+	return &v
 }
 
 type NullablePreemptionCapability struct {

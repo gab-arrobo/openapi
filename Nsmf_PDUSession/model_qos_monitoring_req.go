@@ -24,36 +24,65 @@ import (
 )
 
 // QosMonitoringReq QoS monitoring request. Possible values are   - UL   - DL   - BOTH   - NONE
-type QosMonitoringReq struct {
-	String *string
+type QosMonitoringReq string
+
+// List of QosMonitoringReq
+const (
+	QOSMONITORINGREQ_UL   QosMonitoringReq = "UL"
+	QOSMONITORINGREQ_DL   QosMonitoringReq = "DL"
+	QOSMONITORINGREQ_BOTH QosMonitoringReq = "BOTH"
+	QOSMONITORINGREQ_NONE QosMonitoringReq = "NONE"
+)
+
+// All allowed values of QosMonitoringReq enum
+var AllowedQosMonitoringReqEnumValues = []QosMonitoringReq{
+	"UL",
+	"DL",
+	"BOTH",
+	"NONE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *QosMonitoringReq) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *QosMonitoringReq) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := QosMonitoringReq(value)
+	for _, existing := range AllowedQosMonitoringReqEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(QosMonitoringReq)")
+	return fmt.Errorf("%+v is not a valid QosMonitoringReq", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *QosMonitoringReq) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewQosMonitoringReqFromValue returns a pointer to a valid QosMonitoringReq
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewQosMonitoringReqFromValue(v string) (*QosMonitoringReq, error) {
+	ev := QosMonitoringReq(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for QosMonitoringReq: valid values are %v", v, AllowedQosMonitoringReqEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v QosMonitoringReq) IsValid() bool {
+	for _, existing := range AllowedQosMonitoringReqEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to QosMonitoringReq value
+func (v QosMonitoringReq) Ptr() *QosMonitoringReq {
+	return &v
 }
 
 type NullableQosMonitoringReq struct {

@@ -24,36 +24,63 @@ import (
 )
 
 // QosFlowAccessType Access type associated with a QoS Flow. Possible values are   - 3GPP   - NON_3GPP   - 3GPP_AND_NON_3GPP
-type QosFlowAccessType struct {
-	String *string
+type QosFlowAccessType string
+
+// List of QosFlowAccessType
+const (
+	QOSFLOWACCESSTYPE__3_GPP               QosFlowAccessType = "3GPP"
+	QOSFLOWACCESSTYPE_NON_3_GPP            QosFlowAccessType = "NON_3GPP"
+	QOSFLOWACCESSTYPE__3_GPP_AND_NON_3_GPP QosFlowAccessType = "3GPP_AND_NON_3GPP"
+)
+
+// All allowed values of QosFlowAccessType enum
+var AllowedQosFlowAccessTypeEnumValues = []QosFlowAccessType{
+	"3GPP",
+	"NON_3GPP",
+	"3GPP_AND_NON_3GPP",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *QosFlowAccessType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *QosFlowAccessType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := QosFlowAccessType(value)
+	for _, existing := range AllowedQosFlowAccessTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(QosFlowAccessType)")
+	return fmt.Errorf("%+v is not a valid QosFlowAccessType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *QosFlowAccessType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewQosFlowAccessTypeFromValue returns a pointer to a valid QosFlowAccessType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewQosFlowAccessTypeFromValue(v string) (*QosFlowAccessType, error) {
+	ev := QosFlowAccessType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for QosFlowAccessType: valid values are %v", v, AllowedQosFlowAccessTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v QosFlowAccessType) IsValid() bool {
+	for _, existing := range AllowedQosFlowAccessTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to QosFlowAccessType value
+func (v QosFlowAccessType) Ptr() *QosFlowAccessType {
+	return &v
 }
 
 type NullableQosFlowAccessType struct {

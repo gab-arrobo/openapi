@@ -24,36 +24,61 @@ import (
 )
 
 // SmfChangeIndication Indicates the I-SMF or V-SMF change or removal
-type SmfChangeIndication struct {
-	String *string
+type SmfChangeIndication string
+
+// List of SmfChangeIndication
+const (
+	SMFCHANGEINDICATION_CHANGED SmfChangeIndication = "CHANGED"
+	SMFCHANGEINDICATION_REMOVED SmfChangeIndication = "REMOVED"
+)
+
+// All allowed values of SmfChangeIndication enum
+var AllowedSmfChangeIndicationEnumValues = []SmfChangeIndication{
+	"CHANGED",
+	"REMOVED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SmfChangeIndication) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SmfChangeIndication) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SmfChangeIndication(value)
+	for _, existing := range AllowedSmfChangeIndicationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SmfChangeIndication)")
+	return fmt.Errorf("%+v is not a valid SmfChangeIndication", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SmfChangeIndication) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSmfChangeIndicationFromValue returns a pointer to a valid SmfChangeIndication
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSmfChangeIndicationFromValue(v string) (*SmfChangeIndication, error) {
+	ev := SmfChangeIndication(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SmfChangeIndication: valid values are %v", v, AllowedSmfChangeIndicationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SmfChangeIndication) IsValid() bool {
+	for _, existing := range AllowedSmfChangeIndicationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SmfChangeIndication value
+func (v SmfChangeIndication) Ptr() *SmfChangeIndication {
+	return &v
 }
 
 type NullableSmfChangeIndication struct {

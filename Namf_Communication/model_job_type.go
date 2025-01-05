@@ -24,36 +24,71 @@ import (
 )
 
 // JobType The enumeration JobType defines Job Type in the trace. See 3GPP TS 32.422 for further  description of the values. It shall comply with the provisions defined in table 5.6.3.3-1.
-type JobType struct {
-	String *string
+type JobType string
+
+// List of JobType
+const (
+	JOBTYPE_IMMEDIATE_MDT_ONLY      JobType = "IMMEDIATE_MDT_ONLY"
+	JOBTYPE_LOGGED_MDT_ONLY         JobType = "LOGGED_MDT_ONLY"
+	JOBTYPE_TRACE_ONLY              JobType = "TRACE_ONLY"
+	JOBTYPE_IMMEDIATE_MDT_AND_TRACE JobType = "IMMEDIATE_MDT_AND_TRACE"
+	JOBTYPE_RLF_REPORTS_ONLY        JobType = "RLF_REPORTS_ONLY"
+	JOBTYPE_RCEF_REPORTS_ONLY       JobType = "RCEF_REPORTS_ONLY"
+	JOBTYPE_LOGGED_MBSFN_MDT        JobType = "LOGGED_MBSFN_MDT"
+)
+
+// All allowed values of JobType enum
+var AllowedJobTypeEnumValues = []JobType{
+	"IMMEDIATE_MDT_ONLY",
+	"LOGGED_MDT_ONLY",
+	"TRACE_ONLY",
+	"IMMEDIATE_MDT_AND_TRACE",
+	"RLF_REPORTS_ONLY",
+	"RCEF_REPORTS_ONLY",
+	"LOGGED_MBSFN_MDT",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *JobType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *JobType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := JobType(value)
+	for _, existing := range AllowedJobTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(JobType)")
+	return fmt.Errorf("%+v is not a valid JobType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *JobType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewJobTypeFromValue returns a pointer to a valid JobType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewJobTypeFromValue(v string) (*JobType, error) {
+	ev := JobType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for JobType: valid values are %v", v, AllowedJobTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v JobType) IsValid() bool {
+	for _, existing := range AllowedJobTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to JobType value
+func (v JobType) Ptr() *JobType {
+	return &v
 }
 
 type NullableJobType struct {

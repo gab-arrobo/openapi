@@ -24,36 +24,61 @@ import (
 )
 
 // UnavailableAccessIndication Indicates the access type of a MA PDU session that is unavailable. Possible values are   - 3GA_UNAVAILABLE   - N3GA_UNAVAILABLE
-type UnavailableAccessIndication struct {
-	String *string
+type UnavailableAccessIndication string
+
+// List of UnavailableAccessIndication
+const (
+	UNAVAILABLEACCESSINDICATION__3_GA_UNAVAILABLE UnavailableAccessIndication = "3GA_UNAVAILABLE"
+	UNAVAILABLEACCESSINDICATION_N3_GA_UNAVAILABLE UnavailableAccessIndication = "N3GA_UNAVAILABLE"
+)
+
+// All allowed values of UnavailableAccessIndication enum
+var AllowedUnavailableAccessIndicationEnumValues = []UnavailableAccessIndication{
+	"3GA_UNAVAILABLE",
+	"N3GA_UNAVAILABLE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *UnavailableAccessIndication) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *UnavailableAccessIndication) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := UnavailableAccessIndication(value)
+	for _, existing := range AllowedUnavailableAccessIndicationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(UnavailableAccessIndication)")
+	return fmt.Errorf("%+v is not a valid UnavailableAccessIndication", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *UnavailableAccessIndication) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewUnavailableAccessIndicationFromValue returns a pointer to a valid UnavailableAccessIndication
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewUnavailableAccessIndicationFromValue(v string) (*UnavailableAccessIndication, error) {
+	ev := UnavailableAccessIndication(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for UnavailableAccessIndication: valid values are %v", v, AllowedUnavailableAccessIndicationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v UnavailableAccessIndication) IsValid() bool {
+	for _, existing := range AllowedUnavailableAccessIndicationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to UnavailableAccessIndication value
+func (v UnavailableAccessIndication) Ptr() *UnavailableAccessIndication {
+	return &v
 }
 
 type NullableUnavailableAccessIndication struct {

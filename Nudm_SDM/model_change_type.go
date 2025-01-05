@@ -24,36 +24,65 @@ import (
 )
 
 // ChangeType Indicates the type of change to be performed.
-type ChangeType struct {
-	String *string
+type ChangeType string
+
+// List of ChangeType
+const (
+	CHANGETYPE_ADD     ChangeType = "ADD"
+	CHANGETYPE_MOVE    ChangeType = "MOVE"
+	CHANGETYPE_REMOVE  ChangeType = "REMOVE"
+	CHANGETYPE_REPLACE ChangeType = "REPLACE"
+)
+
+// All allowed values of ChangeType enum
+var AllowedChangeTypeEnumValues = []ChangeType{
+	"ADD",
+	"MOVE",
+	"REMOVE",
+	"REPLACE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ChangeType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ChangeType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ChangeType(value)
+	for _, existing := range AllowedChangeTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ChangeType)")
+	return fmt.Errorf("%+v is not a valid ChangeType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ChangeType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewChangeTypeFromValue returns a pointer to a valid ChangeType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewChangeTypeFromValue(v string) (*ChangeType, error) {
+	ev := ChangeType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ChangeType: valid values are %v", v, AllowedChangeTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ChangeType) IsValid() bool {
+	for _, existing := range AllowedChangeTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ChangeType value
+func (v ChangeType) Ptr() *ChangeType {
+	return &v
 }
 
 type NullableChangeType struct {

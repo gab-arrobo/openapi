@@ -24,36 +24,61 @@ import (
 )
 
 // ReportingFrequency Indicates the frequency for the reporting.
-type ReportingFrequency struct {
-	String *string
+type ReportingFrequency string
+
+// List of ReportingFrequency
+const (
+	REPORTINGFREQUENCY_EVENT_TRIGGERED ReportingFrequency = "EVENT_TRIGGERED"
+	REPORTINGFREQUENCY_PERIODIC        ReportingFrequency = "PERIODIC"
+)
+
+// All allowed values of ReportingFrequency enum
+var AllowedReportingFrequencyEnumValues = []ReportingFrequency{
+	"EVENT_TRIGGERED",
+	"PERIODIC",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ReportingFrequency) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ReportingFrequency) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ReportingFrequency(value)
+	for _, existing := range AllowedReportingFrequencyEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ReportingFrequency)")
+	return fmt.Errorf("%+v is not a valid ReportingFrequency", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ReportingFrequency) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewReportingFrequencyFromValue returns a pointer to a valid ReportingFrequency
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewReportingFrequencyFromValue(v string) (*ReportingFrequency, error) {
+	ev := ReportingFrequency(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ReportingFrequency: valid values are %v", v, AllowedReportingFrequencyEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ReportingFrequency) IsValid() bool {
+	for _, existing := range AllowedReportingFrequencyEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ReportingFrequency value
+func (v ReportingFrequency) Ptr() *ReportingFrequency {
+	return &v
 }
 
 type NullableReportingFrequency struct {

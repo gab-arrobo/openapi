@@ -38,9 +38,9 @@ type MdtConfiguration struct {
 	ReportIntervalNr      *ReportIntervalNrMdt   `json:"reportIntervalNr,omitempty"`
 	ReportAmount          *ReportAmountMdt       `json:"reportAmount,omitempty"`
 	// A map (list of key-value pairs) where MeasurementLteForMdt serves as key;
-	ReportAmountPerMeasurementLte map[string]ReportAmountMdt `json:"reportAmountPerMeasurementLte,omitempty"`
+	ReportAmountPerMeasurementLte *map[string]ReportAmountMdt `json:"reportAmountPerMeasurementLte,omitempty"`
 	// A map (list of key-value pairs) where MeasurementNrForMdt serves as key;
-	ReportAmountPerMeasurementNr map[string]ReportAmountMdt `json:"reportAmountPerMeasurementNr,omitempty"`
+	ReportAmountPerMeasurementNr *map[string]ReportAmountMdt `json:"reportAmountPerMeasurementNr,omitempty"`
 	// This IE shall be present if the report trigger parameter is configured for A2 event reporting or A2 event triggered periodic reporting and the job type parameter is configured for Immediate MDT or combined Immediate MDT and Trace in LTE. When present, this IE shall indicate the Event Threshold for RSRP, and the value shall be between 0-97.
 	EventThresholdRsrp *int32 `json:"eventThresholdRsrp,omitempty"`
 	// This IE shall be present if the report trigger parameter is configured for A2 event reporting or A2 event triggered periodic reporting and the job type parameter is configured for Immediate MDT or combined Immediate MDT and Trace in NR. When present, this IE shall indicate the Event Threshold for RSRP, and the value shall be between 0-127.
@@ -403,14 +403,14 @@ func (o *MdtConfiguration) GetReportAmountPerMeasurementLte() map[string]ReportA
 		var ret map[string]ReportAmountMdt
 		return ret
 	}
-	return o.ReportAmountPerMeasurementLte
+	return *o.ReportAmountPerMeasurementLte
 }
 
 // GetReportAmountPerMeasurementLteOk returns a tuple with the ReportAmountPerMeasurementLte field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MdtConfiguration) GetReportAmountPerMeasurementLteOk() (map[string]ReportAmountMdt, bool) {
+func (o *MdtConfiguration) GetReportAmountPerMeasurementLteOk() (*map[string]ReportAmountMdt, bool) {
 	if o == nil || IsNil(o.ReportAmountPerMeasurementLte) {
-		return map[string]ReportAmountMdt{}, false
+		return nil, false
 	}
 	return o.ReportAmountPerMeasurementLte, true
 }
@@ -426,7 +426,7 @@ func (o *MdtConfiguration) HasReportAmountPerMeasurementLte() bool {
 
 // SetReportAmountPerMeasurementLte gets a reference to the given map[string]ReportAmountMdt and assigns it to the ReportAmountPerMeasurementLte field.
 func (o *MdtConfiguration) SetReportAmountPerMeasurementLte(v map[string]ReportAmountMdt) {
-	o.ReportAmountPerMeasurementLte = v
+	o.ReportAmountPerMeasurementLte = &v
 }
 
 // GetReportAmountPerMeasurementNr returns the ReportAmountPerMeasurementNr field value if set, zero value otherwise.
@@ -435,14 +435,14 @@ func (o *MdtConfiguration) GetReportAmountPerMeasurementNr() map[string]ReportAm
 		var ret map[string]ReportAmountMdt
 		return ret
 	}
-	return o.ReportAmountPerMeasurementNr
+	return *o.ReportAmountPerMeasurementNr
 }
 
 // GetReportAmountPerMeasurementNrOk returns a tuple with the ReportAmountPerMeasurementNr field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MdtConfiguration) GetReportAmountPerMeasurementNrOk() (map[string]ReportAmountMdt, bool) {
+func (o *MdtConfiguration) GetReportAmountPerMeasurementNrOk() (*map[string]ReportAmountMdt, bool) {
 	if o == nil || IsNil(o.ReportAmountPerMeasurementNr) {
-		return map[string]ReportAmountMdt{}, false
+		return nil, false
 	}
 	return o.ReportAmountPerMeasurementNr, true
 }
@@ -458,7 +458,7 @@ func (o *MdtConfiguration) HasReportAmountPerMeasurementNr() bool {
 
 // SetReportAmountPerMeasurementNr gets a reference to the given map[string]ReportAmountMdt and assigns it to the ReportAmountPerMeasurementNr field.
 func (o *MdtConfiguration) SetReportAmountPerMeasurementNr(v map[string]ReportAmountMdt) {
-	o.ReportAmountPerMeasurementNr = v
+	o.ReportAmountPerMeasurementNr = &v
 }
 
 // GetEventThresholdRsrp returns the EventThresholdRsrp field value if set, zero value otherwise.

@@ -24,36 +24,63 @@ import (
 )
 
 // NetLocAccessSupport Indicates the access network support of the report of the requested access network information.   Possible values are - ANR_NOT_SUPPORTED: Indicates that the access network does not support the report of access network information. - TZR_NOT_SUPPORTED: Indicates that the access network does not support the report of UE time zone. - LOC_NOT_SUPPORTED: Indicates that the access network does not support the report of UE Location (or PLMN Id).
-type NetLocAccessSupport struct {
-	String *string
+type NetLocAccessSupport string
+
+// List of NetLocAccessSupport
+const (
+	NETLOCACCESSSUPPORT_ANR_NOT_SUPPORTED NetLocAccessSupport = "ANR_NOT_SUPPORTED"
+	NETLOCACCESSSUPPORT_TZR_NOT_SUPPORTED NetLocAccessSupport = "TZR_NOT_SUPPORTED"
+	NETLOCACCESSSUPPORT_LOC_NOT_SUPPORTED NetLocAccessSupport = "LOC_NOT_SUPPORTED"
+)
+
+// All allowed values of NetLocAccessSupport enum
+var AllowedNetLocAccessSupportEnumValues = []NetLocAccessSupport{
+	"ANR_NOT_SUPPORTED",
+	"TZR_NOT_SUPPORTED",
+	"LOC_NOT_SUPPORTED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *NetLocAccessSupport) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *NetLocAccessSupport) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := NetLocAccessSupport(value)
+	for _, existing := range AllowedNetLocAccessSupportEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(NetLocAccessSupport)")
+	return fmt.Errorf("%+v is not a valid NetLocAccessSupport", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *NetLocAccessSupport) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewNetLocAccessSupportFromValue returns a pointer to a valid NetLocAccessSupport
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewNetLocAccessSupportFromValue(v string) (*NetLocAccessSupport, error) {
+	ev := NetLocAccessSupport(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for NetLocAccessSupport: valid values are %v", v, AllowedNetLocAccessSupportEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v NetLocAccessSupport) IsValid() bool {
+	for _, existing := range AllowedNetLocAccessSupportEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to NetLocAccessSupport value
+func (v NetLocAccessSupport) Ptr() *NetLocAccessSupport {
+	return &v
 }
 
 type NullableNetLocAccessSupport struct {

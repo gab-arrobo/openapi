@@ -24,36 +24,61 @@ import (
 )
 
 // ScType Indicates the security context type
-type ScType struct {
-	String *string
+type ScType string
+
+// List of ScType
+const (
+	SCTYPE_NATIVE ScType = "NATIVE"
+	SCTYPE_MAPPED ScType = "MAPPED"
+)
+
+// All allowed values of ScType enum
+var AllowedScTypeEnumValues = []ScType{
+	"NATIVE",
+	"MAPPED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ScType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ScType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ScType(value)
+	for _, existing := range AllowedScTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ScType)")
+	return fmt.Errorf("%+v is not a valid ScType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ScType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewScTypeFromValue returns a pointer to a valid ScType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewScTypeFromValue(v string) (*ScType, error) {
+	ev := ScType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ScType: valid values are %v", v, AllowedScTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ScType) IsValid() bool {
+	for _, existing := range AllowedScTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ScType value
+func (v ScType) Ptr() *ScType {
+	return &v
 }
 
 type NullableScType struct {

@@ -24,36 +24,67 @@ import (
 )
 
 // PendingUpdateInfo Pending Update Information. Possible values are   - UE_LOCATION   - TIMEZONE   - ACCESS_TYPE   - RAT_TYPE   - AMF_ID
-type PendingUpdateInfo struct {
-	String *string
+type PendingUpdateInfo string
+
+// List of PendingUpdateInfo
+const (
+	PENDINGUPDATEINFO_UE_LOCATION PendingUpdateInfo = "UE_LOCATION"
+	PENDINGUPDATEINFO_TIMEZONE    PendingUpdateInfo = "TIMEZONE"
+	PENDINGUPDATEINFO_ACCESS_TYPE PendingUpdateInfo = "ACCESS_TYPE"
+	PENDINGUPDATEINFO_RAT_TYPE    PendingUpdateInfo = "RAT_TYPE"
+	PENDINGUPDATEINFO_AMF_ID      PendingUpdateInfo = "AMF_ID"
+)
+
+// All allowed values of PendingUpdateInfo enum
+var AllowedPendingUpdateInfoEnumValues = []PendingUpdateInfo{
+	"UE_LOCATION",
+	"TIMEZONE",
+	"ACCESS_TYPE",
+	"RAT_TYPE",
+	"AMF_ID",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PendingUpdateInfo) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PendingUpdateInfo) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PendingUpdateInfo(value)
+	for _, existing := range AllowedPendingUpdateInfoEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PendingUpdateInfo)")
+	return fmt.Errorf("%+v is not a valid PendingUpdateInfo", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PendingUpdateInfo) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPendingUpdateInfoFromValue returns a pointer to a valid PendingUpdateInfo
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPendingUpdateInfoFromValue(v string) (*PendingUpdateInfo, error) {
+	ev := PendingUpdateInfo(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PendingUpdateInfo: valid values are %v", v, AllowedPendingUpdateInfoEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PendingUpdateInfo) IsValid() bool {
+	for _, existing := range AllowedPendingUpdateInfoEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PendingUpdateInfo value
+func (v PendingUpdateInfo) Ptr() *PendingUpdateInfo {
+	return &v
 }
 
 type NullablePendingUpdateInfo struct {

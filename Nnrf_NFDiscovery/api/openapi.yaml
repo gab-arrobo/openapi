@@ -43688,17 +43688,15 @@ components:
       - value
       type: object
     NoProfileMatchReason:
-      anyOf:
-      - enum:
-        - REQUESTER_PLMN_NOT_ALLOWED
-        - TARGET_NF_SUSPENDED
-        - TARGET_NF_UNDISCOVERABLE
-        - QUERY_PARAMS_COMBINATION_NO_MATCH
-        - TARGET_NF_TYPE_NOT_SUPPORTED
-        - UNSPECIFIED
-        type: string
-      - type: string
       description: No Profile Match Reason
+      enum:
+      - REQUESTER_PLMN_NOT_ALLOWED
+      - TARGET_NF_SUSPENDED
+      - TARGET_NF_UNDISCOVERABLE
+      - QUERY_PARAMS_COMBINATION_NO_MATCH
+      - TARGET_NF_TYPE_NOT_SUPPORTED
+      - UNSPECIFIED
+      type: string
     AfData:
       description: Contains information supported by the trusted AF
       properties:
@@ -44375,17 +44373,15 @@ components:
         \ TS 23.501."
       type: string
     PduSessionType:
-      anyOf:
-      - enum:
-        - IPV4
-        - IPV6
-        - IPV4V6
-        - UNSTRUCTURED
-        - ETHERNET
-        type: string
-      - type: string
       description: "PduSessionType indicates the type of a PDU session. It shall comply\
         \ with the provisions defined in table 5.4.3.3-1. \n"
+      enum:
+      - IPV4
+      - IPV6
+      - IPV4V6
+      - UNSTRUCTURED
+      - ETHERNET
+      type: string
     EventId:
       anyOf:
       - enum:
@@ -44684,44 +44680,42 @@ components:
       - NG_ENB
       type: string
     RatType:
-      anyOf:
-      - enum:
-        - NR
-        - EUTRA
-        - WLAN
-        - VIRTUAL
-        - NBIOT
-        - WIRELINE
-        - WIRELINE_CABLE
-        - WIRELINE_BBF
-        - LTE-M
-        - NR_U
-        - EUTRA_U
-        - TRUSTED_N3GA
-        - TRUSTED_WLAN
-        - UTRA
-        - GERA
-        - NR_LEO
-        - NR_MEO
-        - NR_GEO
-        - NR_OTHER_SAT
-        - NR_REDCAP
-        - WB_E_UTRAN_LEO
-        - WB_E_UTRAN_MEO
-        - WB_E_UTRAN_GEO
-        - WB_E_UTRAN_OTHERSAT
-        - NB_IOT_LEO
-        - NB_IOT_MEO
-        - NB_IOT_GEO
-        - NB_IOT_OTHERSAT
-        - LTE_M_LEO
-        - LTE_M_MEO
-        - LTE_M_GEO
-        - LTE_M_OTHERSAT
-        - NR_EREDCAP
-        type: string
-      - type: string
       description: Indicates the radio access used.
+      enum:
+      - NR
+      - EUTRA
+      - WLAN
+      - VIRTUAL
+      - NBIOT
+      - WIRELINE
+      - WIRELINE_CABLE
+      - WIRELINE_BBF
+      - LTE-M
+      - NR_U
+      - EUTRA_U
+      - TRUSTED_N3GA
+      - TRUSTED_WLAN
+      - UTRA
+      - GERA
+      - NR_LEO
+      - NR_MEO
+      - NR_GEO
+      - NR_OTHER_SAT
+      - NR_REDCAP
+      - WB_E_UTRAN_LEO
+      - WB_E_UTRAN_MEO
+      - WB_E_UTRAN_GEO
+      - WB_E_UTRAN_OTHERSAT
+      - NB_IOT_LEO
+      - NB_IOT_MEO
+      - NB_IOT_GEO
+      - NB_IOT_OTHERSAT
+      - LTE_M_LEO
+      - LTE_M_MEO
+      - LTE_M_GEO
+      - LTE_M_OTHERSAT
+      - NR_EREDCAP
+      type: string
     AfEventExposureData:
       description: AF Event Exposure data managed by a given NEF Instance
       example:
@@ -45014,35 +45008,31 @@ components:
       - UUAA_MM_AUTH_NOTIFICATION
       type: string
     N1MessageClass:
-      anyOf:
-      - enum:
-        - 5GMM
-        - SM
-        - LPP
-        - SMS
-        - UPDP
-        - LCS
-        - UPP-CM
-        type: string
-      - type: string
       description: Enumeration for N1 Message Class
+      enum:
+      - 5GMM
+      - SM
+      - LPP
+      - SMS
+      - UPDP
+      - LCS
+      - UPP-CM
+      type: string
     N2InformationClass:
-      anyOf:
-      - enum:
-        - SM
-        - NRPPa
-        - PWS
-        - PWS-BCAL
-        - PWS-RF
-        - RAN
-        - V2X
-        - PROSE
-        - TSS
-        - RSPP
-        - A2X
-        type: string
-      - type: string
       description: Enumeration for N2 Information Class
+      enum:
+      - SM
+      - NRPPa
+      - PWS
+      - PWS-BCAL
+      - PWS-RF
+      - RAN
+      - V2X
+      - PROSE
+      - TSS
+      - RSPP
+      - A2X
+      type: string
     VendorSpecificFeature:
       description: Information about a vendor-specific feature
       example:
@@ -50426,13 +50416,11 @@ components:
       - apiVersionInUri
       type: object
     UriScheme:
-      anyOf:
-      - enum:
-        - http
-        - https
-        type: string
-      - type: string
       description: HTTP and HTTPS URI scheme.
+      enum:
+      - http
+      - https
+      type: string
     NFServiceStatus:
       description: Status of a given NF Service Instance of an NF Instance stored
         in NRF

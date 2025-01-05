@@ -24,36 +24,93 @@ import (
 )
 
 // DataSetName Indicates the requested data set name.
-type DataSetName struct {
-	String *string
+type DataSetName string
+
+// List of DataSetName
+const (
+	DATASETNAME_AM          DataSetName = "AM"
+	DATASETNAME_SMF_SEL     DataSetName = "SMF_SEL"
+	DATASETNAME_UEC_SMF     DataSetName = "UEC_SMF"
+	DATASETNAME_UEC_SMSF    DataSetName = "UEC_SMSF"
+	DATASETNAME_SMS_SUB     DataSetName = "SMS_SUB"
+	DATASETNAME_SM          DataSetName = "SM"
+	DATASETNAME_TRACE       DataSetName = "TRACE"
+	DATASETNAME_SMS_MNG     DataSetName = "SMS_MNG"
+	DATASETNAME_LCS_PRIVACY DataSetName = "LCS_PRIVACY"
+	DATASETNAME_LCS_MO      DataSetName = "LCS_MO"
+	DATASETNAME_LCS_SUB     DataSetName = "LCS_SUB"
+	DATASETNAME_UEC_AMF     DataSetName = "UEC_AMF"
+	DATASETNAME_V2_X        DataSetName = "V2X"
+	DATASETNAME_LCS_BCA     DataSetName = "LCS_BCA"
+	DATASETNAME_PROSE       DataSetName = "PROSE"
+	DATASETNAME_UC          DataSetName = "UC"
+	DATASETNAME_MBS         DataSetName = "MBS"
+	DATASETNAME_A2_X        DataSetName = "A2X"
+)
+
+// All allowed values of DataSetName enum
+var AllowedDataSetNameEnumValues = []DataSetName{
+	"AM",
+	"SMF_SEL",
+	"UEC_SMF",
+	"UEC_SMSF",
+	"SMS_SUB",
+	"SM",
+	"TRACE",
+	"SMS_MNG",
+	"LCS_PRIVACY",
+	"LCS_MO",
+	"LCS_SUB",
+	"UEC_AMF",
+	"V2X",
+	"LCS_BCA",
+	"PROSE",
+	"UC",
+	"MBS",
+	"A2X",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *DataSetName) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *DataSetName) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := DataSetName(value)
+	for _, existing := range AllowedDataSetNameEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(DataSetName)")
+	return fmt.Errorf("%+v is not a valid DataSetName", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *DataSetName) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewDataSetNameFromValue returns a pointer to a valid DataSetName
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewDataSetNameFromValue(v string) (*DataSetName, error) {
+	ev := DataSetName(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for DataSetName: valid values are %v", v, AllowedDataSetNameEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v DataSetName) IsValid() bool {
+	for _, existing := range AllowedDataSetNameEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to DataSetName value
+func (v DataSetName) Ptr() *DataSetName {
+	return &v
 }
 
 type NullableDataSetName struct {

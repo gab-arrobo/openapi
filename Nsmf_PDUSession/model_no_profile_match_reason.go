@@ -24,36 +24,69 @@ import (
 )
 
 // NoProfileMatchReason No Profile Match Reason
-type NoProfileMatchReason struct {
-	String *string
+type NoProfileMatchReason string
+
+// List of NoProfileMatchReason
+const (
+	NOPROFILEMATCHREASON_REQUESTER_PLMN_NOT_ALLOWED        NoProfileMatchReason = "REQUESTER_PLMN_NOT_ALLOWED"
+	NOPROFILEMATCHREASON_TARGET_NF_SUSPENDED               NoProfileMatchReason = "TARGET_NF_SUSPENDED"
+	NOPROFILEMATCHREASON_TARGET_NF_UNDISCOVERABLE          NoProfileMatchReason = "TARGET_NF_UNDISCOVERABLE"
+	NOPROFILEMATCHREASON_QUERY_PARAMS_COMBINATION_NO_MATCH NoProfileMatchReason = "QUERY_PARAMS_COMBINATION_NO_MATCH"
+	NOPROFILEMATCHREASON_TARGET_NF_TYPE_NOT_SUPPORTED      NoProfileMatchReason = "TARGET_NF_TYPE_NOT_SUPPORTED"
+	NOPROFILEMATCHREASON_UNSPECIFIED                       NoProfileMatchReason = "UNSPECIFIED"
+)
+
+// All allowed values of NoProfileMatchReason enum
+var AllowedNoProfileMatchReasonEnumValues = []NoProfileMatchReason{
+	"REQUESTER_PLMN_NOT_ALLOWED",
+	"TARGET_NF_SUSPENDED",
+	"TARGET_NF_UNDISCOVERABLE",
+	"QUERY_PARAMS_COMBINATION_NO_MATCH",
+	"TARGET_NF_TYPE_NOT_SUPPORTED",
+	"UNSPECIFIED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *NoProfileMatchReason) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *NoProfileMatchReason) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := NoProfileMatchReason(value)
+	for _, existing := range AllowedNoProfileMatchReasonEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(NoProfileMatchReason)")
+	return fmt.Errorf("%+v is not a valid NoProfileMatchReason", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *NoProfileMatchReason) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewNoProfileMatchReasonFromValue returns a pointer to a valid NoProfileMatchReason
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewNoProfileMatchReasonFromValue(v string) (*NoProfileMatchReason, error) {
+	ev := NoProfileMatchReason(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for NoProfileMatchReason: valid values are %v", v, AllowedNoProfileMatchReasonEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v NoProfileMatchReason) IsValid() bool {
+	for _, existing := range AllowedNoProfileMatchReasonEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to NoProfileMatchReason value
+func (v NoProfileMatchReason) Ptr() *NoProfileMatchReason {
+	return &v
 }
 
 type NullableNoProfileMatchReason struct {

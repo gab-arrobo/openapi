@@ -24,36 +24,73 @@ import (
 )
 
 // RangingSlPosAllowed Indicates the Ranging/SL positioning services that can be authorised to  use in the given PLMN for the UE.
-type RangingSlPosAllowed struct {
-	String *string
+type RangingSlPosAllowed string
+
+// List of RangingSlPosAllowed
+const (
+	RANGINGSLPOSALLOWED_PC5          RangingSlPosAllowed = "PC5"
+	RANGINGSLPOSALLOWED_ANNOUNCE     RangingSlPosAllowed = "ANNOUNCE"
+	RANGINGSLPOSALLOWED_MONITOR      RangingSlPosAllowed = "MONITOR"
+	RANGINGSLPOSALLOWED_DISCOVERER   RangingSlPosAllowed = "DISCOVERER"
+	RANGINGSLPOSALLOWED_DISCOVEREE   RangingSlPosAllowed = "DISCOVEREE"
+	RANGINGSLPOSALLOWED_LOCATED_UE   RangingSlPosAllowed = "LOCATED_UE"
+	RANGINGSLPOSALLOWED_SL_SERVER_UE RangingSlPosAllowed = "SL_SERVER_UE"
+	RANGINGSLPOSALLOWED_SL_CLIENT_UE RangingSlPosAllowed = "SL_CLIENT_UE"
+)
+
+// All allowed values of RangingSlPosAllowed enum
+var AllowedRangingSlPosAllowedEnumValues = []RangingSlPosAllowed{
+	"PC5",
+	"ANNOUNCE",
+	"MONITOR",
+	"DISCOVERER",
+	"DISCOVEREE",
+	"LOCATED_UE",
+	"SL_SERVER_UE",
+	"SL_CLIENT_UE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RangingSlPosAllowed) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RangingSlPosAllowed) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RangingSlPosAllowed(value)
+	for _, existing := range AllowedRangingSlPosAllowedEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RangingSlPosAllowed)")
+	return fmt.Errorf("%+v is not a valid RangingSlPosAllowed", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RangingSlPosAllowed) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRangingSlPosAllowedFromValue returns a pointer to a valid RangingSlPosAllowed
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRangingSlPosAllowedFromValue(v string) (*RangingSlPosAllowed, error) {
+	ev := RangingSlPosAllowed(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RangingSlPosAllowed: valid values are %v", v, AllowedRangingSlPosAllowedEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RangingSlPosAllowed) IsValid() bool {
+	for _, existing := range AllowedRangingSlPosAllowedEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RangingSlPosAllowed value
+func (v RangingSlPosAllowed) Ptr() *RangingSlPosAllowed {
+	return &v
 }
 
 type NullableRangingSlPosAllowed struct {

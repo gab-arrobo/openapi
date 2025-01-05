@@ -24,36 +24,59 @@ import (
 )
 
 // RtpHeaderExtType The enumeration indicates the type of Rtp Header Extension type
-type RtpHeaderExtType struct {
-	String *string
+type RtpHeaderExtType string
+
+// List of RtpHeaderExtType
+const (
+	RTPHEADEREXTTYPE_PDU_SET_MARKING RtpHeaderExtType = "PDU_SET_MARKING"
+)
+
+// All allowed values of RtpHeaderExtType enum
+var AllowedRtpHeaderExtTypeEnumValues = []RtpHeaderExtType{
+	"PDU_SET_MARKING",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RtpHeaderExtType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RtpHeaderExtType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RtpHeaderExtType(value)
+	for _, existing := range AllowedRtpHeaderExtTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RtpHeaderExtType)")
+	return fmt.Errorf("%+v is not a valid RtpHeaderExtType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RtpHeaderExtType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRtpHeaderExtTypeFromValue returns a pointer to a valid RtpHeaderExtType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRtpHeaderExtTypeFromValue(v string) (*RtpHeaderExtType, error) {
+	ev := RtpHeaderExtType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RtpHeaderExtType: valid values are %v", v, AllowedRtpHeaderExtTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RtpHeaderExtType) IsValid() bool {
+	for _, existing := range AllowedRtpHeaderExtTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RtpHeaderExtType value
+func (v RtpHeaderExtType) Ptr() *RtpHeaderExtType {
+	return &v
 }
 
 type NullableRtpHeaderExtType struct {

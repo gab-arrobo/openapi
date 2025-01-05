@@ -24,36 +24,65 @@ import (
 )
 
 // EpsNasIntegrityAlgorithm Indicates the supported EPS NAS Integrity Algorithm
-type EpsNasIntegrityAlgorithm struct {
-	String *string
+type EpsNasIntegrityAlgorithm string
+
+// List of EpsNasIntegrityAlgorithm
+const (
+	EPSNASINTEGRITYALGORITHM_EIA0 EpsNasIntegrityAlgorithm = "EIA0"
+	EPSNASINTEGRITYALGORITHM_EIA1 EpsNasIntegrityAlgorithm = "EIA1"
+	EPSNASINTEGRITYALGORITHM_EIA2 EpsNasIntegrityAlgorithm = "EIA2"
+	EPSNASINTEGRITYALGORITHM_EIA3 EpsNasIntegrityAlgorithm = "EIA3"
+)
+
+// All allowed values of EpsNasIntegrityAlgorithm enum
+var AllowedEpsNasIntegrityAlgorithmEnumValues = []EpsNasIntegrityAlgorithm{
+	"EIA0",
+	"EIA1",
+	"EIA2",
+	"EIA3",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *EpsNasIntegrityAlgorithm) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *EpsNasIntegrityAlgorithm) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := EpsNasIntegrityAlgorithm(value)
+	for _, existing := range AllowedEpsNasIntegrityAlgorithmEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(EpsNasIntegrityAlgorithm)")
+	return fmt.Errorf("%+v is not a valid EpsNasIntegrityAlgorithm", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *EpsNasIntegrityAlgorithm) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewEpsNasIntegrityAlgorithmFromValue returns a pointer to a valid EpsNasIntegrityAlgorithm
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewEpsNasIntegrityAlgorithmFromValue(v string) (*EpsNasIntegrityAlgorithm, error) {
+	ev := EpsNasIntegrityAlgorithm(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for EpsNasIntegrityAlgorithm: valid values are %v", v, AllowedEpsNasIntegrityAlgorithmEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v EpsNasIntegrityAlgorithm) IsValid() bool {
+	for _, existing := range AllowedEpsNasIntegrityAlgorithmEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to EpsNasIntegrityAlgorithm value
+func (v EpsNasIntegrityAlgorithm) Ptr() *EpsNasIntegrityAlgorithm {
+	return &v
 }
 
 type NullableEpsNasIntegrityAlgorithm struct {

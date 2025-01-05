@@ -24,36 +24,69 @@ import (
 )
 
 // RuleOperation Indicates a UE initiated resource operation that causes a request for PCC rules.   Possible values are - CREATE_PCC_RULE: Indicates to create a new PCC rule to reserve the resource requested by the UE.  - DELETE_PCC_RULE: Indicates to delete a PCC rule corresponding to reserve the resource requested by the UE. - MODIFY_PCC_RULE_AND_ADD_PACKET_FILTERS: Indicates to modify the PCC rule by adding new packet filter(s). - MODIFY_ PCC_RULE_AND_REPLACE_PACKET_FILTERS: Indicates to modify the PCC rule by replacing the existing packet filter(s). - MODIFY_ PCC_RULE_AND_DELETE_PACKET_FILTERS: Indicates to modify the PCC rule by deleting the existing packet filter(s). - MODIFY_PCC_RULE_WITHOUT_MODIFY_PACKET_FILTERS: Indicates to modify the PCC rule by modifying the QoS of the PCC rule.
-type RuleOperation struct {
-	String *string
+type RuleOperation string
+
+// List of RuleOperation
+const (
+	RULEOPERATION_CREATE_PCC_RULE                               RuleOperation = "CREATE_PCC_RULE"
+	RULEOPERATION_DELETE_PCC_RULE                               RuleOperation = "DELETE_PCC_RULE"
+	RULEOPERATION_MODIFY_PCC_RULE_AND_ADD_PACKET_FILTERS        RuleOperation = "MODIFY_PCC_RULE_AND_ADD_PACKET_FILTERS"
+	RULEOPERATION_MODIFY__PCC_RULE_AND_REPLACE_PACKET_FILTERS   RuleOperation = "MODIFY_ PCC_RULE_AND_REPLACE_PACKET_FILTERS"
+	RULEOPERATION_MODIFY__PCC_RULE_AND_DELETE_PACKET_FILTERS    RuleOperation = "MODIFY_ PCC_RULE_AND_DELETE_PACKET_FILTERS"
+	RULEOPERATION_MODIFY_PCC_RULE_WITHOUT_MODIFY_PACKET_FILTERS RuleOperation = "MODIFY_PCC_RULE_WITHOUT_MODIFY_PACKET_FILTERS"
+)
+
+// All allowed values of RuleOperation enum
+var AllowedRuleOperationEnumValues = []RuleOperation{
+	"CREATE_PCC_RULE",
+	"DELETE_PCC_RULE",
+	"MODIFY_PCC_RULE_AND_ADD_PACKET_FILTERS",
+	"MODIFY_ PCC_RULE_AND_REPLACE_PACKET_FILTERS",
+	"MODIFY_ PCC_RULE_AND_DELETE_PACKET_FILTERS",
+	"MODIFY_PCC_RULE_WITHOUT_MODIFY_PACKET_FILTERS",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RuleOperation) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RuleOperation) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RuleOperation(value)
+	for _, existing := range AllowedRuleOperationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RuleOperation)")
+	return fmt.Errorf("%+v is not a valid RuleOperation", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RuleOperation) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRuleOperationFromValue returns a pointer to a valid RuleOperation
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRuleOperationFromValue(v string) (*RuleOperation, error) {
+	ev := RuleOperation(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RuleOperation: valid values are %v", v, AllowedRuleOperationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RuleOperation) IsValid() bool {
+	for _, existing := range AllowedRuleOperationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RuleOperation value
+func (v RuleOperation) Ptr() *RuleOperation {
+	return &v
 }
 
 type NullableRuleOperation struct {

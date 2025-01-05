@@ -24,36 +24,61 @@ import (
 )
 
 // MulticastAccessControl Indicates whether the service data flow, corresponding to the service data flow template, is allowed or not allowed.
-type MulticastAccessControl struct {
-	String *string
+type MulticastAccessControl string
+
+// List of MulticastAccessControl
+const (
+	MULTICASTACCESSCONTROL_ALLOWED     MulticastAccessControl = "ALLOWED"
+	MULTICASTACCESSCONTROL_NOT_ALLOWED MulticastAccessControl = "NOT_ALLOWED"
+)
+
+// All allowed values of MulticastAccessControl enum
+var AllowedMulticastAccessControlEnumValues = []MulticastAccessControl{
+	"ALLOWED",
+	"NOT_ALLOWED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *MulticastAccessControl) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *MulticastAccessControl) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := MulticastAccessControl(value)
+	for _, existing := range AllowedMulticastAccessControlEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(MulticastAccessControl)")
+	return fmt.Errorf("%+v is not a valid MulticastAccessControl", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *MulticastAccessControl) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewMulticastAccessControlFromValue returns a pointer to a valid MulticastAccessControl
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewMulticastAccessControlFromValue(v string) (*MulticastAccessControl, error) {
+	ev := MulticastAccessControl(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for MulticastAccessControl: valid values are %v", v, AllowedMulticastAccessControlEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v MulticastAccessControl) IsValid() bool {
+	for _, existing := range AllowedMulticastAccessControlEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to MulticastAccessControl value
+func (v MulticastAccessControl) Ptr() *MulticastAccessControl {
+	return &v
 }
 
 type NullableMulticastAccessControl struct {

@@ -24,36 +24,61 @@ import (
 )
 
 // EventForMdt The enumeration EventForMdt defines events triggered measurement for logged MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.11-1
-type EventForMdt struct {
-	String *string
+type EventForMdt string
+
+// List of EventForMdt
+const (
+	EVENTFORMDT_OUT_OF_COVERAG EventForMdt = "OUT_OF_COVERAG"
+	EVENTFORMDT_A2_EVENT       EventForMdt = "A2_EVENT"
+)
+
+// All allowed values of EventForMdt enum
+var AllowedEventForMdtEnumValues = []EventForMdt{
+	"OUT_OF_COVERAG",
+	"A2_EVENT",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *EventForMdt) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *EventForMdt) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := EventForMdt(value)
+	for _, existing := range AllowedEventForMdtEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(EventForMdt)")
+	return fmt.Errorf("%+v is not a valid EventForMdt", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *EventForMdt) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewEventForMdtFromValue returns a pointer to a valid EventForMdt
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewEventForMdtFromValue(v string) (*EventForMdt, error) {
+	ev := EventForMdt(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for EventForMdt: valid values are %v", v, AllowedEventForMdtEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v EventForMdt) IsValid() bool {
+	for _, existing := range AllowedEventForMdtEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to EventForMdt value
+func (v EventForMdt) Ptr() *EventForMdt {
+	return &v
 }
 
 type NullableEventForMdt struct {

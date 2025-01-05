@@ -24,36 +24,63 @@ import (
 )
 
 // TrafficParameterMeas Indicates the traffic parameters to be measured.
-type TrafficParameterMeas struct {
-	String *string
+type TrafficParameterMeas string
+
+// List of TrafficParameterMeas
+const (
+	TRAFFICPARAMETERMEAS_DL_N6_JITTER TrafficParameterMeas = "DL_N6_JITTER"
+	TRAFFICPARAMETERMEAS_DL_PERIOD    TrafficParameterMeas = "DL_PERIOD"
+	TRAFFICPARAMETERMEAS_UL_PERIOD    TrafficParameterMeas = "UL_PERIOD"
+)
+
+// All allowed values of TrafficParameterMeas enum
+var AllowedTrafficParameterMeasEnumValues = []TrafficParameterMeas{
+	"DL_N6_JITTER",
+	"DL_PERIOD",
+	"UL_PERIOD",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *TrafficParameterMeas) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *TrafficParameterMeas) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := TrafficParameterMeas(value)
+	for _, existing := range AllowedTrafficParameterMeasEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(TrafficParameterMeas)")
+	return fmt.Errorf("%+v is not a valid TrafficParameterMeas", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *TrafficParameterMeas) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewTrafficParameterMeasFromValue returns a pointer to a valid TrafficParameterMeas
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewTrafficParameterMeasFromValue(v string) (*TrafficParameterMeas, error) {
+	ev := TrafficParameterMeas(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for TrafficParameterMeas: valid values are %v", v, AllowedTrafficParameterMeasEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v TrafficParameterMeas) IsValid() bool {
+	for _, existing := range AllowedTrafficParameterMeasEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to TrafficParameterMeas value
+func (v TrafficParameterMeas) Ptr() *TrafficParameterMeas {
+	return &v
 }
 
 type NullableTrafficParameterMeas struct {

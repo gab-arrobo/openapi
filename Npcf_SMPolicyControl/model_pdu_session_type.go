@@ -24,36 +24,67 @@ import (
 )
 
 // PduSessionType PduSessionType indicates the type of a PDU session. It shall comply with the provisions defined in table 5.4.3.3-1.
-type PduSessionType struct {
-	String *string
+type PduSessionType string
+
+// List of PduSessionType
+const (
+	PDUSESSIONTYPE_IPV4         PduSessionType = "IPV4"
+	PDUSESSIONTYPE_IPV6         PduSessionType = "IPV6"
+	PDUSESSIONTYPE_IPV4_V6      PduSessionType = "IPV4V6"
+	PDUSESSIONTYPE_UNSTRUCTURED PduSessionType = "UNSTRUCTURED"
+	PDUSESSIONTYPE_ETHERNET     PduSessionType = "ETHERNET"
+)
+
+// All allowed values of PduSessionType enum
+var AllowedPduSessionTypeEnumValues = []PduSessionType{
+	"IPV4",
+	"IPV6",
+	"IPV4V6",
+	"UNSTRUCTURED",
+	"ETHERNET",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PduSessionType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PduSessionType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PduSessionType(value)
+	for _, existing := range AllowedPduSessionTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PduSessionType)")
+	return fmt.Errorf("%+v is not a valid PduSessionType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PduSessionType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPduSessionTypeFromValue returns a pointer to a valid PduSessionType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPduSessionTypeFromValue(v string) (*PduSessionType, error) {
+	ev := PduSessionType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PduSessionType: valid values are %v", v, AllowedPduSessionTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PduSessionType) IsValid() bool {
+	for _, existing := range AllowedPduSessionTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PduSessionType value
+func (v PduSessionType) Ptr() *PduSessionType {
+	return &v
 }
 
 type NullablePduSessionType struct {

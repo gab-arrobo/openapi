@@ -24,36 +24,63 @@ import (
 )
 
 // SubscriptionAction Indicates the required action by the event producer NF on the event subscription if an exception occurs while the event is muted.
-type SubscriptionAction struct {
-	String *string
+type SubscriptionAction string
+
+// List of SubscriptionAction
+const (
+	SUBSCRIPTIONACTION_CLOSE                   SubscriptionAction = "CLOSE"
+	SUBSCRIPTIONACTION_CONTINUE_WITH_MUTING    SubscriptionAction = "CONTINUE_WITH_MUTING"
+	SUBSCRIPTIONACTION_CONTINUE_WITHOUT_MUTING SubscriptionAction = "CONTINUE_WITHOUT_MUTING"
+)
+
+// All allowed values of SubscriptionAction enum
+var AllowedSubscriptionActionEnumValues = []SubscriptionAction{
+	"CLOSE",
+	"CONTINUE_WITH_MUTING",
+	"CONTINUE_WITHOUT_MUTING",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SubscriptionAction) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SubscriptionAction) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SubscriptionAction(value)
+	for _, existing := range AllowedSubscriptionActionEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SubscriptionAction)")
+	return fmt.Errorf("%+v is not a valid SubscriptionAction", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SubscriptionAction) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSubscriptionActionFromValue returns a pointer to a valid SubscriptionAction
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSubscriptionActionFromValue(v string) (*SubscriptionAction, error) {
+	ev := SubscriptionAction(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SubscriptionAction: valid values are %v", v, AllowedSubscriptionActionEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SubscriptionAction) IsValid() bool {
+	for _, existing := range AllowedSubscriptionActionEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SubscriptionAction value
+func (v SubscriptionAction) Ptr() *SubscriptionAction {
+	return &v
 }
 
 type NullableSubscriptionAction struct {

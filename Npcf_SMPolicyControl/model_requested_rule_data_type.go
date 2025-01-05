@@ -24,36 +24,69 @@ import (
 )
 
 // RequestedRuleDataType Indicates the type of rule data requested by the PCF.   Possible values are: - CH_ID: Indicates that the requested rule data is the charging identifier. - MS_TIME_ZONE: Indicates that the requested access network info type is the UE's timezone. - USER_LOC_INFO: Indicates that the requested access network info type is the UE's location. - RES_RELEASE: Indicates that the requested rule data is the result of the release of resource. - SUCC_RES_ALLO: Indicates that the requested rule data is the successful resource allocation. - EPS_FALLBACK: Indicates that the requested rule data is the report of QoS flow rejection due to EPS fallback.
-type RequestedRuleDataType struct {
-	String *string
+type RequestedRuleDataType string
+
+// List of RequestedRuleDataType
+const (
+	REQUESTEDRULEDATATYPE_CH_ID         RequestedRuleDataType = "CH_ID"
+	REQUESTEDRULEDATATYPE_MS_TIME_ZONE  RequestedRuleDataType = "MS_TIME_ZONE"
+	REQUESTEDRULEDATATYPE_USER_LOC_INFO RequestedRuleDataType = "USER_LOC_INFO"
+	REQUESTEDRULEDATATYPE_RES_RELEASE   RequestedRuleDataType = "RES_RELEASE"
+	REQUESTEDRULEDATATYPE_SUCC_RES_ALLO RequestedRuleDataType = "SUCC_RES_ALLO"
+	REQUESTEDRULEDATATYPE_EPS_FALLBACK  RequestedRuleDataType = "EPS_FALLBACK"
+)
+
+// All allowed values of RequestedRuleDataType enum
+var AllowedRequestedRuleDataTypeEnumValues = []RequestedRuleDataType{
+	"CH_ID",
+	"MS_TIME_ZONE",
+	"USER_LOC_INFO",
+	"RES_RELEASE",
+	"SUCC_RES_ALLO",
+	"EPS_FALLBACK",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RequestedRuleDataType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RequestedRuleDataType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RequestedRuleDataType(value)
+	for _, existing := range AllowedRequestedRuleDataTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RequestedRuleDataType)")
+	return fmt.Errorf("%+v is not a valid RequestedRuleDataType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RequestedRuleDataType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRequestedRuleDataTypeFromValue returns a pointer to a valid RequestedRuleDataType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRequestedRuleDataTypeFromValue(v string) (*RequestedRuleDataType, error) {
+	ev := RequestedRuleDataType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RequestedRuleDataType: valid values are %v", v, AllowedRequestedRuleDataTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RequestedRuleDataType) IsValid() bool {
+	for _, existing := range AllowedRequestedRuleDataTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RequestedRuleDataType value
+func (v RequestedRuleDataType) Ptr() *RequestedRuleDataType {
+	return &v
 }
 
 type NullableRequestedRuleDataType struct {

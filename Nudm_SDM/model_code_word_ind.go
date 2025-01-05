@@ -24,36 +24,61 @@ import (
 )
 
 // CodeWordInd Indicates that the codeword shall be checked in UE or one or more codeword values to be checked in GMLC.
-type CodeWordInd struct {
-	String *string
+type CodeWordInd string
+
+// List of CodeWordInd
+const (
+	CODEWORDIND_UE   CodeWordInd = "CODEWORD_CHECK_IN_UE"
+	CODEWORDIND_GMLC CodeWordInd = "CODEWORD_CHECK_IN_GMLC"
+)
+
+// All allowed values of CodeWordInd enum
+var AllowedCodeWordIndEnumValues = []CodeWordInd{
+	"CODEWORD_CHECK_IN_UE",
+	"CODEWORD_CHECK_IN_GMLC",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *CodeWordInd) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *CodeWordInd) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := CodeWordInd(value)
+	for _, existing := range AllowedCodeWordIndEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(CodeWordInd)")
+	return fmt.Errorf("%+v is not a valid CodeWordInd", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *CodeWordInd) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewCodeWordIndFromValue returns a pointer to a valid CodeWordInd
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewCodeWordIndFromValue(v string) (*CodeWordInd, error) {
+	ev := CodeWordInd(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for CodeWordInd: valid values are %v", v, AllowedCodeWordIndEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v CodeWordInd) IsValid() bool {
+	for _, existing := range AllowedCodeWordIndEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to CodeWordInd value
+func (v CodeWordInd) Ptr() *CodeWordInd {
+	return &v
 }
 
 type NullableCodeWordInd struct {

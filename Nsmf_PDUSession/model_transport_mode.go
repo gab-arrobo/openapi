@@ -24,36 +24,63 @@ import (
 )
 
 // TransportMode Indicates the Transport Mode when the steering functionality is MPQUIC functionality.
-type TransportMode struct {
-	String *string
+type TransportMode string
+
+// List of TransportMode
+const (
+	TRANSPORTMODE_DATAGRAM_MODE_1 TransportMode = "DATAGRAM_MODE_1"
+	TRANSPORTMODE_DATAGRAM_MODE_2 TransportMode = "DATAGRAM_MODE_2"
+	TRANSPORTMODE_STREAM_MODE     TransportMode = "STREAM_MODE"
+)
+
+// All allowed values of TransportMode enum
+var AllowedTransportModeEnumValues = []TransportMode{
+	"DATAGRAM_MODE_1",
+	"DATAGRAM_MODE_2",
+	"STREAM_MODE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *TransportMode) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *TransportMode) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := TransportMode(value)
+	for _, existing := range AllowedTransportModeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(TransportMode)")
+	return fmt.Errorf("%+v is not a valid TransportMode", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *TransportMode) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewTransportModeFromValue returns a pointer to a valid TransportMode
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewTransportModeFromValue(v string) (*TransportMode, error) {
+	ev := TransportMode(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for TransportMode: valid values are %v", v, AllowedTransportModeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v TransportMode) IsValid() bool {
+	for _, existing := range AllowedTransportModeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to TransportMode value
+func (v TransportMode) Ptr() *TransportMode {
+	return &v
 }
 
 type NullableTransportMode struct {

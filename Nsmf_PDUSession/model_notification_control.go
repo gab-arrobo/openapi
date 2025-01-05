@@ -24,36 +24,61 @@ import (
 )
 
 // NotificationControl The enumeration NotificationControl indicates whether notifications are requested from the RAN when the GFBR can no longer  (or again) be fulfilled for a QoS Flow during the lifetime of the QoS Flow (see clause 5.7.2.4 of 3GPP TS 23.501). It shall comply with the provisions defined in table 5.5.3.5-1.
-type NotificationControl struct {
-	String *string
+type NotificationControl string
+
+// List of NotificationControl
+const (
+	NOTIFICATIONCONTROL_REQUESTED     NotificationControl = "REQUESTED"
+	NOTIFICATIONCONTROL_NOT_REQUESTED NotificationControl = "NOT_REQUESTED"
+)
+
+// All allowed values of NotificationControl enum
+var AllowedNotificationControlEnumValues = []NotificationControl{
+	"REQUESTED",
+	"NOT_REQUESTED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *NotificationControl) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *NotificationControl) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := NotificationControl(value)
+	for _, existing := range AllowedNotificationControlEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(NotificationControl)")
+	return fmt.Errorf("%+v is not a valid NotificationControl", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *NotificationControl) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewNotificationControlFromValue returns a pointer to a valid NotificationControl
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewNotificationControlFromValue(v string) (*NotificationControl, error) {
+	ev := NotificationControl(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for NotificationControl: valid values are %v", v, AllowedNotificationControlEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v NotificationControl) IsValid() bool {
+	for _, existing := range AllowedNotificationControlEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to NotificationControl value
+func (v NotificationControl) Ptr() *NotificationControl {
+	return &v
 }
 
 type NullableNotificationControl struct {

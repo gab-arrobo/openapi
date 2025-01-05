@@ -24,36 +24,61 @@ import (
 )
 
 // CoreNetworkType It contains the Core Network type 5GC or EPC.
-type CoreNetworkType struct {
-	String *string
+type CoreNetworkType string
+
+// List of CoreNetworkType
+const (
+	CORENETWORKTYPE__5_GC CoreNetworkType = "5GC"
+	CORENETWORKTYPE_EPC   CoreNetworkType = "EPC"
+)
+
+// All allowed values of CoreNetworkType enum
+var AllowedCoreNetworkTypeEnumValues = []CoreNetworkType{
+	"5GC",
+	"EPC",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *CoreNetworkType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *CoreNetworkType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := CoreNetworkType(value)
+	for _, existing := range AllowedCoreNetworkTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(CoreNetworkType)")
+	return fmt.Errorf("%+v is not a valid CoreNetworkType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *CoreNetworkType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewCoreNetworkTypeFromValue returns a pointer to a valid CoreNetworkType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewCoreNetworkTypeFromValue(v string) (*CoreNetworkType, error) {
+	ev := CoreNetworkType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for CoreNetworkType: valid values are %v", v, AllowedCoreNetworkTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v CoreNetworkType) IsValid() bool {
+	for _, existing := range AllowedCoreNetworkTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to CoreNetworkType value
+func (v CoreNetworkType) Ptr() *CoreNetworkType {
+	return &v
 }
 
 type NullableCoreNetworkType struct {

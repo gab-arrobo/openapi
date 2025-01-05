@@ -24,36 +24,67 @@ import (
 )
 
 // ResourceStatus Status of SM context or PDU session resource. Possible values are - RELEASED - UNCHANGED - TRANSFERRED - UPDATED - ALT_ANCHOR_SMF
-type ResourceStatus struct {
-	String *string
+type ResourceStatus string
+
+// List of ResourceStatus
+const (
+	RESOURCESTATUS_RELEASED       ResourceStatus = "RELEASED"
+	RESOURCESTATUS_UNCHANGED      ResourceStatus = "UNCHANGED"
+	RESOURCESTATUS_TRANSFERRED    ResourceStatus = "TRANSFERRED"
+	RESOURCESTATUS_UPDATED        ResourceStatus = "UPDATED"
+	RESOURCESTATUS_ALT_ANCHOR_SMF ResourceStatus = "ALT_ANCHOR_SMF"
+)
+
+// All allowed values of ResourceStatus enum
+var AllowedResourceStatusEnumValues = []ResourceStatus{
+	"RELEASED",
+	"UNCHANGED",
+	"TRANSFERRED",
+	"UPDATED",
+	"ALT_ANCHOR_SMF",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ResourceStatus) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ResourceStatus) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ResourceStatus(value)
+	for _, existing := range AllowedResourceStatusEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ResourceStatus)")
+	return fmt.Errorf("%+v is not a valid ResourceStatus", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ResourceStatus) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewResourceStatusFromValue returns a pointer to a valid ResourceStatus
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewResourceStatusFromValue(v string) (*ResourceStatus, error) {
+	ev := ResourceStatus(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ResourceStatus: valid values are %v", v, AllowedResourceStatusEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ResourceStatus) IsValid() bool {
+	for _, existing := range AllowedResourceStatusEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ResourceStatus value
+func (v ResourceStatus) Ptr() *ResourceStatus {
+	return &v
 }
 
 type NullableResourceStatus struct {

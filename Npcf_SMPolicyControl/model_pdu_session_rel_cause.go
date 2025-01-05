@@ -24,36 +24,61 @@ import (
 )
 
 // PduSessionRelCause Contains the SMF PDU Session release cause.
-type PduSessionRelCause struct {
-	String *string
+type PduSessionRelCause string
+
+// List of PduSessionRelCause
+const (
+	PDUSESSIONRELCAUSE_PS_TO_CS_HO PduSessionRelCause = "PS_TO_CS_HO"
+	PDUSESSIONRELCAUSE_RULE_ERROR  PduSessionRelCause = "RULE_ERROR"
+)
+
+// All allowed values of PduSessionRelCause enum
+var AllowedPduSessionRelCauseEnumValues = []PduSessionRelCause{
+	"PS_TO_CS_HO",
+	"RULE_ERROR",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PduSessionRelCause) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PduSessionRelCause) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PduSessionRelCause(value)
+	for _, existing := range AllowedPduSessionRelCauseEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PduSessionRelCause)")
+	return fmt.Errorf("%+v is not a valid PduSessionRelCause", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PduSessionRelCause) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPduSessionRelCauseFromValue returns a pointer to a valid PduSessionRelCause
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPduSessionRelCauseFromValue(v string) (*PduSessionRelCause, error) {
+	ev := PduSessionRelCause(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PduSessionRelCause: valid values are %v", v, AllowedPduSessionRelCauseEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PduSessionRelCause) IsValid() bool {
+	for _, existing := range AllowedPduSessionRelCauseEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PduSessionRelCause value
+func (v PduSessionRelCause) Ptr() *PduSessionRelCause {
+	return &v
 }
 
 type NullablePduSessionRelCause struct {

@@ -31296,247 +31296,175 @@ components:
       - rangingSlPosPlmn
       type: object
     DataSetName:
-      anyOf:
-      - enum:
-        - AM
-        - SMF_SEL
-        - UEC_SMF
-        - UEC_SMSF
-        - SMS_SUB
-        - SM
-        - TRACE
-        - SMS_MNG
-        - LCS_PRIVACY
-        - LCS_MO
-        - LCS_SUB
-        - UEC_AMF
-        - V2X
-        - LCS_BCA
-        - PROSE
-        - UC
-        - MBS
-        - A2X
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates the requested data set name.
+      enum:
+      - AM
+      - SMF_SEL
+      - UEC_SMF
+      - UEC_SMSF
+      - SMS_SUB
+      - SM
+      - TRACE
+      - SMS_MNG
+      - LCS_PRIVACY
+      - LCS_MO
+      - LCS_SUB
+      - UEC_AMF
+      - V2X
+      - LCS_BCA
+      - PROSE
+      - UC
+      - MBS
+      - A2X
+      type: string
     UcPurpose:
-      anyOf:
-      - enum:
-        - ANALYTICS
-        - MODEL_TRAINING
-        - NW_CAP_EXPOSURE
-        - EDGEAPP_UE_LOCATION
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates the purpose of the user consent.
+      enum:
+      - ANALYTICS
+      - MODEL_TRAINING
+      - NW_CAP_EXPOSURE
+      - EDGEAPP_UE_LOCATION
+      type: string
     UserConsent:
-      anyOf:
-      - enum:
-        - CONSENT_NOT_GIVEN
-        - CONSENT_GIVEN
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates user’s consent.
+      enum:
+      - CONSENT_NOT_GIVEN
+      - CONSENT_GIVEN
+      type: string
     PduSessionContinuityInd:
-      anyOf:
-      - enum:
-        - MAINTAIN_PDUSESSION
-        - RECONNECT_PDUSESSION
-        - RELEASE_PDUSESSION
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         It indicates the handling of PDU session when the UE moves in and out of NB-IoT. In its absence, the local policy should be used.
+      enum:
+      - MAINTAIN_PDUSESSION
+      - RECONNECT_PDUSESSION
+      - RELEASE_PDUSESSION
+      type: string
     LocationPrivacyInd:
-      anyOf:
-      - enum:
-        - LOCATION_DISALLOWED
-        - LOCATION_ALLOWED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates one of the mutually exclusive global settings (if the location is allowed or disallowed).
+      enum:
+      - LOCATION_DISALLOWED
+      - LOCATION_ALLOWED
+      type: string
     PrivacyCheckRelatedAction:
-      anyOf:
-      - enum:
-        - LOCATION_NOT_ALLOWED
-        - LOCATION_ALLOWED_WITH_NOTIFICATION
-        - LOCATION_ALLOWED_WITHOUT_NOTIFICATION
-        - LOCATION_ALLOWED_WITHOUT_RESPONSE
-        - LOCATION_RESTRICTED_WITHOUT_RESPONSE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates actions related to privacy check.
+      enum:
+      - LOCATION_NOT_ALLOWED
+      - LOCATION_ALLOWED_WITH_NOTIFICATION
+      - LOCATION_ALLOWED_WITHOUT_NOTIFICATION
+      - LOCATION_ALLOWED_WITHOUT_RESPONSE
+      - LOCATION_RESTRICTED_WITHOUT_RESPONSE
+      type: string
     LcsClientClass:
-      anyOf:
-      - enum:
-        - BROADCAST_SERVICE
-        - OM_IN_HPLMN
-        - OM_IN_VPLMN
-        - ANONYMOUS_LOCATION_SERVICE
-        - SPECIFIC_SERVICE
-        - NWDAF_IN_HPLMN
-        - NWDAF_IN_VPLMN
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates LCS Client class.
+      enum:
+      - BROADCAST_SERVICE
+      - OM_IN_HPLMN
+      - OM_IN_VPLMN
+      - ANONYMOUS_LOCATION_SERVICE
+      - SPECIFIC_SERVICE
+      - NWDAF_IN_HPLMN
+      - NWDAF_IN_VPLMN
+      type: string
     LcsMoServiceClass:
-      anyOf:
-      - enum:
-        - BASIC_SELF_LOCATION
-        - AUTONOMOUS_SELF_LOCATION
-        - TRANSFER_TO_THIRD_PARTY
-        - RANGING_SL_POS_EXPOSURE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the requirement of the UE to request its own location or location related to other UE.
+      enum:
+      - BASIC_SELF_LOCATION
+      - AUTONOMOUS_SELF_LOCATION
+      - TRANSFER_TO_THIRD_PARTY
+      - RANGING_SL_POS_EXPOSURE
+      type: string
     OperationMode:
-      anyOf:
-      - enum:
-        - WB_S1
-        - NB_S1
-        - WB_N1
-        - NB_N1
-        - NR_N1
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the Operation Mode.
+      enum:
+      - WB_S1
+      - NB_S1
+      - WB_N1
+      - NB_N1
+      - NR_N1
+      type: string
     SorUpdateIndicator:
-      anyOf:
-      - enum:
-        - INITIAL_REGISTRATION
-        - EMERGENCY_REGISTRATION
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates serving node PLMN identity.
+      enum:
+      - INITIAL_REGISTRATION
+      - EMERGENCY_REGISTRATION
+      type: string
     CodeWordInd:
-      anyOf:
-      - enum:
-        - CODEWORD_CHECK_IN_UE
-        - CODEWORD_CHECK_IN_GMLC
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates that the codeword shall be checked in UE or one or more codeword values to be checked in GMLC.
+      enum:
+      - CODEWORD_CHECK_IN_UE
+      - CODEWORD_CHECK_IN_GMLC
+      type: string
     MdtUserConsent:
-      anyOf:
-      - enum:
-        - CONSENT_NOT_GIVEN
-        - CONSENT_GIVEN
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the user has given his consent for MDT activation.
+      enum:
+      - CONSENT_NOT_GIVEN
+      - CONSENT_GIVEN
+      type: string
     SharedDataTreatmentInstruction:
-      anyOf:
-      - enum:
-        - USE_IF_NO_CLASH
-        - OVERWRITE
-        - MAX
-        - MIN
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the presence of this attribute in the individual data. Otherwise, the individual data takes precedence, by default.
+      enum:
+      - USE_IF_NO_CLASH
+      - OVERWRITE
+      - MAX
+      - MIN
+      type: string
     GpsiType:
-      anyOf:
-      - enum:
-        - MSISDN
-        - EXT_ID
-        - EXT_GROUP_ID
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Type of GPSI (MSISDN or External-ID)
+      enum:
+      - MSISDN
+      - EXT_ID
+      - EXT_GROUP_ID
+      type: string
     AerialUeIndication:
-      anyOf:
-      - enum:
-        - AERIAL_UE_ALLOWED
-        - AERIAL_UE_NOT_ALLOWED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the Aerial service for the UE is allowed or not allowed, possible values are - AERIAL_UE_ALLOWED: Aerial service for the UE is allowed. - AERIAL_UE_NOT_ALLOWED: Aerial service for the UE is not allowed.
+      enum:
+      - AERIAL_UE_ALLOWED
+      - AERIAL_UE_NOT_ALLOWED
+      type: string
     ProseDirectAllowed:
-      anyOf:
-      - enum:
-        - ANNOUNCE
-        - MONITOR
-        - RESTRICTD_ANNOUNCE
-        - RESTRICTD_MONITOR
-        - DISCOVERER
-        - DISCOVEREE
-        - BROADCAST
-        - GROUPCAST
-        - UNICAST
-        - LAYER2_RELAY
-        - LAYER3_RELAY
-        - LAYER3_REMOTE
-        - LAYER2_UE_RELAY
-        - LAYER3_UE_RELAY
-        - LAYER2_END
-        - LAYER3_END
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the 5G ProSe Direct services that can be authorised to  use in the given PLMN for the UE.
+      enum:
+      - ANNOUNCE
+      - MONITOR
+      - RESTRICTD_ANNOUNCE
+      - RESTRICTD_MONITOR
+      - DISCOVERER
+      - DISCOVEREE
+      - BROADCAST
+      - GROUPCAST
+      - UNICAST
+      - LAYER2_RELAY
+      - LAYER3_RELAY
+      - LAYER3_REMOTE
+      - LAYER2_UE_RELAY
+      - LAYER3_UE_RELAY
+      - LAYER2_END
+      - LAYER3_END
+      type: string
     NsacAdmissionMode:
-      anyOf:
-      - enum:
-        - VPLMN_ADMISSION
-        - VPLMN_WITH_HPLMN_ASSISTANCE
-        - HPLMN_ADMISSION
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the NSAC admission mode applied in roaming case.
+      enum:
+      - VPLMN_ADMISSION
+      - VPLMN_WITH_HPLMN_ASSISTANCE
+      - HPLMN_ADMISSION
+      type: string
     PruInd:
-      anyOf:
-      - enum:
-        - NON_PRU
-        - STATIONARY_PRU
-        - NON_STATIONARY_PRU
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates whether the UE can act as a PRU or the type of PRU.
+      enum:
+      - NON_PRU
+      - STATIONARY_PRU
+      - NON_STATIONARY_PRU
+      type: string
     AreaUsageInd:
       description: |
         Indicates one of the mutually exclusive global settings (whether the UE is allowed to generate and send the reports inside or outside the event report expected area).
@@ -31546,38 +31474,30 @@ components:
       pattern: ^(INSIDE_REPORTING|OUTSIDE_REPORTING|.*)$
       type: string
     RangingSlPosAllowed:
-      anyOf:
-      - enum:
-        - PC5
-        - ANNOUNCE
-        - MONITOR
-        - DISCOVERER
-        - DISCOVEREE
-        - LOCATED_UE
-        - SL_SERVER_UE
-        - SL_CLIENT_UE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the Ranging/SL positioning services that can be authorised to  use in the given PLMN for the UE.
+      enum:
+      - PC5
+      - ANNOUNCE
+      - MONITOR
+      - DISCOVERER
+      - DISCOVEREE
+      - LOCATED_UE
+      - SL_SERVER_UE
+      - SL_CLIENT_UE
+      type: string
     ExpecedUeBehaviourDataset:
-      anyOf:
-      - enum:
-        - STATIONARY_INDICATION
-        - COMMUNICATION_DURATION_TIME
-        - PERIODIC_TIME
-        - SCHEDULED_COMMUNICATION_TIME
-        - SCHEDULED_COMMUNICATION_TYPE
-        - EXPECTED_UMTS
-        - TRAFFIC_PROFILE
-        - BATTERY_INDICATION
-        - EXPECTED_INACTIVITY_TIME
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
+      enum:
+      - STATIONARY_INDICATION
+      - COMMUNICATION_DURATION_TIME
+      - PERIODIC_TIME
+      - SCHEDULED_COMMUNICATION_TIME
+      - SCHEDULED_COMMUNICATION_TYPE
+      - EXPECTED_UMTS
+      - TRAFFIC_PROFILE
+      - BATTERY_INDICATION
+      - EXPECTED_INACTIVITY_TIME
+      type: string
     UpLocRepIndAf:
       description: |
         Indicates one of the mutually exclusive global settings for location reporting over user plane connectivity to an LCS client or AF.
@@ -31587,20 +31507,16 @@ components:
       pattern: ^(USER_PLANE_REPORT_ALLOWED|USER_PLANE_REPORT_NOT_ALLOWED|.*)$
       type: string
     RecurType:
-      anyOf:
-      - enum:
-        - DAILY
-        - WEEKLY
-        - MONTHLY_BY_DATE
-        - MONTHLY_BY_DAY
-        - YEARLY
-        - WEEKDAYS_ONLY
-        - WEEKENDS_ONLY
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates the recurrence applicable to a time window.
+      enum:
+      - DAILY
+      - WEEKLY
+      - MONTHLY_BY_DATE
+      - MONTHLY_BY_DAY
+      - YEARLY
+      - WEEKDAYS_ONLY
+      - WEEKENDS_ONLY
+      type: string
     Supi:
       description: "String identifying a Supi that shall contain either an IMSI, a\
         \ network specific identifier,\na Global Cable Identifier (GCI) or a Global\
@@ -31982,18 +31898,14 @@ components:
       - traceRef
       type: object
     TraceDepth:
-      anyOf:
-      - enum:
-        - MINIMUM
-        - MEDIUM
-        - MAXIMUM
-        - MINIMUM_WO_VENDOR_EXTENSION
-        - MEDIUM_WO_VENDOR_EXTENSION
-        - MAXIMUM_WO_VENDOR_EXTENSION
-        type: string
-      - type: string
-      description: |
-        The enumeration TraceDepth defines how detailed information should be recorded in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.1-1
+      enum:
+      - MINIMUM
+      - MEDIUM
+      - MAXIMUM
+      - MINIMUM_WO_VENDOR_EXTENSION
+      - MEDIUM_WO_VENDOR_EXTENSION
+      - MAXIMUM_WO_VENDOR_EXTENSION
+      type: string
     Ipv4Addr:
       description: |
         String identifying a IPv4 address formatted in the 'dotted decimal' notation as defined in RFC 1166.
@@ -32061,44 +31973,42 @@ components:
       - null
       type: string
     RatType:
-      anyOf:
-      - enum:
-        - NR
-        - EUTRA
-        - WLAN
-        - VIRTUAL
-        - NBIOT
-        - WIRELINE
-        - WIRELINE_CABLE
-        - WIRELINE_BBF
-        - LTE-M
-        - NR_U
-        - EUTRA_U
-        - TRUSTED_N3GA
-        - TRUSTED_WLAN
-        - UTRA
-        - GERA
-        - NR_LEO
-        - NR_MEO
-        - NR_GEO
-        - NR_OTHER_SAT
-        - NR_REDCAP
-        - WB_E_UTRAN_LEO
-        - WB_E_UTRAN_MEO
-        - WB_E_UTRAN_GEO
-        - WB_E_UTRAN_OTHERSAT
-        - NB_IOT_LEO
-        - NB_IOT_MEO
-        - NB_IOT_GEO
-        - NB_IOT_OTHERSAT
-        - LTE_M_LEO
-        - LTE_M_MEO
-        - LTE_M_GEO
-        - LTE_M_OTHERSAT
-        - NR_EREDCAP
-        type: string
-      - type: string
       description: Indicates the radio access used.
+      enum:
+      - NR
+      - EUTRA
+      - WLAN
+      - VIRTUAL
+      - NBIOT
+      - WIRELINE
+      - WIRELINE_CABLE
+      - WIRELINE_BBF
+      - LTE-M
+      - NR_U
+      - EUTRA_U
+      - TRUSTED_N3GA
+      - TRUSTED_WLAN
+      - UTRA
+      - GERA
+      - NR_LEO
+      - NR_MEO
+      - NR_GEO
+      - NR_OTHER_SAT
+      - NR_REDCAP
+      - WB_E_UTRAN_LEO
+      - WB_E_UTRAN_MEO
+      - WB_E_UTRAN_GEO
+      - WB_E_UTRAN_OTHERSAT
+      - NB_IOT_LEO
+      - NB_IOT_MEO
+      - NB_IOT_GEO
+      - NB_IOT_OTHERSAT
+      - LTE_M_LEO
+      - LTE_M_MEO
+      - LTE_M_GEO
+      - LTE_M_OTHERSAT
+      - NR_EREDCAP
+      type: string
     Area:
       description: Provides area information.
       example:
@@ -32172,25 +32082,21 @@ components:
           type: integer
       type: object
     RestrictionType:
-      anyOf:
-      - enum:
-        - ALLOWED_AREAS
-        - NOT_ALLOWED_AREAS
-        type: string
-      - type: string
       description: It contains the restriction type ALLOWED_AREAS or NOT_ALLOWED_AREAS.
+      enum:
+      - ALLOWED_AREAS
+      - NOT_ALLOWED_AREAS
+      type: string
     Uinteger:
       description: "Unsigned Integer, i.e. only value 0 and integers above 0 are permissible."
       minimum: 0
       type: integer
     CoreNetworkType:
-      anyOf:
-      - enum:
-        - 5GC
-        - EPC
-        type: string
-      - type: string
       description: It contains the Core Network type 5GC or EPC.
+      enum:
+      - 5GC
+      - EPC
+      type: string
     AccessType:
       description: Indicates whether the access is  via 3GPP or via non-3GPP.
       enum:
@@ -32470,28 +32376,24 @@ components:
       - jobType
       type: object
     JobType:
-      anyOf:
-      - enum:
-        - IMMEDIATE_MDT_ONLY
-        - LOGGED_MDT_ONLY
-        - TRACE_ONLY
-        - IMMEDIATE_MDT_AND_TRACE
-        - RLF_REPORTS_ONLY
-        - RCEF_REPORTS_ONLY
-        - LOGGED_MBSFN_MDT
-        type: string
-      - type: string
       description: |
         The enumeration JobType defines Job Type in the trace. See 3GPP TS 32.422 for further  description of the values. It shall comply with the provisions defined in table 5.6.3.3-1.
+      enum:
+      - IMMEDIATE_MDT_ONLY
+      - LOGGED_MDT_ONLY
+      - TRACE_ONLY
+      - IMMEDIATE_MDT_AND_TRACE
+      - RLF_REPORTS_ONLY
+      - RCEF_REPORTS_ONLY
+      - LOGGED_MBSFN_MDT
+      type: string
     ReportTypeMdt:
-      anyOf:
-      - enum:
-        - PERIODICAL
-        - EVENT_TRIGGED
-        type: string
-      - type: string
       description: |
         The enumeration ReportTypeMdt defines Report Type for logged MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.4-1.
+      enum:
+      - PERIODICAL
+      - EVENT_TRIGGED
+      type: string
     AreaScope:
       description: Contain the area based on Cells or Tracking Areas.
       example:
@@ -32627,240 +32529,208 @@ components:
       - nidList
       type: object
     MeasurementLteForMdt:
-      anyOf:
-      - enum:
-        - M1
-        - M2
-        - M3
-        - M4_DL
-        - M4_UL
-        - M5_DL
-        - M5_UL
-        - M6_DL
-        - M6_UL
-        - M7_DL
-        - M7_UL
-        - M8
-        - M9
-        type: string
-      - type: string
       description: |
         The enumeration MeasurementLteForMdt defines Measurements used for MDT in LTE in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.5-1.
+      enum:
+      - M1
+      - M2
+      - M3
+      - M4_DL
+      - M4_UL
+      - M5_DL
+      - M5_UL
+      - M6_DL
+      - M6_UL
+      - M7_DL
+      - M7_UL
+      - M8
+      - M9
+      type: string
     MeasurementNrForMdt:
-      anyOf:
-      - enum:
-        - M1
-        - M2
-        - M3
-        - M4_DL
-        - M4_UL
-        - M5_DL
-        - M5_UL
-        - M6_DL
-        - M6_UL
-        - M7_DL
-        - M7_UL
-        - M8
-        - M9
-        type: string
-      - type: string
       description: |
         The enumeration MeasurementNrForMdt defines Measurements used for MDT in NR in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.6-1.
+      enum:
+      - M1
+      - M2
+      - M3
+      - M4_DL
+      - M4_UL
+      - M5_DL
+      - M5_UL
+      - M6_DL
+      - M6_UL
+      - M7_DL
+      - M7_UL
+      - M8
+      - M9
+      type: string
     SensorMeasurement:
-      anyOf:
-      - enum:
-        - BAROMETRIC_PRESSURE
-        - UE_SPEED
-        - UE_ORIENTATION
-        type: string
-      - type: string
       description: |
         The enumeration SensorMeasurement defines sensor measurement type for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.7-1.
+      enum:
+      - BAROMETRIC_PRESSURE
+      - UE_SPEED
+      - UE_ORIENTATION
+      type: string
     ReportingTrigger:
-      anyOf:
-      - enum:
-        - PERIODICAL
-        - EVENT_A2
-        - EVENT_A2_PERIODIC
-        - ALL_RRM_EVENT_TRIGGERS
-        type: string
-      - type: string
       description: |
         The enumeration ReportingTrigger defines Reporting Triggers for MDT in the trace. See 3GPP TS 32.42] for further  description of the values. It shall comply with the provisions defined in table 5.6.3.8-1.
+      enum:
+      - PERIODICAL
+      - EVENT_A2
+      - EVENT_A2_PERIODIC
+      - ALL_RRM_EVENT_TRIGGERS
+      type: string
     ReportIntervalMdt:
-      anyOf:
-      - enum:
-        - "120"
-        - "240"
-        - "480"
-        - "640"
-        - "1024"
-        - "2048"
-        - "5120"
-        - "10240"
-        - "60000"
-        - "360000"
-        - "720000"
-        - "1800000"
-        - "3600000"
-        type: string
-      - type: string
       description: |
         The enumeration ReportIntervalMdt defines Report Interval for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.9-1.
+      enum:
+      - "120"
+      - "240"
+      - "480"
+      - "640"
+      - "1024"
+      - "2048"
+      - "5120"
+      - "10240"
+      - "60000"
+      - "360000"
+      - "720000"
+      - "1800000"
+      - "3600000"
+      type: string
     ReportIntervalNrMdt:
-      anyOf:
-      - enum:
-        - "120"
-        - "240"
-        - "480"
-        - "640"
-        - "1024"
-        - "2048"
-        - "5120"
-        - "10240"
-        - "20480"
-        - "40960"
-        - "60000"
-        - "360000"
-        - "720000"
-        - "1800000"
-        - "3600000"
-        type: string
-      - type: string
       description: |
         The enumeration ReportIntervalNrMdt defines Report Interval in NR for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.17-1.
+      enum:
+      - "120"
+      - "240"
+      - "480"
+      - "640"
+      - "1024"
+      - "2048"
+      - "5120"
+      - "10240"
+      - "20480"
+      - "40960"
+      - "60000"
+      - "360000"
+      - "720000"
+      - "1800000"
+      - "3600000"
+      type: string
     ReportAmountMdt:
-      anyOf:
-      - enum:
-        - "1"
-        - "2"
-        - "4"
-        - "8"
-        - "16"
-        - "32"
-        - "64"
-        - infinity
-        type: string
-      - type: string
       description: |
         The enumeration ReportAmountMdt defines Report Amount for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.10-1.
+      enum:
+      - "1"
+      - "2"
+      - "4"
+      - "8"
+      - "16"
+      - "32"
+      - "64"
+      - infinity
+      type: string
     EventForMdt:
-      anyOf:
-      - enum:
-        - OUT_OF_COVERAG
-        - A2_EVENT
-        type: string
-      - type: string
       description: |
         The enumeration EventForMdt defines events triggered measurement for logged MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.11-1
+      enum:
+      - OUT_OF_COVERAG
+      - A2_EVENT
+      type: string
     LoggingIntervalMdt:
-      anyOf:
-      - enum:
-        - "128"
-        - "256"
-        - "512"
-        - "1024"
-        - "2048"
-        - "3072"
-        - "4096"
-        - "6144"
-        type: string
-      - type: string
       description: |
         The enumeration LoggingIntervalMdt defines Logging Interval for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.12-1.
+      enum:
+      - "128"
+      - "256"
+      - "512"
+      - "1024"
+      - "2048"
+      - "3072"
+      - "4096"
+      - "6144"
+      type: string
     LoggingIntervalNrMdt:
-      anyOf:
-      - enum:
-        - "128"
-        - "256"
-        - "512"
-        - "1024"
-        - "2048"
-        - "3072"
-        - "4096"
-        - "6144"
-        - "320"
-        - "640"
-        - infinity
-        type: string
-      - type: string
       description: |
         The enumeration LoggingIntervalNrMdt defines Logging Interval in NR for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.18-1.
+      enum:
+      - "128"
+      - "256"
+      - "512"
+      - "1024"
+      - "2048"
+      - "3072"
+      - "4096"
+      - "6144"
+      - "320"
+      - "640"
+      - infinity
+      type: string
     LoggingDurationMdt:
-      anyOf:
-      - enum:
-        - "600"
-        - "1200"
-        - "2400"
-        - "3600"
-        - "5400"
-        - "7200"
-        type: string
-      - type: string
       description: |
         The enumeration LoggingIntervalMdt defines Logging Interval for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.12-1.
+      enum:
+      - "600"
+      - "1200"
+      - "2400"
+      - "3600"
+      - "5400"
+      - "7200"
+      type: string
     LoggingDurationNrMdt:
-      anyOf:
-      - enum:
-        - "600"
-        - "1200"
-        - "2400"
-        - "3600"
-        - "5400"
-        - "7200"
-        type: string
-      - type: string
       description: |
         The enumeration LoggingDurationMdt defines Logging Duration in NR for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.20-1.
+      enum:
+      - "600"
+      - "1200"
+      - "2400"
+      - "3600"
+      - "5400"
+      - "7200"
+      type: string
     PositioningMethodMdt:
-      anyOf:
-      - enum:
-        - GNSS
-        - E_CELL_ID
-        type: string
-      - type: string
       description: |
         The enumeration LoggingDurationMdt defines Logging Duration for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.13-1.
+      enum:
+      - GNSS
+      - E_CELL_ID
+      type: string
     CollectionPeriodRmmLteMdt:
-      anyOf:
-      - enum:
-        - "1024"
-        - "1280"
-        - "2048"
-        - "2560"
-        - "5120"
-        - "10240"
-        - "60000"
-        type: string
-      - type: string
       description: |
         The enumeration CollectionPeriodRmmLteMdt defines Collection period for RRM measurements LTE for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.15-1.
+      enum:
+      - "1024"
+      - "1280"
+      - "2048"
+      - "2560"
+      - "5120"
+      - "10240"
+      - "60000"
+      type: string
     CollectionPeriodRmmNrMdt:
-      anyOf:
-      - enum:
-        - "1024"
-        - "2048"
-        - "5120"
-        - "10240"
-        - "60000"
-        type: string
-      - type: string
       description: |
         The enumeration CollectionPeriodRmmNrMdt defines Collection period for RRM measurements NR for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.19-1
+      enum:
+      - "1024"
+      - "2048"
+      - "5120"
+      - "10240"
+      - "60000"
+      type: string
     MeasurementPeriodLteMdt:
-      anyOf:
-      - enum:
-        - "1024"
-        - "1280"
-        - "2048"
-        - "2560"
-        - "5120"
-        - "10240"
-        - "60000"
-        type: string
-      - type: string
       description: |
         The enumeration MeasurementPeriodLteMdt defines Measurement period LTE for MDT in the trace.  See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.16-1.
+      enum:
+      - "1024"
+      - "1280"
+      - "2048"
+      - "2560"
+      - "5120"
+      - "10240"
+      - "60000"
+      type: string
     MbsfnArea:
       description: Contains an MBSFN area information.
       example:
@@ -33143,18 +33013,13 @@ components:
       pattern: "^[0-9]{3}-[0-9]{2,3}-[A-Fa-f0-9]{6}$"
       type: string
     QoeServiceType:
-      anyOf:
-      - enum:
-        - DASH
-        - MTSI
-        - VR
-        type: string
-      - description: "This string provides forward-compatibility with future extensions\
-          \ to the enumeration but is not used to encode content defined in the present\
-          \ version of this API. \n"
-        type: string
       description: |
         The enumeration QoeServiceType indicates the kind of service that shall be recorded for QMC. It shall comply with the provisions defined in TS 29.571, table 5.6.3.21-1.
+      enum:
+      - DASH
+      - MTSI
+      - VR
+      type: string
     QmcAreaScope:
       description: |
         This IE contains the area in Cells or Tracking Areas where the QMC data collection shall take place.
@@ -33300,25 +33165,18 @@ components:
       format: string
       pattern: "^[0-9]{3}-[0-9]{2,3}-[A-Fa-f0-9]{6}-[A-Fa-f0-9]{4}$"
     AvailableRanVisibleQoeMetric:
-      anyOf:
-      - enum:
-        - APPLICATION_LAYER_BUFFER_LEVEL_LIST
-        - PLAYOUT_DELAY_FOR_MEDIA_STARTUP
-        type: string
-      - description: "This string provides forward-compatibility with future extensions\
-          \ to the enumeration but is not used to encode content defined in the present\
-          \ version of this API. \n"
-        type: string
       description: |
         The enumeration AvailableRanVisibleQoeMetric indicates different available RAN-visible QoE metrics to the gNB. It shall comply with the provisions defined in TS 29.571, table 5.6.3.22-1.
+      enum:
+      - APPLICATION_LAYER_BUFFER_LEVEL_LIST
+      - PLAYOUT_DELAY_FOR_MEDIA_STARTUP
+      type: string
     MbsServiceType:
-      anyOf:
-      - enum:
-        - MULTICAST
-        - BROADCAST
-        type: string
-      - type: string
       description: Indicates the MBS service type of an MBS session
+      enum:
+      - MULTICAST
+      - BROADCAST
+      type: string
     TemporalValidity:
       description: Indicates the time interval(s) during which the AF request is to
         be applied.
@@ -33336,15 +33194,11 @@ components:
           type: string
       type: object
     ClockQualityDetailLevel:
-      anyOf:
-      - enum:
-        - CLOCK_QUALITY_METRICS
-        - ACCEPT_INDICATION
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates the Clock Quality Detail Level.
+      enum:
+      - CLOCK_QUALITY_METRICS
+      - ACCEPT_INDICATION
+      type: string
     ClockQualityAcceptanceCriterion:
       description: Contains a Clock Quality Acceptance Criterion.
       example:
@@ -33375,16 +33229,12 @@ components:
           type: array
       type: object
     SynchronizationState:
-      anyOf:
-      - enum:
-        - LOCKED
-        - HOLDOVER
-        - FREERUN
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates the Synchronization State.
+      enum:
+      - LOCKED
+      - HOLDOVER
+      - FREERUN
+      type: string
     ClockQuality:
       description: Contains Clock Quality.
       example:
@@ -33419,22 +33269,18 @@ components:
       minimum: 0
       type: integer
     TimeSource:
-      anyOf:
-      - enum:
-        - SYNC_E
-        - PTP
-        - GNSS
-        - ATOMIC_CLOCK
-        - TERRESTRIAL_RADIO
-        - SERIAL_TIME_CODE
-        - NTP
-        - HAND_SET
-        - OTHER
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates the Time Source.
+      enum:
+      - SYNC_E
+      - PTP
+      - GNSS
+      - ATOMIC_CLOCK
+      - TERRESTRIAL_RADIO
+      - SERIAL_TIME_CODE
+      - NTP
+      - HAND_SET
+      - OTHER
+      type: string
     ProseServiceAuth:
       description: |
         Indicates whether the UE is authorized to use related services.
@@ -33475,16 +33321,14 @@ components:
           $ref: '#/components/schemas/UeAuth'
       type: object
     UeAuth:
-      anyOf:
-      - enum:
-        - AUTHORIZED
-        - NOT_AUTHORIZED
-        type: string
-      - type: string
       description: |
         Possible values are:
         - AUTHORIZED: Indicates that the UE is authorized.
         - NOT_AUTHORIZED: Indicates that the UE is not authorized.
+      enum:
+      - AUTHORIZED
+      - NOT_AUTHORIZED
+      type: string
     DateTime:
       description: string with format 'date-time' as defined in OpenAPI.
       format: date-time
@@ -33645,23 +33489,19 @@ components:
       nullable: true
       type: integer
     PreemptionCapability:
-      anyOf:
-      - enum:
-        - NOT_PREEMPT
-        - MAY_PREEMPT
-        type: string
-      - type: string
       description: |
         The enumeration PreemptionCapability indicates the pre-emption capability of a request on other QoS flows. See clause 5.7.2.2 of 3GPP TS 23.501. It shall comply with the provisions defined in table 5.5.3.1-1.
+      enum:
+      - NOT_PREEMPT
+      - MAY_PREEMPT
+      type: string
     PreemptionVulnerability:
-      anyOf:
-      - enum:
-        - NOT_PREEMPTABLE
-        - PREEMPTABLE
-        type: string
-      - type: string
       description: |
         The enumeration PreemptionVulnerability indicates the pre-emption vulnerability of the QoS flow to pre-emption from other QoS flows. See clause 5.7.2.2 of 3GPP TS 23.501. It shall comply with the provisions defined in table 5.5.3.2-1
+      enum:
+      - NOT_PREEMPTABLE
+      - PREEMPTABLE
+      type: string
     fiveQiPriorityLevel:
       description: "Unsigned integer indicating the 5QI Priority Level (see clauses\
         \ 5.7.3.3 and 5.7.4 of 3GPP TS 23.501, within the range 1 to 127.Values are\
@@ -33685,26 +33525,22 @@ components:
       - upIntegr
       type: object
     UpIntegrity:
-      anyOf:
-      - enum:
-        - REQUIRED
-        - PREFERRED
-        - NOT_NEEDED
-        type: string
-      - type: string
       description: "indicates whether UP integrity protection is required, preferred\
         \ or not needed for all the traffic on the PDU Session. It shall comply with\
         \ the provisions defined in  table 5.4.3.4-1. \n"
+      enum:
+      - REQUIRED
+      - PREFERRED
+      - NOT_NEEDED
+      type: string
     UpConfidentiality:
-      anyOf:
-      - enum:
-        - REQUIRED
-        - PREFERRED
-        - NOT_NEEDED
-        type: string
-      - type: string
       description: |
         indicates whether UP confidentiality protection is required, preferred or not needed for all the traffic on the PDU Session. It shall comply with the provisions defined in table 5.4.3.5-1.
+      enum:
+      - REQUIRED
+      - PREFERRED
+      - NOT_NEEDED
+      type: string
     NefId:
       description: Identity of the NEF
       type: string
@@ -33857,27 +33693,23 @@ components:
       pattern: "^extgroupid-[^@]+@[^@]+$"
       type: string
     PduSessionType:
-      anyOf:
-      - enum:
-        - IPV4
-        - IPV6
-        - IPV4V6
-        - UNSTRUCTURED
-        - ETHERNET
-        type: string
-      - type: string
       description: "PduSessionType indicates the type of a PDU session. It shall comply\
         \ with the provisions defined in table 5.4.3.3-1. \n"
+      enum:
+      - IPV4
+      - IPV6
+      - IPV4V6
+      - UNSTRUCTURED
+      - ETHERNET
+      type: string
     SscMode:
-      anyOf:
-      - enum:
-        - SSC_MODE_1
-        - SSC_MODE_2
-        - SSC_MODE_3
-        type: string
-      - type: string
       description: "represents the service and session continuity mode It shall comply\
         \ with the provisions defined in table 5.4.3.6-1. \n"
+      enum:
+      - SSC_MODE_1
+      - SSC_MODE_2
+      - SSC_MODE_3
+      type: string
     ServiceName:
       description: Service names known to NRF
       enum:
@@ -34077,15 +33909,13 @@ components:
       - path
       type: object
     ChangeType:
-      anyOf:
-      - enum:
-        - ADD
-        - MOVE
-        - REMOVE
-        - REPLACE
-        type: string
-      - type: string
       description: Indicates the type of change to be performed.
+      enum:
+      - ADD
+      - MOVE
+      - REMOVE
+      - REPLACE
+      type: string
     SorMac:
       description: MAC value for protecting SOR procedure (SoR-MAC-IAUSF and SoR-XMAC-IUE).
       pattern: "^[A-Fa-f0-9]{32}$"
@@ -34541,18 +34371,14 @@ components:
       format: binary
       type: string
     StationaryIndication:
-      anyOf:
-      - enum:
-        - STATIONARY
-        - MOBILE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Possible values are:
         - STATIONARY: Identifies the UE is stationary
         - MOBILE: Identifies the UE is mobile
+      enum:
+      - STATIONARY
+      - MOBILE
+      type: string
     ScheduledCommunicationTime:
       description: Identifies time and day of the week when the UE is available for
         communication.
@@ -34597,18 +34423,16 @@ components:
         \ UTC). \n"
       type: string
     ScheduledCommunicationType:
-      anyOf:
-      - enum:
-        - DOWNLINK_ONLY
-        - UPLINK_ONLY
-        - BIDIRECTIONAL
-        type: string
-      - type: string
       description: |
         Possible values are:
         -DOWNLINK_ONLY: Downlink only
         -UPLINK_ONLY: Uplink only
         -BIDIRECTIONA: Bi-directional
+      enum:
+      - DOWNLINK_ONLY
+      - UPLINK_ONLY
+      - BIDIRECTIONAL
+      type: string
     LocationArea:
       example:
         geographicAreas:
@@ -34880,24 +34704,19 @@ components:
       - timeOfDay
       type: object
     TrafficProfile:
-      anyOf:
-      - enum:
-        - SINGLE_TRANS_UL
-        - SINGLE_TRANS_DL
-        - DUAL_TRANS_UL_FIRST
-        - DUAL_TRANS_DL_FIRST
-        - MULTI_TRANS
-        type: string
-      - description: "This string provides forward-compatibility with future extensions\
-          \ to the enumeration but is not used to encode content defined in the present\
-          \ version of this API. \n"
-        type: string
       description: "Possible values are:\n- SINGLE_TRANS_UL: Uplink single packet\
         \ transmission.\n- SINGLE_TRANS_DL: Downlink single packet transmission.\n\
         - DUAL_TRANS_UL_FIRST: Dual packet transmission, firstly uplink packet transmission\n\
         \  with subsequent downlink packet transmission.\n- DUAL_TRANS_DL_FIRST: Dual\
         \ packet transmission, firstly downlink packet transmission\n  with subsequent\
         \ uplink packet transmission. \n"
+      enum:
+      - SINGLE_TRANS_UL
+      - SINGLE_TRANS_DL
+      - DUAL_TRANS_UL_FIRST
+      - DUAL_TRANS_DL_FIRST
+      - MULTI_TRANS
+      type: string
     BatteryIndication:
       description: |
         Parameters "replaceableInd" and "rechargeableInd" are only included if the value of Parameter "batteryInd" is true.
@@ -35274,17 +35093,15 @@ components:
       - reason
       type: object
     NoProfileMatchReason:
-      anyOf:
-      - enum:
-        - REQUESTER_PLMN_NOT_ALLOWED
-        - TARGET_NF_SUSPENDED
-        - TARGET_NF_UNDISCOVERABLE
-        - QUERY_PARAMS_COMBINATION_NO_MATCH
-        - TARGET_NF_TYPE_NOT_SUPPORTED
-        - UNSPECIFIED
-        type: string
-      - type: string
       description: No Profile Match Reason
+      enum:
+      - REQUESTER_PLMN_NOT_ALLOWED
+      - TARGET_NF_SUSPENDED
+      - TARGET_NF_UNDISCOVERABLE
+      - QUERY_PARAMS_COMBINATION_NO_MATCH
+      - TARGET_NF_TYPE_NOT_SUPPORTED
+      - UNSPECIFIED
+      type: string
     QueryParamCombination:
       description: Contains a list of Query Parameters
       properties:

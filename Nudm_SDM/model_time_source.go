@@ -24,36 +24,75 @@ import (
 )
 
 // TimeSource Indicates the Time Source.
-type TimeSource struct {
-	String *string
+type TimeSource string
+
+// List of TimeSource
+const (
+	TIMESOURCE_SYNC_E            TimeSource = "SYNC_E"
+	TIMESOURCE_PTP               TimeSource = "PTP"
+	TIMESOURCE_GNSS              TimeSource = "GNSS"
+	TIMESOURCE_ATOMIC_CLOCK      TimeSource = "ATOMIC_CLOCK"
+	TIMESOURCE_TERRESTRIAL_RADIO TimeSource = "TERRESTRIAL_RADIO"
+	TIMESOURCE_SERIAL_TIME_CODE  TimeSource = "SERIAL_TIME_CODE"
+	TIMESOURCE_NTP               TimeSource = "NTP"
+	TIMESOURCE_HAND_SET          TimeSource = "HAND_SET"
+	TIMESOURCE_OTHER             TimeSource = "OTHER"
+)
+
+// All allowed values of TimeSource enum
+var AllowedTimeSourceEnumValues = []TimeSource{
+	"SYNC_E",
+	"PTP",
+	"GNSS",
+	"ATOMIC_CLOCK",
+	"TERRESTRIAL_RADIO",
+	"SERIAL_TIME_CODE",
+	"NTP",
+	"HAND_SET",
+	"OTHER",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *TimeSource) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *TimeSource) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := TimeSource(value)
+	for _, existing := range AllowedTimeSourceEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(TimeSource)")
+	return fmt.Errorf("%+v is not a valid TimeSource", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *TimeSource) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewTimeSourceFromValue returns a pointer to a valid TimeSource
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewTimeSourceFromValue(v string) (*TimeSource, error) {
+	ev := TimeSource(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for TimeSource: valid values are %v", v, AllowedTimeSourceEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v TimeSource) IsValid() bool {
+	for _, existing := range AllowedTimeSourceEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to TimeSource value
+func (v TimeSource) Ptr() *TimeSource {
+	return &v
 }
 
 type NullableTimeSource struct {

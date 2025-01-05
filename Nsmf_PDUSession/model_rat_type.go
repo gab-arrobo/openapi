@@ -24,36 +24,123 @@ import (
 )
 
 // RatType Indicates the radio access used.
-type RatType struct {
-	String *string
+type RatType string
+
+// List of RatType
+const (
+	RATTYPE_NR                  RatType = "NR"
+	RATTYPE_EUTRA               RatType = "EUTRA"
+	RATTYPE_WLAN                RatType = "WLAN"
+	RATTYPE_VIRTUAL             RatType = "VIRTUAL"
+	RATTYPE_NBIOT               RatType = "NBIOT"
+	RATTYPE_WIRELINE            RatType = "WIRELINE"
+	RATTYPE_WIRELINE_CABLE      RatType = "WIRELINE_CABLE"
+	RATTYPE_WIRELINE_BBF        RatType = "WIRELINE_BBF"
+	RATTYPE_LTE_M               RatType = "LTE-M"
+	RATTYPE_NR_U                RatType = "NR_U"
+	RATTYPE_EUTRA_U             RatType = "EUTRA_U"
+	RATTYPE_TRUSTED_N3_GA       RatType = "TRUSTED_N3GA"
+	RATTYPE_TRUSTED_WLAN        RatType = "TRUSTED_WLAN"
+	RATTYPE_UTRA                RatType = "UTRA"
+	RATTYPE_GERA                RatType = "GERA"
+	RATTYPE_NR_LEO              RatType = "NR_LEO"
+	RATTYPE_NR_MEO              RatType = "NR_MEO"
+	RATTYPE_NR_GEO              RatType = "NR_GEO"
+	RATTYPE_NR_OTHER_SAT        RatType = "NR_OTHER_SAT"
+	RATTYPE_NR_REDCAP           RatType = "NR_REDCAP"
+	RATTYPE_WB_E_UTRAN_LEO      RatType = "WB_E_UTRAN_LEO"
+	RATTYPE_WB_E_UTRAN_MEO      RatType = "WB_E_UTRAN_MEO"
+	RATTYPE_WB_E_UTRAN_GEO      RatType = "WB_E_UTRAN_GEO"
+	RATTYPE_WB_E_UTRAN_OTHERSAT RatType = "WB_E_UTRAN_OTHERSAT"
+	RATTYPE_NB_IOT_LEO          RatType = "NB_IOT_LEO"
+	RATTYPE_NB_IOT_MEO          RatType = "NB_IOT_MEO"
+	RATTYPE_NB_IOT_GEO          RatType = "NB_IOT_GEO"
+	RATTYPE_NB_IOT_OTHERSAT     RatType = "NB_IOT_OTHERSAT"
+	RATTYPE_LTE_M_LEO           RatType = "LTE_M_LEO"
+	RATTYPE_LTE_M_MEO           RatType = "LTE_M_MEO"
+	RATTYPE_LTE_M_GEO           RatType = "LTE_M_GEO"
+	RATTYPE_LTE_M_OTHERSAT      RatType = "LTE_M_OTHERSAT"
+	RATTYPE_NR_EREDCAP          RatType = "NR_EREDCAP"
+)
+
+// All allowed values of RatType enum
+var AllowedRatTypeEnumValues = []RatType{
+	"NR",
+	"EUTRA",
+	"WLAN",
+	"VIRTUAL",
+	"NBIOT",
+	"WIRELINE",
+	"WIRELINE_CABLE",
+	"WIRELINE_BBF",
+	"LTE-M",
+	"NR_U",
+	"EUTRA_U",
+	"TRUSTED_N3GA",
+	"TRUSTED_WLAN",
+	"UTRA",
+	"GERA",
+	"NR_LEO",
+	"NR_MEO",
+	"NR_GEO",
+	"NR_OTHER_SAT",
+	"NR_REDCAP",
+	"WB_E_UTRAN_LEO",
+	"WB_E_UTRAN_MEO",
+	"WB_E_UTRAN_GEO",
+	"WB_E_UTRAN_OTHERSAT",
+	"NB_IOT_LEO",
+	"NB_IOT_MEO",
+	"NB_IOT_GEO",
+	"NB_IOT_OTHERSAT",
+	"LTE_M_LEO",
+	"LTE_M_MEO",
+	"LTE_M_GEO",
+	"LTE_M_OTHERSAT",
+	"NR_EREDCAP",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RatType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RatType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RatType(value)
+	for _, existing := range AllowedRatTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RatType)")
+	return fmt.Errorf("%+v is not a valid RatType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RatType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRatTypeFromValue returns a pointer to a valid RatType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRatTypeFromValue(v string) (*RatType, error) {
+	ev := RatType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RatType: valid values are %v", v, AllowedRatTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RatType) IsValid() bool {
+	for _, existing := range AllowedRatTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RatType value
+func (v RatType) Ptr() *RatType {
+	return &v
 }
 
 type NullableRatType struct {

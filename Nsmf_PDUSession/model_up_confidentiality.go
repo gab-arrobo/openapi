@@ -24,36 +24,63 @@ import (
 )
 
 // UpConfidentiality indicates whether UP confidentiality protection is required, preferred or not needed for all the traffic on the PDU Session. It shall comply with the provisions defined in table 5.4.3.5-1.
-type UpConfidentiality struct {
-	String *string
+type UpConfidentiality string
+
+// List of UpConfidentiality
+const (
+	UPCONFIDENTIALITY_REQUIRED   UpConfidentiality = "REQUIRED"
+	UPCONFIDENTIALITY_PREFERRED  UpConfidentiality = "PREFERRED"
+	UPCONFIDENTIALITY_NOT_NEEDED UpConfidentiality = "NOT_NEEDED"
+)
+
+// All allowed values of UpConfidentiality enum
+var AllowedUpConfidentialityEnumValues = []UpConfidentiality{
+	"REQUIRED",
+	"PREFERRED",
+	"NOT_NEEDED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *UpConfidentiality) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *UpConfidentiality) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := UpConfidentiality(value)
+	for _, existing := range AllowedUpConfidentialityEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(UpConfidentiality)")
+	return fmt.Errorf("%+v is not a valid UpConfidentiality", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *UpConfidentiality) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewUpConfidentialityFromValue returns a pointer to a valid UpConfidentiality
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewUpConfidentialityFromValue(v string) (*UpConfidentiality, error) {
+	ev := UpConfidentiality(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for UpConfidentiality: valid values are %v", v, AllowedUpConfidentialityEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v UpConfidentiality) IsValid() bool {
+	for _, existing := range AllowedUpConfidentialityEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to UpConfidentiality value
+func (v UpConfidentiality) Ptr() *UpConfidentiality {
+	return &v
 }
 
 type NullableUpConfidentiality struct {

@@ -24,36 +24,73 @@ import (
 )
 
 // MatchingOperator the matching operation.
-type MatchingOperator struct {
-	String *string
+type MatchingOperator string
+
+// List of MatchingOperator
+const (
+	MATCHINGOPERATOR_FULL_MATCH     MatchingOperator = "FULL_MATCH"
+	MATCHINGOPERATOR_MATCH_ALL      MatchingOperator = "MATCH_ALL"
+	MATCHINGOPERATOR_STARTS_WITH    MatchingOperator = "STARTS_WITH"
+	MATCHINGOPERATOR_NOT_START_WITH MatchingOperator = "NOT_START_WITH"
+	MATCHINGOPERATOR_ENDS_WITH      MatchingOperator = "ENDS_WITH"
+	MATCHINGOPERATOR_NOT_END_WITH   MatchingOperator = "NOT_END_WITH"
+	MATCHINGOPERATOR_CONTAINS       MatchingOperator = "CONTAINS"
+	MATCHINGOPERATOR_NOT_CONTAIN    MatchingOperator = "NOT_CONTAIN"
+)
+
+// All allowed values of MatchingOperator enum
+var AllowedMatchingOperatorEnumValues = []MatchingOperator{
+	"FULL_MATCH",
+	"MATCH_ALL",
+	"STARTS_WITH",
+	"NOT_START_WITH",
+	"ENDS_WITH",
+	"NOT_END_WITH",
+	"CONTAINS",
+	"NOT_CONTAIN",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *MatchingOperator) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *MatchingOperator) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := MatchingOperator(value)
+	for _, existing := range AllowedMatchingOperatorEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(MatchingOperator)")
+	return fmt.Errorf("%+v is not a valid MatchingOperator", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *MatchingOperator) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewMatchingOperatorFromValue returns a pointer to a valid MatchingOperator
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewMatchingOperatorFromValue(v string) (*MatchingOperator, error) {
+	ev := MatchingOperator(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for MatchingOperator: valid values are %v", v, AllowedMatchingOperatorEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v MatchingOperator) IsValid() bool {
+	for _, existing := range AllowedMatchingOperatorEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to MatchingOperator value
+func (v MatchingOperator) Ptr() *MatchingOperator {
+	return &v
 }
 
 type NullableMatchingOperator struct {

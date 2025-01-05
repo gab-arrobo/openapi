@@ -24,36 +24,63 @@ import (
 )
 
 // PruInd Indicates whether the UE can act as a PRU or the type of PRU.
-type PruInd struct {
-	String *string
+type PruInd string
+
+// List of PruInd
+const (
+	PRUIND_NON_PRU            PruInd = "NON_PRU"
+	PRUIND_STATIONARY_PRU     PruInd = "STATIONARY_PRU"
+	PRUIND_NON_STATIONARY_PRU PruInd = "NON_STATIONARY_PRU"
+)
+
+// All allowed values of PruInd enum
+var AllowedPruIndEnumValues = []PruInd{
+	"NON_PRU",
+	"STATIONARY_PRU",
+	"NON_STATIONARY_PRU",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PruInd) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PruInd) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PruInd(value)
+	for _, existing := range AllowedPruIndEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PruInd)")
+	return fmt.Errorf("%+v is not a valid PruInd", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PruInd) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPruIndFromValue returns a pointer to a valid PruInd
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPruIndFromValue(v string) (*PruInd, error) {
+	ev := PruInd(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PruInd: valid values are %v", v, AllowedPruIndEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PruInd) IsValid() bool {
+	for _, existing := range AllowedPruIndEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PruInd value
+func (v PruInd) Ptr() *PruInd {
+	return &v
 }
 
 type NullablePruInd struct {

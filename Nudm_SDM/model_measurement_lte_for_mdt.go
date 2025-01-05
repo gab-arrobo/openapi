@@ -24,36 +24,83 @@ import (
 )
 
 // MeasurementLteForMdt The enumeration MeasurementLteForMdt defines Measurements used for MDT in LTE in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.5-1.
-type MeasurementLteForMdt struct {
-	String *string
+type MeasurementLteForMdt string
+
+// List of MeasurementLteForMdt
+const (
+	MEASUREMENTLTEFORMDT_M1    MeasurementLteForMdt = "M1"
+	MEASUREMENTLTEFORMDT_M2    MeasurementLteForMdt = "M2"
+	MEASUREMENTLTEFORMDT_M3    MeasurementLteForMdt = "M3"
+	MEASUREMENTLTEFORMDT_M4_DL MeasurementLteForMdt = "M4_DL"
+	MEASUREMENTLTEFORMDT_M4_UL MeasurementLteForMdt = "M4_UL"
+	MEASUREMENTLTEFORMDT_M5_DL MeasurementLteForMdt = "M5_DL"
+	MEASUREMENTLTEFORMDT_M5_UL MeasurementLteForMdt = "M5_UL"
+	MEASUREMENTLTEFORMDT_M6_DL MeasurementLteForMdt = "M6_DL"
+	MEASUREMENTLTEFORMDT_M6_UL MeasurementLteForMdt = "M6_UL"
+	MEASUREMENTLTEFORMDT_M7_DL MeasurementLteForMdt = "M7_DL"
+	MEASUREMENTLTEFORMDT_M7_UL MeasurementLteForMdt = "M7_UL"
+	MEASUREMENTLTEFORMDT_M8    MeasurementLteForMdt = "M8"
+	MEASUREMENTLTEFORMDT_M9    MeasurementLteForMdt = "M9"
+)
+
+// All allowed values of MeasurementLteForMdt enum
+var AllowedMeasurementLteForMdtEnumValues = []MeasurementLteForMdt{
+	"M1",
+	"M2",
+	"M3",
+	"M4_DL",
+	"M4_UL",
+	"M5_DL",
+	"M5_UL",
+	"M6_DL",
+	"M6_UL",
+	"M7_DL",
+	"M7_UL",
+	"M8",
+	"M9",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *MeasurementLteForMdt) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *MeasurementLteForMdt) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := MeasurementLteForMdt(value)
+	for _, existing := range AllowedMeasurementLteForMdtEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(MeasurementLteForMdt)")
+	return fmt.Errorf("%+v is not a valid MeasurementLteForMdt", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *MeasurementLteForMdt) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewMeasurementLteForMdtFromValue returns a pointer to a valid MeasurementLteForMdt
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewMeasurementLteForMdtFromValue(v string) (*MeasurementLteForMdt, error) {
+	ev := MeasurementLteForMdt(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for MeasurementLteForMdt: valid values are %v", v, AllowedMeasurementLteForMdtEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v MeasurementLteForMdt) IsValid() bool {
+	for _, existing := range AllowedMeasurementLteForMdtEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to MeasurementLteForMdt value
+func (v MeasurementLteForMdt) Ptr() *MeasurementLteForMdt {
+	return &v
 }
 
 type NullableMeasurementLteForMdt struct {

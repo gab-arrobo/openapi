@@ -24,36 +24,63 @@ import (
 )
 
 // QosResourceType The enumeration QosResourceType indicates whether a QoS Flow is non-GBR, delay critical GBR, or non-delay critical GBR (see clauses 5.7.3.4 and 5.7.3.5 of 3GPP TS 23.501). It shall comply with the provisions defined in table 5.5.3.6-1.
-type QosResourceType struct {
-	String *string
+type QosResourceType string
+
+// List of QosResourceType
+const (
+	QOSRESOURCETYPE_NON_GBR          QosResourceType = "NON_GBR"
+	QOSRESOURCETYPE_NON_CRITICAL_GBR QosResourceType = "NON_CRITICAL_GBR"
+	QOSRESOURCETYPE_CRITICAL_GBR     QosResourceType = "CRITICAL_GBR"
+)
+
+// All allowed values of QosResourceType enum
+var AllowedQosResourceTypeEnumValues = []QosResourceType{
+	"NON_GBR",
+	"NON_CRITICAL_GBR",
+	"CRITICAL_GBR",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *QosResourceType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *QosResourceType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := QosResourceType(value)
+	for _, existing := range AllowedQosResourceTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(QosResourceType)")
+	return fmt.Errorf("%+v is not a valid QosResourceType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *QosResourceType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewQosResourceTypeFromValue returns a pointer to a valid QosResourceType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewQosResourceTypeFromValue(v string) (*QosResourceType, error) {
+	ev := QosResourceType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for QosResourceType: valid values are %v", v, AllowedQosResourceTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v QosResourceType) IsValid() bool {
+	for _, existing := range AllowedQosResourceTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to QosResourceType value
+func (v QosResourceType) Ptr() *QosResourceType {
+	return &v
 }
 
 type NullableQosResourceType struct {

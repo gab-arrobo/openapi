@@ -24,36 +24,59 @@ import (
 )
 
 // PduSessionContextType Type of PDU Session information. Possible values are   - AF_COORDINATION_INFO
-type PduSessionContextType struct {
-	String *string
+type PduSessionContextType string
+
+// List of PduSessionContextType
+const (
+	PDUSESSIONCONTEXTTYPE_AF_COORDINATION_INFO PduSessionContextType = "AF_COORDINATION_INFO"
+)
+
+// All allowed values of PduSessionContextType enum
+var AllowedPduSessionContextTypeEnumValues = []PduSessionContextType{
+	"AF_COORDINATION_INFO",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PduSessionContextType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PduSessionContextType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PduSessionContextType(value)
+	for _, existing := range AllowedPduSessionContextTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PduSessionContextType)")
+	return fmt.Errorf("%+v is not a valid PduSessionContextType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PduSessionContextType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPduSessionContextTypeFromValue returns a pointer to a valid PduSessionContextType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPduSessionContextTypeFromValue(v string) (*PduSessionContextType, error) {
+	ev := PduSessionContextType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PduSessionContextType: valid values are %v", v, AllowedPduSessionContextTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PduSessionContextType) IsValid() bool {
+	for _, existing := range AllowedPduSessionContextTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PduSessionContextType value
+func (v PduSessionContextType) Ptr() *PduSessionContextType {
+	return &v
 }
 
 type NullablePduSessionContextType struct {

@@ -24,36 +24,65 @@ import (
 )
 
 // RequestType Request Type in Create (SM context) service operation. Possible values are - INITIAL_REQUEST - EXISTING_PDU_SESSION - INITIAL_EMERGENCY_REQUEST - EXISTING_EMERGENCY_PDU_SESSION
-type RequestType struct {
-	String *string
+type RequestType string
+
+// List of RequestType
+const (
+	REQUESTTYPE_INITIAL_REQUEST                RequestType = "INITIAL_REQUEST"
+	REQUESTTYPE_EXISTING_PDU_SESSION           RequestType = "EXISTING_PDU_SESSION"
+	REQUESTTYPE_INITIAL_EMERGENCY_REQUEST      RequestType = "INITIAL_EMERGENCY_REQUEST"
+	REQUESTTYPE_EXISTING_EMERGENCY_PDU_SESSION RequestType = "EXISTING_EMERGENCY_PDU_SESSION"
+)
+
+// All allowed values of RequestType enum
+var AllowedRequestTypeEnumValues = []RequestType{
+	"INITIAL_REQUEST",
+	"EXISTING_PDU_SESSION",
+	"INITIAL_EMERGENCY_REQUEST",
+	"EXISTING_EMERGENCY_PDU_SESSION",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RequestType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RequestType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RequestType(value)
+	for _, existing := range AllowedRequestTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RequestType)")
+	return fmt.Errorf("%+v is not a valid RequestType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RequestType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRequestTypeFromValue returns a pointer to a valid RequestType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRequestTypeFromValue(v string) (*RequestType, error) {
+	ev := RequestType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RequestType: valid values are %v", v, AllowedRequestTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RequestType) IsValid() bool {
+	for _, existing := range AllowedRequestTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RequestType value
+func (v RequestType) Ptr() *RequestType {
+	return &v
 }
 
 type NullableRequestType struct {

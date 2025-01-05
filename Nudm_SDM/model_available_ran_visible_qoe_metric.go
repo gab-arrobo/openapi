@@ -24,36 +24,61 @@ import (
 )
 
 // AvailableRanVisibleQoeMetric The enumeration AvailableRanVisibleQoeMetric indicates different available RAN-visible QoE metrics to the gNB. It shall comply with the provisions defined in TS 29.571, table 5.6.3.22-1.
-type AvailableRanVisibleQoeMetric struct {
-	String *string
+type AvailableRanVisibleQoeMetric string
+
+// List of AvailableRanVisibleQoeMetric
+const (
+	AVAILABLERANVISIBLEQOEMETRIC_APPLICATION_LAYER_BUFFER_LEVEL_LIST AvailableRanVisibleQoeMetric = "APPLICATION_LAYER_BUFFER_LEVEL_LIST"
+	AVAILABLERANVISIBLEQOEMETRIC_PLAYOUT_DELAY_FOR_MEDIA_STARTUP     AvailableRanVisibleQoeMetric = "PLAYOUT_DELAY_FOR_MEDIA_STARTUP"
+)
+
+// All allowed values of AvailableRanVisibleQoeMetric enum
+var AllowedAvailableRanVisibleQoeMetricEnumValues = []AvailableRanVisibleQoeMetric{
+	"APPLICATION_LAYER_BUFFER_LEVEL_LIST",
+	"PLAYOUT_DELAY_FOR_MEDIA_STARTUP",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *AvailableRanVisibleQoeMetric) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *AvailableRanVisibleQoeMetric) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := AvailableRanVisibleQoeMetric(value)
+	for _, existing := range AllowedAvailableRanVisibleQoeMetricEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(AvailableRanVisibleQoeMetric)")
+	return fmt.Errorf("%+v is not a valid AvailableRanVisibleQoeMetric", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *AvailableRanVisibleQoeMetric) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewAvailableRanVisibleQoeMetricFromValue returns a pointer to a valid AvailableRanVisibleQoeMetric
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewAvailableRanVisibleQoeMetricFromValue(v string) (*AvailableRanVisibleQoeMetric, error) {
+	ev := AvailableRanVisibleQoeMetric(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for AvailableRanVisibleQoeMetric: valid values are %v", v, AllowedAvailableRanVisibleQoeMetricEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v AvailableRanVisibleQoeMetric) IsValid() bool {
+	for _, existing := range AllowedAvailableRanVisibleQoeMetricEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to AvailableRanVisibleQoeMetric value
+func (v AvailableRanVisibleQoeMetric) Ptr() *AvailableRanVisibleQoeMetric {
+	return &v
 }
 
 type NullableAvailableRanVisibleQoeMetric struct {

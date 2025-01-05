@@ -28,7 +28,7 @@ var _ MappedNullable = &UcSubscriptionData{}
 // UcSubscriptionData Contains the User Consent Subscription Data.
 type UcSubscriptionData struct {
 	// A map(list of key-value pairs) where user consent purpose serves as key of user consent
-	UserConsentPerPurposeList map[string]UserConsent `json:"userConsentPerPurposeList,omitempty"`
+	UserConsentPerPurposeList *map[string]UserConsent `json:"userConsentPerPurposeList,omitempty"`
 	AdditionalProperties      map[string]interface{}
 }
 
@@ -57,14 +57,14 @@ func (o *UcSubscriptionData) GetUserConsentPerPurposeList() map[string]UserConse
 		var ret map[string]UserConsent
 		return ret
 	}
-	return o.UserConsentPerPurposeList
+	return *o.UserConsentPerPurposeList
 }
 
 // GetUserConsentPerPurposeListOk returns a tuple with the UserConsentPerPurposeList field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *UcSubscriptionData) GetUserConsentPerPurposeListOk() (map[string]UserConsent, bool) {
+func (o *UcSubscriptionData) GetUserConsentPerPurposeListOk() (*map[string]UserConsent, bool) {
 	if o == nil || IsNil(o.UserConsentPerPurposeList) {
-		return map[string]UserConsent{}, false
+		return nil, false
 	}
 	return o.UserConsentPerPurposeList, true
 }
@@ -80,7 +80,7 @@ func (o *UcSubscriptionData) HasUserConsentPerPurposeList() bool {
 
 // SetUserConsentPerPurposeList gets a reference to the given map[string]UserConsent and assigns it to the UserConsentPerPurposeList field.
 func (o *UcSubscriptionData) SetUserConsentPerPurposeList(v map[string]UserConsent) {
-	o.UserConsentPerPurposeList = v
+	o.UserConsentPerPurposeList = &v
 }
 
 func (o UcSubscriptionData) ToMap() (map[string]interface{}, error) {

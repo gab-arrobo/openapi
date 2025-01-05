@@ -65,11 +65,11 @@ type AccessAndMobilitySubscriptionData struct {
 	ServiceGapTime *int32          `json:"serviceGapTime,omitempty"`
 	MdtUserConsent *MdtUserConsent `json:"mdtUserConsent,omitempty"`
 	// A map (list of key-value pairs where PlmnId serves as key) of MdtUserConsent
-	AdjacentPlmnMdtUserConsents map[string]MdtUserConsent `json:"adjacentPlmnMdtUserConsents,omitempty"`
-	MdtConfiguration            *MdtConfiguration         `json:"mdtConfiguration,omitempty"`
-	TraceData                   NullableTraceData         `json:"traceData,omitempty"`
-	SharedTraceDataId           *string                   `json:"sharedTraceDataId,omitempty" validate:"regexp=^[0-9]{5,6}-.+$"`
-	CagData                     *CagData                  `json:"cagData,omitempty"`
+	AdjacentPlmnMdtUserConsents *map[string]MdtUserConsent `json:"adjacentPlmnMdtUserConsents,omitempty"`
+	MdtConfiguration            *MdtConfiguration          `json:"mdtConfiguration,omitempty"`
+	TraceData                   NullableTraceData          `json:"traceData,omitempty"`
+	SharedTraceDataId           *string                    `json:"sharedTraceDataId,omitempty" validate:"regexp=^[0-9]{5,6}-.+$"`
+	CagData                     *CagData                   `json:"cagData,omitempty"`
 	// String representing the STN-SR as defined in clause 18.6 of 3GPP TS 23.003.
 	StnSr *string `json:"stnSr,omitempty"`
 	// String representing the C-MSISDN as defined in clause 18.7 of 3GPP TS 23.003.
@@ -1187,14 +1187,14 @@ func (o *AccessAndMobilitySubscriptionData) GetAdjacentPlmnMdtUserConsents() map
 		var ret map[string]MdtUserConsent
 		return ret
 	}
-	return o.AdjacentPlmnMdtUserConsents
+	return *o.AdjacentPlmnMdtUserConsents
 }
 
 // GetAdjacentPlmnMdtUserConsentsOk returns a tuple with the AdjacentPlmnMdtUserConsents field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AccessAndMobilitySubscriptionData) GetAdjacentPlmnMdtUserConsentsOk() (map[string]MdtUserConsent, bool) {
+func (o *AccessAndMobilitySubscriptionData) GetAdjacentPlmnMdtUserConsentsOk() (*map[string]MdtUserConsent, bool) {
 	if o == nil || IsNil(o.AdjacentPlmnMdtUserConsents) {
-		return map[string]MdtUserConsent{}, false
+		return nil, false
 	}
 	return o.AdjacentPlmnMdtUserConsents, true
 }
@@ -1210,7 +1210,7 @@ func (o *AccessAndMobilitySubscriptionData) HasAdjacentPlmnMdtUserConsents() boo
 
 // SetAdjacentPlmnMdtUserConsents gets a reference to the given map[string]MdtUserConsent and assigns it to the AdjacentPlmnMdtUserConsents field.
 func (o *AccessAndMobilitySubscriptionData) SetAdjacentPlmnMdtUserConsents(v map[string]MdtUserConsent) {
-	o.AdjacentPlmnMdtUserConsents = v
+	o.AdjacentPlmnMdtUserConsents = &v
 }
 
 // GetMdtConfiguration returns the MdtConfiguration field value if set, zero value otherwise.

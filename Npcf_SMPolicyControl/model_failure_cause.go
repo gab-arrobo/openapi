@@ -24,36 +24,67 @@ import (
 )
 
 // FailureCause Indicates the cause of the failure in a Partial Success Report.
-type FailureCause struct {
-	String *string
+type FailureCause string
+
+// List of FailureCause
+const (
+	FAILURECAUSE_PCC_RULE_EVENT       FailureCause = "PCC_RULE_EVENT"
+	FAILURECAUSE_PCC_QOS_FLOW_EVENT   FailureCause = "PCC_QOS_FLOW_EVENT"
+	FAILURECAUSE_RULE_PERMANENT_ERROR FailureCause = "RULE_PERMANENT_ERROR"
+	FAILURECAUSE_RULE_TEMPORARY_ERROR FailureCause = "RULE_TEMPORARY_ERROR"
+	FAILURECAUSE_POL_DEC_ERROR        FailureCause = "POL_DEC_ERROR"
+)
+
+// All allowed values of FailureCause enum
+var AllowedFailureCauseEnumValues = []FailureCause{
+	"PCC_RULE_EVENT",
+	"PCC_QOS_FLOW_EVENT",
+	"RULE_PERMANENT_ERROR",
+	"RULE_TEMPORARY_ERROR",
+	"POL_DEC_ERROR",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *FailureCause) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *FailureCause) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := FailureCause(value)
+	for _, existing := range AllowedFailureCauseEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(FailureCause)")
+	return fmt.Errorf("%+v is not a valid FailureCause", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *FailureCause) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewFailureCauseFromValue returns a pointer to a valid FailureCause
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewFailureCauseFromValue(v string) (*FailureCause, error) {
+	ev := FailureCause(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for FailureCause: valid values are %v", v, AllowedFailureCauseEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v FailureCause) IsValid() bool {
+	for _, existing := range AllowedFailureCauseEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to FailureCause value
+func (v FailureCause) Ptr() *FailureCause {
+	return &v
 }
 
 type NullableFailureCause struct {

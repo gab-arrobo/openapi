@@ -24,36 +24,65 @@ import (
 )
 
 // LcsMoServiceClass Indicates the requirement of the UE to request its own location or location related to other UE.
-type LcsMoServiceClass struct {
-	String *string
+type LcsMoServiceClass string
+
+// List of LcsMoServiceClass
+const (
+	LCSMOSERVICECLASS_BASIC_SELF_LOCATION      LcsMoServiceClass = "BASIC_SELF_LOCATION"
+	LCSMOSERVICECLASS_AUTONOMOUS_SELF_LOCATION LcsMoServiceClass = "AUTONOMOUS_SELF_LOCATION"
+	LCSMOSERVICECLASS_TRANSFER_TO_THIRD_PARTY  LcsMoServiceClass = "TRANSFER_TO_THIRD_PARTY"
+	LCSMOSERVICECLASS_RANGING_SL_POS_EXPOSURE  LcsMoServiceClass = "RANGING_SL_POS_EXPOSURE"
+)
+
+// All allowed values of LcsMoServiceClass enum
+var AllowedLcsMoServiceClassEnumValues = []LcsMoServiceClass{
+	"BASIC_SELF_LOCATION",
+	"AUTONOMOUS_SELF_LOCATION",
+	"TRANSFER_TO_THIRD_PARTY",
+	"RANGING_SL_POS_EXPOSURE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *LcsMoServiceClass) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *LcsMoServiceClass) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := LcsMoServiceClass(value)
+	for _, existing := range AllowedLcsMoServiceClassEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(LcsMoServiceClass)")
+	return fmt.Errorf("%+v is not a valid LcsMoServiceClass", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *LcsMoServiceClass) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewLcsMoServiceClassFromValue returns a pointer to a valid LcsMoServiceClass
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewLcsMoServiceClassFromValue(v string) (*LcsMoServiceClass, error) {
+	ev := LcsMoServiceClass(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for LcsMoServiceClass: valid values are %v", v, AllowedLcsMoServiceClassEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v LcsMoServiceClass) IsValid() bool {
+	for _, existing := range AllowedLcsMoServiceClassEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to LcsMoServiceClass value
+func (v LcsMoServiceClass) Ptr() *LcsMoServiceClass {
+	return &v
 }
 
 type NullableLcsMoServiceClass struct {

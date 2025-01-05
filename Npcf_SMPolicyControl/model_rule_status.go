@@ -24,36 +24,61 @@ import (
 )
 
 // RuleStatus Indicates the status of PCC or session rule.   Possible values are - ACTIVE: Indicates that the PCC rule(s) are successfully installed (for those provisioned  from PCF) or activated (for those pre-defined in SMF), or the session rule(s) are  successfully installed  - INACTIVE: Indicates that the PCC rule(s) are removed (for those provisioned from PCF) or  inactive (for those pre-defined in SMF) or the session rule(s) are removed.
-type RuleStatus struct {
-	String *string
+type RuleStatus string
+
+// List of RuleStatus
+const (
+	RULESTATUS_ACTIVE   RuleStatus = "ACTIVE"
+	RULESTATUS_INACTIVE RuleStatus = "INACTIVE"
+)
+
+// All allowed values of RuleStatus enum
+var AllowedRuleStatusEnumValues = []RuleStatus{
+	"ACTIVE",
+	"INACTIVE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RuleStatus) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RuleStatus) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RuleStatus(value)
+	for _, existing := range AllowedRuleStatusEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RuleStatus)")
+	return fmt.Errorf("%+v is not a valid RuleStatus", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RuleStatus) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRuleStatusFromValue returns a pointer to a valid RuleStatus
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRuleStatusFromValue(v string) (*RuleStatus, error) {
+	ev := RuleStatus(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RuleStatus: valid values are %v", v, AllowedRuleStatusEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RuleStatus) IsValid() bool {
+	for _, existing := range AllowedRuleStatusEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RuleStatus value
+func (v RuleStatus) Ptr() *RuleStatus {
+	return &v
 }
 
 type NullableRuleStatus struct {

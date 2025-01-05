@@ -24,36 +24,73 @@ import (
 )
 
 // LoggingIntervalMdt The enumeration LoggingIntervalMdt defines Logging Interval for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.12-1.
-type LoggingIntervalMdt struct {
-	String *string
+type LoggingIntervalMdt string
+
+// List of LoggingIntervalMdt
+const (
+	LOGGINGINTERVALMDT__128  LoggingIntervalMdt = "128"
+	LOGGINGINTERVALMDT__256  LoggingIntervalMdt = "256"
+	LOGGINGINTERVALMDT__512  LoggingIntervalMdt = "512"
+	LOGGINGINTERVALMDT__1024 LoggingIntervalMdt = "1024"
+	LOGGINGINTERVALMDT__2048 LoggingIntervalMdt = "2048"
+	LOGGINGINTERVALMDT__3072 LoggingIntervalMdt = "3072"
+	LOGGINGINTERVALMDT__4096 LoggingIntervalMdt = "4096"
+	LOGGINGINTERVALMDT__6144 LoggingIntervalMdt = "6144"
+)
+
+// All allowed values of LoggingIntervalMdt enum
+var AllowedLoggingIntervalMdtEnumValues = []LoggingIntervalMdt{
+	"128",
+	"256",
+	"512",
+	"1024",
+	"2048",
+	"3072",
+	"4096",
+	"6144",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *LoggingIntervalMdt) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *LoggingIntervalMdt) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := LoggingIntervalMdt(value)
+	for _, existing := range AllowedLoggingIntervalMdtEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(LoggingIntervalMdt)")
+	return fmt.Errorf("%+v is not a valid LoggingIntervalMdt", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *LoggingIntervalMdt) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewLoggingIntervalMdtFromValue returns a pointer to a valid LoggingIntervalMdt
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewLoggingIntervalMdtFromValue(v string) (*LoggingIntervalMdt, error) {
+	ev := LoggingIntervalMdt(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for LoggingIntervalMdt: valid values are %v", v, AllowedLoggingIntervalMdtEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v LoggingIntervalMdt) IsValid() bool {
+	for _, existing := range AllowedLoggingIntervalMdtEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to LoggingIntervalMdt value
+func (v LoggingIntervalMdt) Ptr() *LoggingIntervalMdt {
+	return &v
 }
 
 type NullableLoggingIntervalMdt struct {

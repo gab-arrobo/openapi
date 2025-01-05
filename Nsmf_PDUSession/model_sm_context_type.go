@@ -24,36 +24,63 @@ import (
 )
 
 // SmContextType Type of SM Context information. Possible values are   - EPS_PDN_CONNECTION   - SM_CONTEXT   - AF_COORDINATION_INFO
-type SmContextType struct {
-	String *string
+type SmContextType string
+
+// List of SmContextType
+const (
+	SMCONTEXTTYPE_EPS_PDN_CONNECTION   SmContextType = "EPS_PDN_CONNECTION"
+	SMCONTEXTTYPE_SM_CONTEXT           SmContextType = "SM_CONTEXT"
+	SMCONTEXTTYPE_AF_COORDINATION_INFO SmContextType = "AF_COORDINATION_INFO"
+)
+
+// All allowed values of SmContextType enum
+var AllowedSmContextTypeEnumValues = []SmContextType{
+	"EPS_PDN_CONNECTION",
+	"SM_CONTEXT",
+	"AF_COORDINATION_INFO",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SmContextType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SmContextType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SmContextType(value)
+	for _, existing := range AllowedSmContextTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SmContextType)")
+	return fmt.Errorf("%+v is not a valid SmContextType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SmContextType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSmContextTypeFromValue returns a pointer to a valid SmContextType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSmContextTypeFromValue(v string) (*SmContextType, error) {
+	ev := SmContextType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SmContextType: valid values are %v", v, AllowedSmContextTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SmContextType) IsValid() bool {
+	for _, existing := range AllowedSmContextTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SmContextType value
+func (v SmContextType) Ptr() *SmContextType {
+	return &v
 }
 
 type NullableSmContextType struct {

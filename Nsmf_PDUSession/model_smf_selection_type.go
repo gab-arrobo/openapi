@@ -24,36 +24,61 @@ import (
 )
 
 // SmfSelectionType Smf Selection Type. Possible values are   - CURRENT_PDU_SESSION   - NEXT_PDU_SESSION
-type SmfSelectionType struct {
-	String *string
+type SmfSelectionType string
+
+// List of SmfSelectionType
+const (
+	SMFSELECTIONTYPE_CURRENT_PDU_SESSION SmfSelectionType = "CURRENT_PDU_SESSION"
+	SMFSELECTIONTYPE_NEXT_PDU_SESSION    SmfSelectionType = "NEXT_PDU_SESSION"
+)
+
+// All allowed values of SmfSelectionType enum
+var AllowedSmfSelectionTypeEnumValues = []SmfSelectionType{
+	"CURRENT_PDU_SESSION",
+	"NEXT_PDU_SESSION",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SmfSelectionType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SmfSelectionType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SmfSelectionType(value)
+	for _, existing := range AllowedSmfSelectionTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SmfSelectionType)")
+	return fmt.Errorf("%+v is not a valid SmfSelectionType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SmfSelectionType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSmfSelectionTypeFromValue returns a pointer to a valid SmfSelectionType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSmfSelectionTypeFromValue(v string) (*SmfSelectionType, error) {
+	ev := SmfSelectionType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SmfSelectionType: valid values are %v", v, AllowedSmfSelectionTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SmfSelectionType) IsValid() bool {
+	for _, existing := range AllowedSmfSelectionTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SmfSelectionType value
+func (v SmfSelectionType) Ptr() *SmfSelectionType {
+	return &v
 }
 
 type NullableSmfSelectionType struct {

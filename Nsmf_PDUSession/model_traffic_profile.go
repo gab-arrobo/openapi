@@ -24,36 +24,67 @@ import (
 )
 
 // TrafficProfile Possible values are: - SINGLE_TRANS_UL: Uplink single packet transmission. - SINGLE_TRANS_DL: Downlink single packet transmission. - DUAL_TRANS_UL_FIRST: Dual packet transmission, firstly uplink packet transmission   with subsequent downlink packet transmission. - DUAL_TRANS_DL_FIRST: Dual packet transmission, firstly downlink packet transmission   with subsequent uplink packet transmission.
-type TrafficProfile struct {
-	String *string
+type TrafficProfile string
+
+// List of TrafficProfile
+const (
+	TRAFFICPROFILE_SINGLE_TRANS_UL     TrafficProfile = "SINGLE_TRANS_UL"
+	TRAFFICPROFILE_SINGLE_TRANS_DL     TrafficProfile = "SINGLE_TRANS_DL"
+	TRAFFICPROFILE_DUAL_TRANS_UL_FIRST TrafficProfile = "DUAL_TRANS_UL_FIRST"
+	TRAFFICPROFILE_DUAL_TRANS_DL_FIRST TrafficProfile = "DUAL_TRANS_DL_FIRST"
+	TRAFFICPROFILE_MULTI_TRANS         TrafficProfile = "MULTI_TRANS"
+)
+
+// All allowed values of TrafficProfile enum
+var AllowedTrafficProfileEnumValues = []TrafficProfile{
+	"SINGLE_TRANS_UL",
+	"SINGLE_TRANS_DL",
+	"DUAL_TRANS_UL_FIRST",
+	"DUAL_TRANS_DL_FIRST",
+	"MULTI_TRANS",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *TrafficProfile) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *TrafficProfile) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := TrafficProfile(value)
+	for _, existing := range AllowedTrafficProfileEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(TrafficProfile)")
+	return fmt.Errorf("%+v is not a valid TrafficProfile", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *TrafficProfile) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewTrafficProfileFromValue returns a pointer to a valid TrafficProfile
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewTrafficProfileFromValue(v string) (*TrafficProfile, error) {
+	ev := TrafficProfile(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for TrafficProfile: valid values are %v", v, AllowedTrafficProfileEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v TrafficProfile) IsValid() bool {
+	for _, existing := range AllowedTrafficProfileEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to TrafficProfile value
+func (v TrafficProfile) Ptr() *TrafficProfile {
+	return &v
 }
 
 type NullableTrafficProfile struct {

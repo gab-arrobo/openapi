@@ -24,36 +24,75 @@ import (
 )
 
 // SatelliteBackhaulCategory Indicates the satellite backhaul used.
-type SatelliteBackhaulCategory struct {
-	String *string
+type SatelliteBackhaulCategory string
+
+// List of SatelliteBackhaulCategory
+const (
+	SATELLITEBACKHAULCATEGORY_GEO               SatelliteBackhaulCategory = "GEO"
+	SATELLITEBACKHAULCATEGORY_MEO               SatelliteBackhaulCategory = "MEO"
+	SATELLITEBACKHAULCATEGORY_LEO               SatelliteBackhaulCategory = "LEO"
+	SATELLITEBACKHAULCATEGORY_OTHER_SAT         SatelliteBackhaulCategory = "OTHER_SAT"
+	SATELLITEBACKHAULCATEGORY_DYNAMIC_GEO       SatelliteBackhaulCategory = "DYNAMIC_GEO"
+	SATELLITEBACKHAULCATEGORY_DYNAMIC_MEO       SatelliteBackhaulCategory = "DYNAMIC_MEO"
+	SATELLITEBACKHAULCATEGORY_DYNAMIC_LEO       SatelliteBackhaulCategory = "DYNAMIC_LEO"
+	SATELLITEBACKHAULCATEGORY_DYNAMIC_OTHER_SAT SatelliteBackhaulCategory = "DYNAMIC_OTHER_SAT"
+	SATELLITEBACKHAULCATEGORY_NON_SATELLITE     SatelliteBackhaulCategory = "NON_SATELLITE"
+)
+
+// All allowed values of SatelliteBackhaulCategory enum
+var AllowedSatelliteBackhaulCategoryEnumValues = []SatelliteBackhaulCategory{
+	"GEO",
+	"MEO",
+	"LEO",
+	"OTHER_SAT",
+	"DYNAMIC_GEO",
+	"DYNAMIC_MEO",
+	"DYNAMIC_LEO",
+	"DYNAMIC_OTHER_SAT",
+	"NON_SATELLITE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SatelliteBackhaulCategory) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SatelliteBackhaulCategory) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SatelliteBackhaulCategory(value)
+	for _, existing := range AllowedSatelliteBackhaulCategoryEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SatelliteBackhaulCategory)")
+	return fmt.Errorf("%+v is not a valid SatelliteBackhaulCategory", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SatelliteBackhaulCategory) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSatelliteBackhaulCategoryFromValue returns a pointer to a valid SatelliteBackhaulCategory
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSatelliteBackhaulCategoryFromValue(v string) (*SatelliteBackhaulCategory, error) {
+	ev := SatelliteBackhaulCategory(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SatelliteBackhaulCategory: valid values are %v", v, AllowedSatelliteBackhaulCategoryEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SatelliteBackhaulCategory) IsValid() bool {
+	for _, existing := range AllowedSatelliteBackhaulCategoryEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SatelliteBackhaulCategory value
+func (v SatelliteBackhaulCategory) Ptr() *SatelliteBackhaulCategory {
+	return &v
 }
 
 type NullableSatelliteBackhaulCategory struct {

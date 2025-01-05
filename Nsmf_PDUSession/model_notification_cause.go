@@ -24,36 +24,65 @@ import (
 )
 
 // NotificationCause Cause for generating a notification. Possible values are - QOS_FULFILLED - QOS_NOT_FULFILLED - UP_SEC_FULFILLED - UP_SEC_NOT_FULFILLED
-type NotificationCause struct {
-	String *string
+type NotificationCause string
+
+// List of NotificationCause
+const (
+	NOTIFICATIONCAUSE_QOS_FULFILLED        NotificationCause = "QOS_FULFILLED"
+	NOTIFICATIONCAUSE_QOS_NOT_FULFILLED    NotificationCause = "QOS_NOT_FULFILLED"
+	NOTIFICATIONCAUSE_UP_SEC_FULFILLED     NotificationCause = "UP_SEC_FULFILLED"
+	NOTIFICATIONCAUSE_UP_SEC_NOT_FULFILLED NotificationCause = "UP_SEC_NOT_FULFILLED"
+)
+
+// All allowed values of NotificationCause enum
+var AllowedNotificationCauseEnumValues = []NotificationCause{
+	"QOS_FULFILLED",
+	"QOS_NOT_FULFILLED",
+	"UP_SEC_FULFILLED",
+	"UP_SEC_NOT_FULFILLED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *NotificationCause) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *NotificationCause) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := NotificationCause(value)
+	for _, existing := range AllowedNotificationCauseEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(NotificationCause)")
+	return fmt.Errorf("%+v is not a valid NotificationCause", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *NotificationCause) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewNotificationCauseFromValue returns a pointer to a valid NotificationCause
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewNotificationCauseFromValue(v string) (*NotificationCause, error) {
+	ev := NotificationCause(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for NotificationCause: valid values are %v", v, AllowedNotificationCauseEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v NotificationCause) IsValid() bool {
+	for _, existing := range AllowedNotificationCauseEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to NotificationCause value
+func (v NotificationCause) Ptr() *NotificationCause {
+	return &v
 }
 
 type NullableNotificationCause struct {

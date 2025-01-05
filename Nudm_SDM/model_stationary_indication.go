@@ -24,36 +24,61 @@ import (
 )
 
 // StationaryIndication Possible values are: - STATIONARY: Identifies the UE is stationary - MOBILE: Identifies the UE is mobile
-type StationaryIndication struct {
-	String *string
+type StationaryIndication string
+
+// List of StationaryIndication
+const (
+	STATIONARYINDICATION_STATIONARY StationaryIndication = "STATIONARY"
+	STATIONARYINDICATION_MOBILE     StationaryIndication = "MOBILE"
+)
+
+// All allowed values of StationaryIndication enum
+var AllowedStationaryIndicationEnumValues = []StationaryIndication{
+	"STATIONARY",
+	"MOBILE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *StationaryIndication) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *StationaryIndication) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := StationaryIndication(value)
+	for _, existing := range AllowedStationaryIndicationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(StationaryIndication)")
+	return fmt.Errorf("%+v is not a valid StationaryIndication", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *StationaryIndication) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewStationaryIndicationFromValue returns a pointer to a valid StationaryIndication
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewStationaryIndicationFromValue(v string) (*StationaryIndication, error) {
+	ev := StationaryIndication(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for StationaryIndication: valid values are %v", v, AllowedStationaryIndicationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v StationaryIndication) IsValid() bool {
+	for _, existing := range AllowedStationaryIndicationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to StationaryIndication value
+func (v StationaryIndication) Ptr() *StationaryIndication {
+	return &v
 }
 
 type NullableStationaryIndication struct {

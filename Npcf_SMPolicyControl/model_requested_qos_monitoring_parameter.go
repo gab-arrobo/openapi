@@ -24,36 +24,71 @@ import (
 )
 
 // RequestedQosMonitoringParameter Indicates the requested QoS monitoring parameters to be measured.
-type RequestedQosMonitoringParameter struct {
-	String *string
+type RequestedQosMonitoringParameter string
+
+// List of RequestedQosMonitoringParameter
+const (
+	REQUESTEDQOSMONITORINGPARAMETER_DOWNLINK            RequestedQosMonitoringParameter = "DOWNLINK"
+	REQUESTEDQOSMONITORINGPARAMETER_UPLINK              RequestedQosMonitoringParameter = "UPLINK"
+	REQUESTEDQOSMONITORINGPARAMETER_ROUND_TRIP          RequestedQosMonitoringParameter = "ROUND_TRIP"
+	REQUESTEDQOSMONITORINGPARAMETER_DOWNLINK_DATA_RATE  RequestedQosMonitoringParameter = "DOWNLINK_DATA_RATE"
+	REQUESTEDQOSMONITORINGPARAMETER_UPLINK_DATA_RATE    RequestedQosMonitoringParameter = "UPLINK_DATA_RATE"
+	REQUESTEDQOSMONITORINGPARAMETER_DOWNLINK_CONGESTION RequestedQosMonitoringParameter = "DOWNLINK_CONGESTION"
+	REQUESTEDQOSMONITORINGPARAMETER_UPLINK_CONGESTION   RequestedQosMonitoringParameter = "UPLINK_CONGESTION"
+)
+
+// All allowed values of RequestedQosMonitoringParameter enum
+var AllowedRequestedQosMonitoringParameterEnumValues = []RequestedQosMonitoringParameter{
+	"DOWNLINK",
+	"UPLINK",
+	"ROUND_TRIP",
+	"DOWNLINK_DATA_RATE",
+	"UPLINK_DATA_RATE",
+	"DOWNLINK_CONGESTION",
+	"UPLINK_CONGESTION",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RequestedQosMonitoringParameter) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RequestedQosMonitoringParameter) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RequestedQosMonitoringParameter(value)
+	for _, existing := range AllowedRequestedQosMonitoringParameterEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RequestedQosMonitoringParameter)")
+	return fmt.Errorf("%+v is not a valid RequestedQosMonitoringParameter", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RequestedQosMonitoringParameter) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRequestedQosMonitoringParameterFromValue returns a pointer to a valid RequestedQosMonitoringParameter
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRequestedQosMonitoringParameterFromValue(v string) (*RequestedQosMonitoringParameter, error) {
+	ev := RequestedQosMonitoringParameter(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RequestedQosMonitoringParameter: valid values are %v", v, AllowedRequestedQosMonitoringParameterEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RequestedQosMonitoringParameter) IsValid() bool {
+	for _, existing := range AllowedRequestedQosMonitoringParameterEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RequestedQosMonitoringParameter value
+func (v RequestedQosMonitoringParameter) Ptr() *RequestedQosMonitoringParameter {
+	return &v
 }
 
 type NullableRequestedQosMonitoringParameter struct {

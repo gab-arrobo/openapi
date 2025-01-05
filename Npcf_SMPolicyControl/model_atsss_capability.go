@@ -24,36 +24,83 @@ import (
 )
 
 // AtsssCapability Contains the ATSSS capability supported for the MA PDU Session.
-type AtsssCapability struct {
-	String *string
+type AtsssCapability string
+
+// List of AtsssCapability
+const (
+	ATSSSCAPABILITY_MPTCP_ATSSS_LL_WITH_ASMODE_UL                    AtsssCapability = "MPTCP_ATSSS_LL_WITH_ASMODE_UL"
+	ATSSSCAPABILITY_MPTCP_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL        AtsssCapability = "MPTCP_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL"
+	ATSSSCAPABILITY_MPTCP_ATSSS_LL_WITH_ASMODE_DLUL                  AtsssCapability = "MPTCP_ATSSS_LL_WITH_ASMODE_DLUL"
+	ATSSSCAPABILITY_ATSSS_LL                                         AtsssCapability = "ATSSS_LL"
+	ATSSSCAPABILITY_MPTCP_ATSSS_LL                                   AtsssCapability = "MPTCP_ATSSS_LL"
+	ATSSSCAPABILITY_MPQUIC_ATSSS_LL_WITH_ASMODE_UL                   AtsssCapability = "MPQUIC_ATSSS_LL_WITH_ASMODE_UL"
+	ATSSSCAPABILITY_MPQUIC_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL       AtsssCapability = "MPQUIC_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL"
+	ATSSSCAPABILITY_MPQUIC_ATSSS_LL_WITH_ASMODE_DLUL                 AtsssCapability = "MPQUIC_ATSSS_LL_WITH_ASMODE_DLUL"
+	ATSSSCAPABILITY_MPQUIC_ATSSS_LL                                  AtsssCapability = "MPQUIC_ATSSS_LL"
+	ATSSSCAPABILITY_MPTCP_MPQUIC_ATSSS_LL_WITH_ASMODE_UL             AtsssCapability = "MPTCP_MPQUIC_ATSSS_LL_WITH_ASMODE_UL"
+	ATSSSCAPABILITY_MPTCP_MPQUIC_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL AtsssCapability = "MPTCP_MPQUIC_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL"
+	ATSSSCAPABILITY_MPTCP_MPQUIC_ATSSS_LL_WITH_ASMODE_DLUL           AtsssCapability = "MPTCP_MPQUIC_ATSSS_LL_WITH_ASMODE_DLUL"
+	ATSSSCAPABILITY_MPTCP_MPQUIC_ATSSS_LL                            AtsssCapability = "MPTCP_MPQUIC_ATSSS_LL"
+)
+
+// All allowed values of AtsssCapability enum
+var AllowedAtsssCapabilityEnumValues = []AtsssCapability{
+	"MPTCP_ATSSS_LL_WITH_ASMODE_UL",
+	"MPTCP_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL",
+	"MPTCP_ATSSS_LL_WITH_ASMODE_DLUL",
+	"ATSSS_LL",
+	"MPTCP_ATSSS_LL",
+	"MPQUIC_ATSSS_LL_WITH_ASMODE_UL",
+	"MPQUIC_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL",
+	"MPQUIC_ATSSS_LL_WITH_ASMODE_DLUL",
+	"MPQUIC_ATSSS_LL",
+	"MPTCP_MPQUIC_ATSSS_LL_WITH_ASMODE_UL",
+	"MPTCP_MPQUIC_ATSSS_LL_WITH_EXSDMODE_DL_ASMODE_UL",
+	"MPTCP_MPQUIC_ATSSS_LL_WITH_ASMODE_DLUL",
+	"MPTCP_MPQUIC_ATSSS_LL",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *AtsssCapability) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *AtsssCapability) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := AtsssCapability(value)
+	for _, existing := range AllowedAtsssCapabilityEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(AtsssCapability)")
+	return fmt.Errorf("%+v is not a valid AtsssCapability", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *AtsssCapability) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewAtsssCapabilityFromValue returns a pointer to a valid AtsssCapability
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewAtsssCapabilityFromValue(v string) (*AtsssCapability, error) {
+	ev := AtsssCapability(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for AtsssCapability: valid values are %v", v, AllowedAtsssCapabilityEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v AtsssCapability) IsValid() bool {
+	for _, existing := range AllowedAtsssCapabilityEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to AtsssCapability value
+func (v AtsssCapability) Ptr() *AtsssCapability {
+	return &v
 }
 
 type NullableAtsssCapability struct {

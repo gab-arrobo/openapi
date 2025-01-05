@@ -24,36 +24,59 @@ import (
 )
 
 // NgranFailureInfo Indicates a NG-RAN failure event.
-type NgranFailureInfo struct {
-	String *string
+type NgranFailureInfo string
+
+// List of NgranFailureInfo
+const (
+	NGRANFAILUREINFO_NG_RAN_NOT_REACHABLE NgranFailureInfo = "NG_RAN_NOT_REACHABLE"
+)
+
+// All allowed values of NgranFailureInfo enum
+var AllowedNgranFailureInfoEnumValues = []NgranFailureInfo{
+	"NG_RAN_NOT_REACHABLE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *NgranFailureInfo) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *NgranFailureInfo) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := NgranFailureInfo(value)
+	for _, existing := range AllowedNgranFailureInfoEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(NgranFailureInfo)")
+	return fmt.Errorf("%+v is not a valid NgranFailureInfo", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *NgranFailureInfo) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewNgranFailureInfoFromValue returns a pointer to a valid NgranFailureInfo
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewNgranFailureInfoFromValue(v string) (*NgranFailureInfo, error) {
+	ev := NgranFailureInfo(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for NgranFailureInfo: valid values are %v", v, AllowedNgranFailureInfoEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v NgranFailureInfo) IsValid() bool {
+	for _, existing := range AllowedNgranFailureInfoEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to NgranFailureInfo value
+func (v NgranFailureInfo) Ptr() *NgranFailureInfo {
+	return &v
 }
 
 type NullableNgranFailureInfo struct {

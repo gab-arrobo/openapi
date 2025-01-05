@@ -24,36 +24,61 @@ import (
 )
 
 // StatusChange Enumeration for AMF status
-type StatusChange struct {
-	String *string
+type StatusChange string
+
+// List of StatusChange
+const (
+	STATUSCHANGE_UNAVAILABLE StatusChange = "AMF_UNAVAILABLE"
+	STATUSCHANGE_AVAILABLE   StatusChange = "AMF_AVAILABLE"
+)
+
+// All allowed values of StatusChange enum
+var AllowedStatusChangeEnumValues = []StatusChange{
+	"AMF_UNAVAILABLE",
+	"AMF_AVAILABLE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *StatusChange) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *StatusChange) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := StatusChange(value)
+	for _, existing := range AllowedStatusChangeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(StatusChange)")
+	return fmt.Errorf("%+v is not a valid StatusChange", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *StatusChange) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewStatusChangeFromValue returns a pointer to a valid StatusChange
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewStatusChangeFromValue(v string) (*StatusChange, error) {
+	ev := StatusChange(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for StatusChange: valid values are %v", v, AllowedStatusChangeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v StatusChange) IsValid() bool {
+	for _, existing := range AllowedStatusChangeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to StatusChange value
+func (v StatusChange) Ptr() *StatusChange {
+	return &v
 }
 
 type NullableStatusChange struct {

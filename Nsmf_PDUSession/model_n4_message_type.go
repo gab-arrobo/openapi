@@ -24,36 +24,73 @@ import (
 )
 
 // N4MessageType N4 Message Type. Possible values are   - PFCP_SES_EST_REQ   - PFCP_SES_EST_RSP   - PFCP_SES_MOD_REQ   - PFCP_SES_MOD_RSP   - PFCP_SES_DEL_REQ   - PFCP_SES_DEL_RSP   - PFCP_SES_REP_REQ   - PFCP_SES_REP_RSP
-type N4MessageType struct {
-	String *string
+type N4MessageType string
+
+// List of N4MessageType
+const (
+	N4MESSAGETYPE_EST_REQ N4MessageType = "PFCP_SES_EST_REQ"
+	N4MESSAGETYPE_EST_RSP N4MessageType = "PFCP_SES_EST_RSP"
+	N4MESSAGETYPE_MOD_REQ N4MessageType = "PFCP_SES_MOD_REQ"
+	N4MESSAGETYPE_MOD_RSP N4MessageType = "PFCP_SES_MOD_RSP"
+	N4MESSAGETYPE_DEL_REQ N4MessageType = "PFCP_SES_DEL_REQ"
+	N4MESSAGETYPE_DEL_RSP N4MessageType = "PFCP_SES_DEL_RSP"
+	N4MESSAGETYPE_REP_REQ N4MessageType = "PFCP_SES_REP_REQ"
+	N4MESSAGETYPE_REP_RSP N4MessageType = "PFCP_SES_REP_RSP"
+)
+
+// All allowed values of N4MessageType enum
+var AllowedN4MessageTypeEnumValues = []N4MessageType{
+	"PFCP_SES_EST_REQ",
+	"PFCP_SES_EST_RSP",
+	"PFCP_SES_MOD_REQ",
+	"PFCP_SES_MOD_RSP",
+	"PFCP_SES_DEL_REQ",
+	"PFCP_SES_DEL_RSP",
+	"PFCP_SES_REP_REQ",
+	"PFCP_SES_REP_RSP",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *N4MessageType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *N4MessageType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := N4MessageType(value)
+	for _, existing := range AllowedN4MessageTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(N4MessageType)")
+	return fmt.Errorf("%+v is not a valid N4MessageType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *N4MessageType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewN4MessageTypeFromValue returns a pointer to a valid N4MessageType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewN4MessageTypeFromValue(v string) (*N4MessageType, error) {
+	ev := N4MessageType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for N4MessageType: valid values are %v", v, AllowedN4MessageTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v N4MessageType) IsValid() bool {
+	for _, existing := range AllowedN4MessageTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to N4MessageType value
+func (v N4MessageType) Ptr() *N4MessageType {
+	return &v
 }
 
 type NullableN4MessageType struct {

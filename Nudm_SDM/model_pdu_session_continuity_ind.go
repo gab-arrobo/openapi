@@ -24,36 +24,63 @@ import (
 )
 
 // PduSessionContinuityInd It indicates the handling of PDU session when the UE moves in and out of NB-IoT. In its absence, the local policy should be used.
-type PduSessionContinuityInd struct {
-	String *string
+type PduSessionContinuityInd string
+
+// List of PduSessionContinuityInd
+const (
+	PDUSESSIONCONTINUITYIND_MAINTAIN_PDUSESSION  PduSessionContinuityInd = "MAINTAIN_PDUSESSION"
+	PDUSESSIONCONTINUITYIND_RECONNECT_PDUSESSION PduSessionContinuityInd = "RECONNECT_PDUSESSION"
+	PDUSESSIONCONTINUITYIND_RELEASE_PDUSESSION   PduSessionContinuityInd = "RELEASE_PDUSESSION"
+)
+
+// All allowed values of PduSessionContinuityInd enum
+var AllowedPduSessionContinuityIndEnumValues = []PduSessionContinuityInd{
+	"MAINTAIN_PDUSESSION",
+	"RECONNECT_PDUSESSION",
+	"RELEASE_PDUSESSION",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PduSessionContinuityInd) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PduSessionContinuityInd) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PduSessionContinuityInd(value)
+	for _, existing := range AllowedPduSessionContinuityIndEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PduSessionContinuityInd)")
+	return fmt.Errorf("%+v is not a valid PduSessionContinuityInd", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PduSessionContinuityInd) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPduSessionContinuityIndFromValue returns a pointer to a valid PduSessionContinuityInd
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPduSessionContinuityIndFromValue(v string) (*PduSessionContinuityInd, error) {
+	ev := PduSessionContinuityInd(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PduSessionContinuityInd: valid values are %v", v, AllowedPduSessionContinuityIndEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PduSessionContinuityInd) IsValid() bool {
+	for _, existing := range AllowedPduSessionContinuityIndEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PduSessionContinuityInd value
+func (v PduSessionContinuityInd) Ptr() *PduSessionContinuityInd {
+	return &v
 }
 
 type NullablePduSessionContinuityInd struct {

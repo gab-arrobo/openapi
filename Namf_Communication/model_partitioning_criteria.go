@@ -24,36 +24,67 @@ import (
 )
 
 // PartitioningCriteria Possible values are: - \"TAC\": Type Allocation Code - \"SUBPLMN\": Subscriber PLMN ID - \"GEOAREA\": Geographical area, i.e. list(s) of TAI(s) - \"SNSSAI\": S-NSSAI - \"DNN\": DNN
-type PartitioningCriteria struct {
-	String *string
+type PartitioningCriteria string
+
+// List of PartitioningCriteria
+const (
+	PARTITIONINGCRITERIA_TAC     PartitioningCriteria = "TAC"
+	PARTITIONINGCRITERIA_SUBPLMN PartitioningCriteria = "SUBPLMN"
+	PARTITIONINGCRITERIA_GEOAREA PartitioningCriteria = "GEOAREA"
+	PARTITIONINGCRITERIA_SNSSAI  PartitioningCriteria = "SNSSAI"
+	PARTITIONINGCRITERIA_DNN     PartitioningCriteria = "DNN"
+)
+
+// All allowed values of PartitioningCriteria enum
+var AllowedPartitioningCriteriaEnumValues = []PartitioningCriteria{
+	"TAC",
+	"SUBPLMN",
+	"GEOAREA",
+	"SNSSAI",
+	"DNN",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PartitioningCriteria) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PartitioningCriteria) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PartitioningCriteria(value)
+	for _, existing := range AllowedPartitioningCriteriaEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PartitioningCriteria)")
+	return fmt.Errorf("%+v is not a valid PartitioningCriteria", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PartitioningCriteria) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPartitioningCriteriaFromValue returns a pointer to a valid PartitioningCriteria
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPartitioningCriteriaFromValue(v string) (*PartitioningCriteria, error) {
+	ev := PartitioningCriteria(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PartitioningCriteria: valid values are %v", v, AllowedPartitioningCriteriaEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PartitioningCriteria) IsValid() bool {
+	for _, existing := range AllowedPartitioningCriteriaEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PartitioningCriteria value
+func (v PartitioningCriteria) Ptr() *PartitioningCriteria {
+	return &v
 }
 
 type NullablePartitioningCriteria struct {

@@ -24,36 +24,65 @@ import (
 )
 
 // SmsSupport Indicates the supported SMS delivery of a UE
-type SmsSupport struct {
-	String *string
+type SmsSupport string
+
+// List of SmsSupport
+const (
+	SMSSUPPORT__3_GPP    SmsSupport = "3GPP"
+	SMSSUPPORT_NON_3_GPP SmsSupport = "NON_3GPP"
+	SMSSUPPORT_BOTH      SmsSupport = "BOTH"
+	SMSSUPPORT_NONE      SmsSupport = "NONE"
+)
+
+// All allowed values of SmsSupport enum
+var AllowedSmsSupportEnumValues = []SmsSupport{
+	"3GPP",
+	"NON_3GPP",
+	"BOTH",
+	"NONE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SmsSupport) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SmsSupport) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SmsSupport(value)
+	for _, existing := range AllowedSmsSupportEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SmsSupport)")
+	return fmt.Errorf("%+v is not a valid SmsSupport", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SmsSupport) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSmsSupportFromValue returns a pointer to a valid SmsSupport
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSmsSupportFromValue(v string) (*SmsSupport, error) {
+	ev := SmsSupport(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SmsSupport: valid values are %v", v, AllowedSmsSupportEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SmsSupport) IsValid() bool {
+	for _, existing := range AllowedSmsSupportEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SmsSupport value
+func (v SmsSupport) Ptr() *SmsSupport {
+	return &v
 }
 
 type NullableSmsSupport struct {

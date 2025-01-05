@@ -24,36 +24,71 @@ import (
 )
 
 // MeasurementPeriodLteMdt The enumeration MeasurementPeriodLteMdt defines Measurement period LTE for MDT in the trace.  See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.16-1.
-type MeasurementPeriodLteMdt struct {
-	String *string
+type MeasurementPeriodLteMdt string
+
+// List of MeasurementPeriodLteMdt
+const (
+	MEASUREMENTPERIODLTEMDT__1024  MeasurementPeriodLteMdt = "1024"
+	MEASUREMENTPERIODLTEMDT__1280  MeasurementPeriodLteMdt = "1280"
+	MEASUREMENTPERIODLTEMDT__2048  MeasurementPeriodLteMdt = "2048"
+	MEASUREMENTPERIODLTEMDT__2560  MeasurementPeriodLteMdt = "2560"
+	MEASUREMENTPERIODLTEMDT__5120  MeasurementPeriodLteMdt = "5120"
+	MEASUREMENTPERIODLTEMDT__10240 MeasurementPeriodLteMdt = "10240"
+	MEASUREMENTPERIODLTEMDT__60000 MeasurementPeriodLteMdt = "60000"
+)
+
+// All allowed values of MeasurementPeriodLteMdt enum
+var AllowedMeasurementPeriodLteMdtEnumValues = []MeasurementPeriodLteMdt{
+	"1024",
+	"1280",
+	"2048",
+	"2560",
+	"5120",
+	"10240",
+	"60000",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *MeasurementPeriodLteMdt) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *MeasurementPeriodLteMdt) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := MeasurementPeriodLteMdt(value)
+	for _, existing := range AllowedMeasurementPeriodLteMdtEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(MeasurementPeriodLteMdt)")
+	return fmt.Errorf("%+v is not a valid MeasurementPeriodLteMdt", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *MeasurementPeriodLteMdt) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewMeasurementPeriodLteMdtFromValue returns a pointer to a valid MeasurementPeriodLteMdt
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewMeasurementPeriodLteMdtFromValue(v string) (*MeasurementPeriodLteMdt, error) {
+	ev := MeasurementPeriodLteMdt(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for MeasurementPeriodLteMdt: valid values are %v", v, AllowedMeasurementPeriodLteMdtEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v MeasurementPeriodLteMdt) IsValid() bool {
+	for _, existing := range AllowedMeasurementPeriodLteMdtEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to MeasurementPeriodLteMdt value
+func (v MeasurementPeriodLteMdt) Ptr() *MeasurementPeriodLteMdt {
+	return &v
 }
 
 type NullableMeasurementPeriodLteMdt struct {

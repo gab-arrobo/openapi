@@ -24,36 +24,63 @@ import (
 )
 
 // DnaiChangeType Possible values are: - EARLY: Early notification of UP path reconfiguration. - EARLY_LATE: Early and late notification of UP path reconfiguration. This value shall   only be present in the subscription to the DNAI change event. - LATE: Late notification of UP path reconfiguration.
-type DnaiChangeType struct {
-	String *string
+type DnaiChangeType string
+
+// List of DnaiChangeType
+const (
+	DNAICHANGETYPE_EARLY      DnaiChangeType = "EARLY"
+	DNAICHANGETYPE_EARLY_LATE DnaiChangeType = "EARLY_LATE"
+	DNAICHANGETYPE_LATE       DnaiChangeType = "LATE"
+)
+
+// All allowed values of DnaiChangeType enum
+var AllowedDnaiChangeTypeEnumValues = []DnaiChangeType{
+	"EARLY",
+	"EARLY_LATE",
+	"LATE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *DnaiChangeType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *DnaiChangeType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := DnaiChangeType(value)
+	for _, existing := range AllowedDnaiChangeTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(DnaiChangeType)")
+	return fmt.Errorf("%+v is not a valid DnaiChangeType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *DnaiChangeType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewDnaiChangeTypeFromValue returns a pointer to a valid DnaiChangeType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewDnaiChangeTypeFromValue(v string) (*DnaiChangeType, error) {
+	ev := DnaiChangeType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for DnaiChangeType: valid values are %v", v, AllowedDnaiChangeTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v DnaiChangeType) IsValid() bool {
+	for _, existing := range AllowedDnaiChangeTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to DnaiChangeType value
+func (v DnaiChangeType) Ptr() *DnaiChangeType {
+	return &v
 }
 
 type NullableDnaiChangeType struct {

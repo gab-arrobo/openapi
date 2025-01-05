@@ -24,36 +24,67 @@ import (
 )
 
 // CreditManagementStatus Indicates the reason of the credit management session failure.
-type CreditManagementStatus struct {
-	String *string
+type CreditManagementStatus string
+
+// List of CreditManagementStatus
+const (
+	CREDITMANAGEMENTSTATUS_END_USER_SER_DENIED CreditManagementStatus = "END_USER_SER_DENIED"
+	CREDITMANAGEMENTSTATUS_CREDIT_CTRL_NOT_APP CreditManagementStatus = "CREDIT_CTRL_NOT_APP"
+	CREDITMANAGEMENTSTATUS_AUTH_REJECTED       CreditManagementStatus = "AUTH_REJECTED"
+	CREDITMANAGEMENTSTATUS_USER_UNKNOWN        CreditManagementStatus = "USER_UNKNOWN"
+	CREDITMANAGEMENTSTATUS_RATING_FAILED       CreditManagementStatus = "RATING_FAILED"
+)
+
+// All allowed values of CreditManagementStatus enum
+var AllowedCreditManagementStatusEnumValues = []CreditManagementStatus{
+	"END_USER_SER_DENIED",
+	"CREDIT_CTRL_NOT_APP",
+	"AUTH_REJECTED",
+	"USER_UNKNOWN",
+	"RATING_FAILED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *CreditManagementStatus) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *CreditManagementStatus) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := CreditManagementStatus(value)
+	for _, existing := range AllowedCreditManagementStatusEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(CreditManagementStatus)")
+	return fmt.Errorf("%+v is not a valid CreditManagementStatus", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *CreditManagementStatus) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewCreditManagementStatusFromValue returns a pointer to a valid CreditManagementStatus
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewCreditManagementStatusFromValue(v string) (*CreditManagementStatus, error) {
+	ev := CreditManagementStatus(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for CreditManagementStatus: valid values are %v", v, AllowedCreditManagementStatusEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v CreditManagementStatus) IsValid() bool {
+	for _, existing := range AllowedCreditManagementStatusEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to CreditManagementStatus value
+func (v CreditManagementStatus) Ptr() *CreditManagementStatus {
+	return &v
 }
 
 type NullableCreditManagementStatus struct {

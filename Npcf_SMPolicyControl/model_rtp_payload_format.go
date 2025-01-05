@@ -24,36 +24,61 @@ import (
 )
 
 // RtpPayloadFormat The enumeration RtpPayloadFormat indicates the RTP Payload format
-type RtpPayloadFormat struct {
-	String *string
+type RtpPayloadFormat string
+
+// List of RtpPayloadFormat
+const (
+	RTPPAYLOADFORMAT_H264 RtpPayloadFormat = "H264"
+	RTPPAYLOADFORMAT_H265 RtpPayloadFormat = "H265"
+)
+
+// All allowed values of RtpPayloadFormat enum
+var AllowedRtpPayloadFormatEnumValues = []RtpPayloadFormat{
+	"H264",
+	"H265",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RtpPayloadFormat) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RtpPayloadFormat) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RtpPayloadFormat(value)
+	for _, existing := range AllowedRtpPayloadFormatEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RtpPayloadFormat)")
+	return fmt.Errorf("%+v is not a valid RtpPayloadFormat", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RtpPayloadFormat) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRtpPayloadFormatFromValue returns a pointer to a valid RtpPayloadFormat
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRtpPayloadFormatFromValue(v string) (*RtpPayloadFormat, error) {
+	ev := RtpPayloadFormat(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RtpPayloadFormat: valid values are %v", v, AllowedRtpPayloadFormatEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RtpPayloadFormat) IsValid() bool {
+	for _, existing := range AllowedRtpPayloadFormatEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RtpPayloadFormat value
+func (v RtpPayloadFormat) Ptr() *RtpPayloadFormat {
+	return &v
 }
 
 type NullableRtpPayloadFormat struct {

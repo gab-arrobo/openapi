@@ -24,36 +24,63 @@ import (
 )
 
 // Rsn Redundancy Sequence Number. Possible values are   - V1   - V2   - NONE
-type Rsn struct {
-	String *string
+type Rsn string
+
+// List of Rsn
+const (
+	RSN_V1   Rsn = "V1"
+	RSN_V2   Rsn = "V2"
+	RSN_NONE Rsn = "NONE"
+)
+
+// All allowed values of Rsn enum
+var AllowedRsnEnumValues = []Rsn{
+	"V1",
+	"V2",
+	"NONE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *Rsn) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *Rsn) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := Rsn(value)
+	for _, existing := range AllowedRsnEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(Rsn)")
+	return fmt.Errorf("%+v is not a valid Rsn", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *Rsn) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRsnFromValue returns a pointer to a valid Rsn
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRsnFromValue(v string) (*Rsn, error) {
+	ev := Rsn(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for Rsn: valid values are %v", v, AllowedRsnEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v Rsn) IsValid() bool {
+	for _, existing := range AllowedRsnEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to Rsn value
+func (v Rsn) Ptr() *Rsn {
+	return &v
 }
 
 type NullableRsn struct {

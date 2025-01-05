@@ -24,36 +24,65 @@ import (
 )
 
 // UcPurpose Indicates the purpose of the user consent.
-type UcPurpose struct {
-	String *string
+type UcPurpose string
+
+// List of UcPurpose
+const (
+	UCPURPOSE_ANALYTICS           UcPurpose = "ANALYTICS"
+	UCPURPOSE_MODEL_TRAINING      UcPurpose = "MODEL_TRAINING"
+	UCPURPOSE_NW_CAP_EXPOSURE     UcPurpose = "NW_CAP_EXPOSURE"
+	UCPURPOSE_EDGEAPP_UE_LOCATION UcPurpose = "EDGEAPP_UE_LOCATION"
+)
+
+// All allowed values of UcPurpose enum
+var AllowedUcPurposeEnumValues = []UcPurpose{
+	"ANALYTICS",
+	"MODEL_TRAINING",
+	"NW_CAP_EXPOSURE",
+	"EDGEAPP_UE_LOCATION",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *UcPurpose) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *UcPurpose) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := UcPurpose(value)
+	for _, existing := range AllowedUcPurposeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(UcPurpose)")
+	return fmt.Errorf("%+v is not a valid UcPurpose", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *UcPurpose) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewUcPurposeFromValue returns a pointer to a valid UcPurpose
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewUcPurposeFromValue(v string) (*UcPurpose, error) {
+	ev := UcPurpose(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for UcPurpose: valid values are %v", v, AllowedUcPurposeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v UcPurpose) IsValid() bool {
+	for _, existing := range AllowedUcPurposeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to UcPurpose value
+func (v UcPurpose) Ptr() *UcPurpose {
+	return &v
 }
 
 type NullableUcPurpose struct {

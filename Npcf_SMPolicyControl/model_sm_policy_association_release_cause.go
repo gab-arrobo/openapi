@@ -24,36 +24,67 @@ import (
 )
 
 // SmPolicyAssociationReleaseCause Represents the cause due to which the PCF requests the termination of the SM policy association.
-type SmPolicyAssociationReleaseCause struct {
-	String *string
+type SmPolicyAssociationReleaseCause string
+
+// List of SmPolicyAssociationReleaseCause
+const (
+	SMPOLICYASSOCIATIONRELEASECAUSE_UNSPECIFIED                  SmPolicyAssociationReleaseCause = "UNSPECIFIED"
+	SMPOLICYASSOCIATIONRELEASECAUSE_UE_SUBSCRIPTION              SmPolicyAssociationReleaseCause = "UE_SUBSCRIPTION"
+	SMPOLICYASSOCIATIONRELEASECAUSE_INSUFFICIENT_RES             SmPolicyAssociationReleaseCause = "INSUFFICIENT_RES"
+	SMPOLICYASSOCIATIONRELEASECAUSE_VALIDATION_CONDITION_NOT_MET SmPolicyAssociationReleaseCause = "VALIDATION_CONDITION_NOT_MET"
+	SMPOLICYASSOCIATIONRELEASECAUSE_REACTIVATION_REQUESTED       SmPolicyAssociationReleaseCause = "REACTIVATION_REQUESTED"
+)
+
+// All allowed values of SmPolicyAssociationReleaseCause enum
+var AllowedSmPolicyAssociationReleaseCauseEnumValues = []SmPolicyAssociationReleaseCause{
+	"UNSPECIFIED",
+	"UE_SUBSCRIPTION",
+	"INSUFFICIENT_RES",
+	"VALIDATION_CONDITION_NOT_MET",
+	"REACTIVATION_REQUESTED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SmPolicyAssociationReleaseCause) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SmPolicyAssociationReleaseCause) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SmPolicyAssociationReleaseCause(value)
+	for _, existing := range AllowedSmPolicyAssociationReleaseCauseEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SmPolicyAssociationReleaseCause)")
+	return fmt.Errorf("%+v is not a valid SmPolicyAssociationReleaseCause", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SmPolicyAssociationReleaseCause) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSmPolicyAssociationReleaseCauseFromValue returns a pointer to a valid SmPolicyAssociationReleaseCause
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSmPolicyAssociationReleaseCauseFromValue(v string) (*SmPolicyAssociationReleaseCause, error) {
+	ev := SmPolicyAssociationReleaseCause(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SmPolicyAssociationReleaseCause: valid values are %v", v, AllowedSmPolicyAssociationReleaseCauseEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SmPolicyAssociationReleaseCause) IsValid() bool {
+	for _, existing := range AllowedSmPolicyAssociationReleaseCauseEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SmPolicyAssociationReleaseCause value
+func (v SmPolicyAssociationReleaseCause) Ptr() *SmPolicyAssociationReleaseCause {
+	return &v
 }
 
 type NullableSmPolicyAssociationReleaseCause struct {

@@ -24,36 +24,65 @@ import (
 )
 
 // EpsNasCipheringAlgorithm Indicates the supported EPS NAS Ciphering Algorithm
-type EpsNasCipheringAlgorithm struct {
-	String *string
+type EpsNasCipheringAlgorithm string
+
+// List of EpsNasCipheringAlgorithm
+const (
+	EPSNASCIPHERINGALGORITHM_EEA0 EpsNasCipheringAlgorithm = "EEA0"
+	EPSNASCIPHERINGALGORITHM_EEA1 EpsNasCipheringAlgorithm = "EEA1"
+	EPSNASCIPHERINGALGORITHM_EEA2 EpsNasCipheringAlgorithm = "EEA2"
+	EPSNASCIPHERINGALGORITHM_EEA3 EpsNasCipheringAlgorithm = "EEA3"
+)
+
+// All allowed values of EpsNasCipheringAlgorithm enum
+var AllowedEpsNasCipheringAlgorithmEnumValues = []EpsNasCipheringAlgorithm{
+	"EEA0",
+	"EEA1",
+	"EEA2",
+	"EEA3",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *EpsNasCipheringAlgorithm) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *EpsNasCipheringAlgorithm) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := EpsNasCipheringAlgorithm(value)
+	for _, existing := range AllowedEpsNasCipheringAlgorithmEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(EpsNasCipheringAlgorithm)")
+	return fmt.Errorf("%+v is not a valid EpsNasCipheringAlgorithm", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *EpsNasCipheringAlgorithm) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewEpsNasCipheringAlgorithmFromValue returns a pointer to a valid EpsNasCipheringAlgorithm
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewEpsNasCipheringAlgorithmFromValue(v string) (*EpsNasCipheringAlgorithm, error) {
+	ev := EpsNasCipheringAlgorithm(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for EpsNasCipheringAlgorithm: valid values are %v", v, AllowedEpsNasCipheringAlgorithmEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v EpsNasCipheringAlgorithm) IsValid() bool {
+	for _, existing := range AllowedEpsNasCipheringAlgorithmEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to EpsNasCipheringAlgorithm value
+func (v EpsNasCipheringAlgorithm) Ptr() *EpsNasCipheringAlgorithm {
+	return &v
 }
 
 type NullableEpsNasCipheringAlgorithm struct {

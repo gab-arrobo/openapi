@@ -24,36 +24,71 @@ import (
 )
 
 // LcsClientClass Indicates LCS Client class.
-type LcsClientClass struct {
-	String *string
+type LcsClientClass string
+
+// List of LcsClientClass
+const (
+	LCSCLIENTCLASS_BROADCAST_SERVICE          LcsClientClass = "BROADCAST_SERVICE"
+	LCSCLIENTCLASS_OM_IN_HPLMN                LcsClientClass = "OM_IN_HPLMN"
+	LCSCLIENTCLASS_OM_IN_VPLMN                LcsClientClass = "OM_IN_VPLMN"
+	LCSCLIENTCLASS_ANONYMOUS_LOCATION_SERVICE LcsClientClass = "ANONYMOUS_LOCATION_SERVICE"
+	LCSCLIENTCLASS_SPECIFIC_SERVICE           LcsClientClass = "SPECIFIC_SERVICE"
+	LCSCLIENTCLASS_NWDAF_IN_HPLMN             LcsClientClass = "NWDAF_IN_HPLMN"
+	LCSCLIENTCLASS_NWDAF_IN_VPLMN             LcsClientClass = "NWDAF_IN_VPLMN"
+)
+
+// All allowed values of LcsClientClass enum
+var AllowedLcsClientClassEnumValues = []LcsClientClass{
+	"BROADCAST_SERVICE",
+	"OM_IN_HPLMN",
+	"OM_IN_VPLMN",
+	"ANONYMOUS_LOCATION_SERVICE",
+	"SPECIFIC_SERVICE",
+	"NWDAF_IN_HPLMN",
+	"NWDAF_IN_VPLMN",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *LcsClientClass) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *LcsClientClass) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := LcsClientClass(value)
+	for _, existing := range AllowedLcsClientClassEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(LcsClientClass)")
+	return fmt.Errorf("%+v is not a valid LcsClientClass", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *LcsClientClass) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewLcsClientClassFromValue returns a pointer to a valid LcsClientClass
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewLcsClientClassFromValue(v string) (*LcsClientClass, error) {
+	ev := LcsClientClass(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for LcsClientClass: valid values are %v", v, AllowedLcsClientClassEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v LcsClientClass) IsValid() bool {
+	for _, existing := range AllowedLcsClientClassEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to LcsClientClass value
+func (v LcsClientClass) Ptr() *LcsClientClass {
+	return &v
 }
 
 type NullableLcsClientClass struct {

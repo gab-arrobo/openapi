@@ -24,36 +24,65 @@ import (
 )
 
 // PresenceState Possible values are: -IN_AREA: Indicates that the UE is inside or enters the presence reporting area. -OUT_OF_AREA: Indicates that the UE is outside or leaves the presence reporting area -UNKNOW: Indicates it is unknown whether the UE is in the presence reporting area or not -INACTIVE: Indicates that the presence reporting area is inactive in the serving node.
-type PresenceState struct {
-	String *string
+type PresenceState string
+
+// List of PresenceState
+const (
+	PRESENCESTATE_IN_AREA     PresenceState = "IN_AREA"
+	PRESENCESTATE_OUT_OF_AREA PresenceState = "OUT_OF_AREA"
+	PRESENCESTATE_UNKNOWN     PresenceState = "UNKNOWN"
+	PRESENCESTATE_INACTIVE    PresenceState = "INACTIVE"
+)
+
+// All allowed values of PresenceState enum
+var AllowedPresenceStateEnumValues = []PresenceState{
+	"IN_AREA",
+	"OUT_OF_AREA",
+	"UNKNOWN",
+	"INACTIVE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PresenceState) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PresenceState) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PresenceState(value)
+	for _, existing := range AllowedPresenceStateEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PresenceState)")
+	return fmt.Errorf("%+v is not a valid PresenceState", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PresenceState) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPresenceStateFromValue returns a pointer to a valid PresenceState
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPresenceStateFromValue(v string) (*PresenceState, error) {
+	ev := PresenceState(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PresenceState: valid values are %v", v, AllowedPresenceStateEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PresenceState) IsValid() bool {
+	for _, existing := range AllowedPresenceStateEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PresenceState value
+func (v PresenceState) Ptr() *PresenceState {
+	return &v
 }
 
 type NullablePresenceState struct {

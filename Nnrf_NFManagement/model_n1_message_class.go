@@ -24,36 +24,71 @@ import (
 )
 
 // N1MessageClass Enumeration for N1 Message Class
-type N1MessageClass struct {
-	String *string
+type N1MessageClass string
+
+// List of N1MessageClass
+const (
+	N1MESSAGECLASS__5_GMM N1MessageClass = "5GMM"
+	N1MESSAGECLASS_SM     N1MessageClass = "SM"
+	N1MESSAGECLASS_LPP    N1MessageClass = "LPP"
+	N1MESSAGECLASS_SMS    N1MessageClass = "SMS"
+	N1MESSAGECLASS_UPDP   N1MessageClass = "UPDP"
+	N1MESSAGECLASS_LCS    N1MessageClass = "LCS"
+	N1MESSAGECLASS_UPP_CM N1MessageClass = "UPP-CM"
+)
+
+// All allowed values of N1MessageClass enum
+var AllowedN1MessageClassEnumValues = []N1MessageClass{
+	"5GMM",
+	"SM",
+	"LPP",
+	"SMS",
+	"UPDP",
+	"LCS",
+	"UPP-CM",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *N1MessageClass) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *N1MessageClass) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := N1MessageClass(value)
+	for _, existing := range AllowedN1MessageClassEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(N1MessageClass)")
+	return fmt.Errorf("%+v is not a valid N1MessageClass", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *N1MessageClass) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewN1MessageClassFromValue returns a pointer to a valid N1MessageClass
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewN1MessageClassFromValue(v string) (*N1MessageClass, error) {
+	ev := N1MessageClass(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for N1MessageClass: valid values are %v", v, AllowedN1MessageClassEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v N1MessageClass) IsValid() bool {
+	for _, existing := range AllowedN1MessageClassEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to N1MessageClass value
+func (v N1MessageClass) Ptr() *N1MessageClass {
+	return &v
 }
 
 type NullableN1MessageClass struct {

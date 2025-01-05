@@ -24,36 +24,63 @@ import (
 )
 
 // SensorMeasurement The enumeration SensorMeasurement defines sensor measurement type for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.7-1.
-type SensorMeasurement struct {
-	String *string
+type SensorMeasurement string
+
+// List of SensorMeasurement
+const (
+	SENSORMEASUREMENT_BAROMETRIC_PRESSURE SensorMeasurement = "BAROMETRIC_PRESSURE"
+	SENSORMEASUREMENT_UE_SPEED            SensorMeasurement = "UE_SPEED"
+	SENSORMEASUREMENT_UE_ORIENTATION      SensorMeasurement = "UE_ORIENTATION"
+)
+
+// All allowed values of SensorMeasurement enum
+var AllowedSensorMeasurementEnumValues = []SensorMeasurement{
+	"BAROMETRIC_PRESSURE",
+	"UE_SPEED",
+	"UE_ORIENTATION",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SensorMeasurement) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SensorMeasurement) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SensorMeasurement(value)
+	for _, existing := range AllowedSensorMeasurementEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SensorMeasurement)")
+	return fmt.Errorf("%+v is not a valid SensorMeasurement", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SensorMeasurement) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSensorMeasurementFromValue returns a pointer to a valid SensorMeasurement
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSensorMeasurementFromValue(v string) (*SensorMeasurement, error) {
+	ev := SensorMeasurement(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SensorMeasurement: valid values are %v", v, AllowedSensorMeasurementEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SensorMeasurement) IsValid() bool {
+	for _, existing := range AllowedSensorMeasurementEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SensorMeasurement value
+func (v SensorMeasurement) Ptr() *SensorMeasurement {
+	return &v
 }
 
 type NullableSensorMeasurement struct {

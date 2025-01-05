@@ -24,36 +24,75 @@ import (
 )
 
 // PolicyReqTrigger Policy Request Triggers
-type PolicyReqTrigger struct {
-	String *string
+type PolicyReqTrigger string
+
+// List of PolicyReqTrigger
+const (
+	POLICYREQTRIGGER_LOCATION_CHANGE      PolicyReqTrigger = "LOCATION_CHANGE"
+	POLICYREQTRIGGER_PRA_CHANGE           PolicyReqTrigger = "PRA_CHANGE"
+	POLICYREQTRIGGER_ALLOWED_NSSAI_CHANGE PolicyReqTrigger = "ALLOWED_NSSAI_CHANGE"
+	POLICYREQTRIGGER_NWDAF_DATA_CHANGE    PolicyReqTrigger = "NWDAF_DATA_CHANGE"
+	POLICYREQTRIGGER_PLMN_CHANGE          PolicyReqTrigger = "PLMN_CHANGE"
+	POLICYREQTRIGGER_CON_STATE_CHANGE     PolicyReqTrigger = "CON_STATE_CHANGE"
+	POLICYREQTRIGGER_SMF_SELECT_CHANGE    PolicyReqTrigger = "SMF_SELECT_CHANGE"
+	POLICYREQTRIGGER_ACCESS_TYPE_CHANGE   PolicyReqTrigger = "ACCESS_TYPE_CHANGE"
+	POLICYREQTRIGGER_SAT_BACKHAUL_CHANGE  PolicyReqTrigger = "SAT_BACKHAUL_CHANGE"
+)
+
+// All allowed values of PolicyReqTrigger enum
+var AllowedPolicyReqTriggerEnumValues = []PolicyReqTrigger{
+	"LOCATION_CHANGE",
+	"PRA_CHANGE",
+	"ALLOWED_NSSAI_CHANGE",
+	"NWDAF_DATA_CHANGE",
+	"PLMN_CHANGE",
+	"CON_STATE_CHANGE",
+	"SMF_SELECT_CHANGE",
+	"ACCESS_TYPE_CHANGE",
+	"SAT_BACKHAUL_CHANGE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PolicyReqTrigger) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PolicyReqTrigger) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PolicyReqTrigger(value)
+	for _, existing := range AllowedPolicyReqTriggerEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PolicyReqTrigger)")
+	return fmt.Errorf("%+v is not a valid PolicyReqTrigger", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PolicyReqTrigger) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPolicyReqTriggerFromValue returns a pointer to a valid PolicyReqTrigger
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPolicyReqTriggerFromValue(v string) (*PolicyReqTrigger, error) {
+	ev := PolicyReqTrigger(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PolicyReqTrigger: valid values are %v", v, AllowedPolicyReqTriggerEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PolicyReqTrigger) IsValid() bool {
+	for _, existing := range AllowedPolicyReqTriggerEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PolicyReqTrigger value
+func (v PolicyReqTrigger) Ptr() *PolicyReqTrigger {
+	return &v
 }
 
 type NullablePolicyReqTrigger struct {

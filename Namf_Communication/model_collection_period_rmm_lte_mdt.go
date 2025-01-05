@@ -24,36 +24,71 @@ import (
 )
 
 // CollectionPeriodRmmLteMdt The enumeration CollectionPeriodRmmLteMdt defines Collection period for RRM measurements LTE for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.15-1.
-type CollectionPeriodRmmLteMdt struct {
-	String *string
+type CollectionPeriodRmmLteMdt string
+
+// List of CollectionPeriodRmmLteMdt
+const (
+	COLLECTIONPERIODRMMLTEMDT__1024  CollectionPeriodRmmLteMdt = "1024"
+	COLLECTIONPERIODRMMLTEMDT__1280  CollectionPeriodRmmLteMdt = "1280"
+	COLLECTIONPERIODRMMLTEMDT__2048  CollectionPeriodRmmLteMdt = "2048"
+	COLLECTIONPERIODRMMLTEMDT__2560  CollectionPeriodRmmLteMdt = "2560"
+	COLLECTIONPERIODRMMLTEMDT__5120  CollectionPeriodRmmLteMdt = "5120"
+	COLLECTIONPERIODRMMLTEMDT__10240 CollectionPeriodRmmLteMdt = "10240"
+	COLLECTIONPERIODRMMLTEMDT__60000 CollectionPeriodRmmLteMdt = "60000"
+)
+
+// All allowed values of CollectionPeriodRmmLteMdt enum
+var AllowedCollectionPeriodRmmLteMdtEnumValues = []CollectionPeriodRmmLteMdt{
+	"1024",
+	"1280",
+	"2048",
+	"2560",
+	"5120",
+	"10240",
+	"60000",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *CollectionPeriodRmmLteMdt) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *CollectionPeriodRmmLteMdt) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := CollectionPeriodRmmLteMdt(value)
+	for _, existing := range AllowedCollectionPeriodRmmLteMdtEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(CollectionPeriodRmmLteMdt)")
+	return fmt.Errorf("%+v is not a valid CollectionPeriodRmmLteMdt", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *CollectionPeriodRmmLteMdt) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewCollectionPeriodRmmLteMdtFromValue returns a pointer to a valid CollectionPeriodRmmLteMdt
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewCollectionPeriodRmmLteMdtFromValue(v string) (*CollectionPeriodRmmLteMdt, error) {
+	ev := CollectionPeriodRmmLteMdt(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for CollectionPeriodRmmLteMdt: valid values are %v", v, AllowedCollectionPeriodRmmLteMdtEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v CollectionPeriodRmmLteMdt) IsValid() bool {
+	for _, existing := range AllowedCollectionPeriodRmmLteMdtEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to CollectionPeriodRmmLteMdt value
+func (v CollectionPeriodRmmLteMdt) Ptr() *CollectionPeriodRmmLteMdt {
+	return &v
 }
 
 type NullableCollectionPeriodRmmLteMdt struct {

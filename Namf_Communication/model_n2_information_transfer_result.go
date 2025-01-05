@@ -24,36 +24,59 @@ import (
 )
 
 // N2InformationTransferResult Describes the result of N2 information transfer by AMF to the AN
-type N2InformationTransferResult struct {
-	String *string
+type N2InformationTransferResult string
+
+// List of N2InformationTransferResult
+const (
+	N2INFORMATIONTRANSFERRESULT_N2_INFO_TRANSFER_INITIATED N2InformationTransferResult = "N2_INFO_TRANSFER_INITIATED"
+)
+
+// All allowed values of N2InformationTransferResult enum
+var AllowedN2InformationTransferResultEnumValues = []N2InformationTransferResult{
+	"N2_INFO_TRANSFER_INITIATED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *N2InformationTransferResult) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *N2InformationTransferResult) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := N2InformationTransferResult(value)
+	for _, existing := range AllowedN2InformationTransferResultEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(N2InformationTransferResult)")
+	return fmt.Errorf("%+v is not a valid N2InformationTransferResult", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *N2InformationTransferResult) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewN2InformationTransferResultFromValue returns a pointer to a valid N2InformationTransferResult
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewN2InformationTransferResultFromValue(v string) (*N2InformationTransferResult, error) {
+	ev := N2InformationTransferResult(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for N2InformationTransferResult: valid values are %v", v, AllowedN2InformationTransferResultEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v N2InformationTransferResult) IsValid() bool {
+	for _, existing := range AllowedN2InformationTransferResultEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to N2InformationTransferResult value
+func (v N2InformationTransferResult) Ptr() *N2InformationTransferResult {
+	return &v
 }
 
 type NullableN2InformationTransferResult struct {

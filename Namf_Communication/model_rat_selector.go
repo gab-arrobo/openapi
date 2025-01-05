@@ -24,36 +24,61 @@ import (
 )
 
 // RatSelector Indicates the RAT type for the transfer of N2 information
-type RatSelector struct {
-	String *string
+type RatSelector string
+
+// List of RatSelector
+const (
+	RATSELECTOR_E_UTRA RatSelector = "E-UTRA"
+	RATSELECTOR_NR     RatSelector = "NR"
+)
+
+// All allowed values of RatSelector enum
+var AllowedRatSelectorEnumValues = []RatSelector{
+	"E-UTRA",
+	"NR",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RatSelector) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RatSelector) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RatSelector(value)
+	for _, existing := range AllowedRatSelectorEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RatSelector)")
+	return fmt.Errorf("%+v is not a valid RatSelector", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RatSelector) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRatSelectorFromValue returns a pointer to a valid RatSelector
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRatSelectorFromValue(v string) (*RatSelector, error) {
+	ev := RatSelector(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RatSelector: valid values are %v", v, AllowedRatSelectorEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RatSelector) IsValid() bool {
+	for _, existing := range AllowedRatSelectorEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RatSelector value
+func (v RatSelector) Ptr() *RatSelector {
+	return &v
 }
 
 type NullableRatSelector struct {

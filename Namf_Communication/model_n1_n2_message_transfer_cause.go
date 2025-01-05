@@ -24,36 +24,81 @@ import (
 )
 
 // N1N2MessageTransferCause Enumeration for N1N2Message Transfer Cause
-type N1N2MessageTransferCause struct {
-	String *string
+type N1N2MessageTransferCause string
+
+// List of N1N2MessageTransferCause
+const (
+	N1N2MESSAGETRANSFERCAUSE_ATTEMPTING_TO_REACH_UE                N1N2MessageTransferCause = "ATTEMPTING_TO_REACH_UE"
+	N1N2MESSAGETRANSFERCAUSE_N1_N2_TRANSFER_INITIATED              N1N2MessageTransferCause = "N1_N2_TRANSFER_INITIATED"
+	N1N2MESSAGETRANSFERCAUSE_WAITING_FOR_ASYNCHRONOUS_TRANSFER     N1N2MessageTransferCause = "WAITING_FOR_ASYNCHRONOUS_TRANSFER"
+	N1N2MESSAGETRANSFERCAUSE_UE_NOT_RESPONDING                     N1N2MessageTransferCause = "UE_NOT_RESPONDING"
+	N1N2MESSAGETRANSFERCAUSE_N1_MSG_NOT_TRANSFERRED                N1N2MessageTransferCause = "N1_MSG_NOT_TRANSFERRED"
+	N1N2MESSAGETRANSFERCAUSE_N2_MSG_NOT_TRANSFERRED                N1N2MessageTransferCause = "N2_MSG_NOT_TRANSFERRED"
+	N1N2MESSAGETRANSFERCAUSE_UE_NOT_REACHABLE_FOR_SESSION          N1N2MessageTransferCause = "UE_NOT_REACHABLE_FOR_SESSION"
+	N1N2MESSAGETRANSFERCAUSE_TEMPORARY_REJECT_REGISTRATION_ONGOING N1N2MessageTransferCause = "TEMPORARY_REJECT_REGISTRATION_ONGOING"
+	N1N2MESSAGETRANSFERCAUSE_TEMPORARY_REJECT_HANDOVER_ONGOING     N1N2MessageTransferCause = "TEMPORARY_REJECT_HANDOVER_ONGOING"
+	N1N2MESSAGETRANSFERCAUSE_REJECTION_DUE_TO_PAGING_RESTRICTION   N1N2MessageTransferCause = "REJECTION_DUE_TO_PAGING_RESTRICTION"
+	N1N2MESSAGETRANSFERCAUSE_AN_NOT_RESPONDING                     N1N2MessageTransferCause = "AN_NOT_RESPONDING"
+	N1N2MESSAGETRANSFERCAUSE_FAILURE_CAUSE_UNSPECIFIED             N1N2MessageTransferCause = "FAILURE_CAUSE_UNSPECIFIED"
+)
+
+// All allowed values of N1N2MessageTransferCause enum
+var AllowedN1N2MessageTransferCauseEnumValues = []N1N2MessageTransferCause{
+	"ATTEMPTING_TO_REACH_UE",
+	"N1_N2_TRANSFER_INITIATED",
+	"WAITING_FOR_ASYNCHRONOUS_TRANSFER",
+	"UE_NOT_RESPONDING",
+	"N1_MSG_NOT_TRANSFERRED",
+	"N2_MSG_NOT_TRANSFERRED",
+	"UE_NOT_REACHABLE_FOR_SESSION",
+	"TEMPORARY_REJECT_REGISTRATION_ONGOING",
+	"TEMPORARY_REJECT_HANDOVER_ONGOING",
+	"REJECTION_DUE_TO_PAGING_RESTRICTION",
+	"AN_NOT_RESPONDING",
+	"FAILURE_CAUSE_UNSPECIFIED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *N1N2MessageTransferCause) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *N1N2MessageTransferCause) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := N1N2MessageTransferCause(value)
+	for _, existing := range AllowedN1N2MessageTransferCauseEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(N1N2MessageTransferCause)")
+	return fmt.Errorf("%+v is not a valid N1N2MessageTransferCause", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *N1N2MessageTransferCause) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewN1N2MessageTransferCauseFromValue returns a pointer to a valid N1N2MessageTransferCause
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewN1N2MessageTransferCauseFromValue(v string) (*N1N2MessageTransferCause, error) {
+	ev := N1N2MessageTransferCause(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for N1N2MessageTransferCause: valid values are %v", v, AllowedN1N2MessageTransferCauseEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v N1N2MessageTransferCause) IsValid() bool {
+	for _, existing := range AllowedN1N2MessageTransferCauseEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to N1N2MessageTransferCause value
+func (v N1N2MessageTransferCause) Ptr() *N1N2MessageTransferCause {
+	return &v
 }
 
 type NullableN1N2MessageTransferCause struct {

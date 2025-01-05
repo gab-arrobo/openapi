@@ -24,36 +24,67 @@ import (
 )
 
 // OperationMode Indicates the Operation Mode.
-type OperationMode struct {
-	String *string
+type OperationMode string
+
+// List of OperationMode
+const (
+	OPERATIONMODE_WB_S1 OperationMode = "WB_S1"
+	OPERATIONMODE_NB_S1 OperationMode = "NB_S1"
+	OPERATIONMODE_WB_N1 OperationMode = "WB_N1"
+	OPERATIONMODE_NB_N1 OperationMode = "NB_N1"
+	OPERATIONMODE_NR_N1 OperationMode = "NR_N1"
+)
+
+// All allowed values of OperationMode enum
+var AllowedOperationModeEnumValues = []OperationMode{
+	"WB_S1",
+	"NB_S1",
+	"WB_N1",
+	"NB_N1",
+	"NR_N1",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *OperationMode) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *OperationMode) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := OperationMode(value)
+	for _, existing := range AllowedOperationModeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(OperationMode)")
+	return fmt.Errorf("%+v is not a valid OperationMode", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *OperationMode) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewOperationModeFromValue returns a pointer to a valid OperationMode
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewOperationModeFromValue(v string) (*OperationMode, error) {
+	ev := OperationMode(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for OperationMode: valid values are %v", v, AllowedOperationModeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v OperationMode) IsValid() bool {
+	for _, existing := range AllowedOperationModeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to OperationMode value
+func (v OperationMode) Ptr() *OperationMode {
+	return &v
 }
 
 type NullableOperationMode struct {

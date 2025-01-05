@@ -24,36 +24,61 @@ import (
 )
 
 // RestrictionType It contains the restriction type ALLOWED_AREAS or NOT_ALLOWED_AREAS.
-type RestrictionType struct {
-	String *string
+type RestrictionType string
+
+// List of RestrictionType
+const (
+	RESTRICTIONTYPE_ALLOWED_AREAS     RestrictionType = "ALLOWED_AREAS"
+	RESTRICTIONTYPE_NOT_ALLOWED_AREAS RestrictionType = "NOT_ALLOWED_AREAS"
+)
+
+// All allowed values of RestrictionType enum
+var AllowedRestrictionTypeEnumValues = []RestrictionType{
+	"ALLOWED_AREAS",
+	"NOT_ALLOWED_AREAS",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *RestrictionType) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *RestrictionType) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := RestrictionType(value)
+	for _, existing := range AllowedRestrictionTypeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(RestrictionType)")
+	return fmt.Errorf("%+v is not a valid RestrictionType", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *RestrictionType) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewRestrictionTypeFromValue returns a pointer to a valid RestrictionType
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewRestrictionTypeFromValue(v string) (*RestrictionType, error) {
+	ev := RestrictionType(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for RestrictionType: valid values are %v", v, AllowedRestrictionTypeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v RestrictionType) IsValid() bool {
+	for _, existing := range AllowedRestrictionTypeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to RestrictionType value
+func (v RestrictionType) Ptr() *RestrictionType {
+	return &v
 }
 
 type NullableRestrictionType struct {

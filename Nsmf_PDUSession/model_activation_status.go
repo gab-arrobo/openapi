@@ -24,36 +24,61 @@ import (
 )
 
 // ActivationStatus Activation Status. Possible values are - ACTIVE - NOT_ACTIVE
-type ActivationStatus struct {
-	String *string
+type ActivationStatus string
+
+// List of ActivationStatus
+const (
+	ACTIVATIONSTATUS_ACTIVE     ActivationStatus = "ACTIVE"
+	ACTIVATIONSTATUS_NOT_ACTIVE ActivationStatus = "NOT_ACTIVE"
+)
+
+// All allowed values of ActivationStatus enum
+var AllowedActivationStatusEnumValues = []ActivationStatus{
+	"ACTIVE",
+	"NOT_ACTIVE",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ActivationStatus) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ActivationStatus) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ActivationStatus(value)
+	for _, existing := range AllowedActivationStatusEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ActivationStatus)")
+	return fmt.Errorf("%+v is not a valid ActivationStatus", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ActivationStatus) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewActivationStatusFromValue returns a pointer to a valid ActivationStatus
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewActivationStatusFromValue(v string) (*ActivationStatus, error) {
+	ev := ActivationStatus(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ActivationStatus: valid values are %v", v, AllowedActivationStatusEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ActivationStatus) IsValid() bool {
+	for _, existing := range AllowedActivationStatusEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ActivationStatus value
+func (v ActivationStatus) Ptr() *ActivationStatus {
+	return &v
 }
 
 type NullableActivationStatus struct {

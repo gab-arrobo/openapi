@@ -16477,34 +16477,19 @@ components:
       format: byte
       type: string
     UpCnxState:
-      anyOf:
-      - enum:
-        - ACTIVATED
-        - DEACTIVATED
-        - ACTIVATING
-        - SUSPENDED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         User Plane Connection State. Possible values are
         - ACTIVATED
         - DEACTIVATED
         - ACTIVATING
         - SUSPENDED
+      enum:
+      - ACTIVATED
+      - DEACTIVATED
+      - ACTIVATING
+      - SUSPENDED
+      type: string
     HoState:
-      anyOf:
-      - enum:
-        - NONE
-        - PREPARING
-        - PREPARED
-        - COMPLETED
-        - CANCELLED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Handover state. Possible values are
         - NONE
@@ -16512,38 +16497,27 @@ components:
         - PREPARED
         - COMPLETED
         - CANCELLED
+      enum:
+      - NONE
+      - PREPARING
+      - PREPARED
+      - COMPLETED
+      - CANCELLED
+      type: string
     RequestType:
-      anyOf:
-      - enum:
-        - INITIAL_REQUEST
-        - EXISTING_PDU_SESSION
-        - INITIAL_EMERGENCY_REQUEST
-        - EXISTING_EMERGENCY_PDU_SESSION
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Request Type in Create (SM context) service operation. Possible values are
         - INITIAL_REQUEST
         - EXISTING_PDU_SESSION
         - INITIAL_EMERGENCY_REQUEST
         - EXISTING_EMERGENCY_PDU_SESSION
+      enum:
+      - INITIAL_REQUEST
+      - EXISTING_PDU_SESSION
+      - INITIAL_EMERGENCY_REQUEST
+      - EXISTING_EMERGENCY_PDU_SESSION
+      type: string
     RequestIndication:
-      anyOf:
-      - enum:
-        - UE_REQ_PDU_SES_MOD
-        - UE_REQ_PDU_SES_REL
-        - PDU_SES_MOB
-        - NW_REQ_PDU_SES_AUTH
-        - NW_REQ_PDU_SES_MOD
-        - NW_REQ_PDU_SES_REL
-        - EBI_ASSIGNMENT_REQ
-        - REL_DUE_TO_5G_AN_REQUEST
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Request Indication in Update (SM context) service operation. Possible values are
         - UE_REQ_PDU_SES_MOD
@@ -16554,88 +16528,30 @@ components:
         - NW_REQ_PDU_SES_REL
         - EBI_ASSIGNMENT_REQ
         - REL_DUE_TO_5G_AN_REQUEST
+      enum:
+      - UE_REQ_PDU_SES_MOD
+      - UE_REQ_PDU_SES_REL
+      - PDU_SES_MOB
+      - NW_REQ_PDU_SES_AUTH
+      - NW_REQ_PDU_SES_MOD
+      - NW_REQ_PDU_SES_REL
+      - EBI_ASSIGNMENT_REQ
+      - REL_DUE_TO_5G_AN_REQUEST
+      type: string
     NotificationCause:
-      anyOf:
-      - enum:
-        - QOS_FULFILLED
-        - QOS_NOT_FULFILLED
-        - UP_SEC_FULFILLED
-        - UP_SEC_NOT_FULFILLED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Cause for generating a notification. Possible values are
         - QOS_FULFILLED
         - QOS_NOT_FULFILLED
         - UP_SEC_FULFILLED
         - UP_SEC_NOT_FULFILLED
+      enum:
+      - QOS_FULFILLED
+      - QOS_NOT_FULFILLED
+      - UP_SEC_FULFILLED
+      - UP_SEC_NOT_FULFILLED
+      type: string
     Cause:
-      anyOf:
-      - enum:
-        - REL_DUE_TO_HO
-        - EPS_FALLBACK
-        - REL_DUE_TO_UP_SEC
-        - DNN_CONGESTION
-        - S_NSSAI_CONGESTION
-        - REL_DUE_TO_REACTIVATION
-        - 5G_AN_NOT_RESPONDING
-        - REL_DUE_TO_SLICE_NOT_AVAILABLE
-        - REL_DUE_TO_DUPLICATE_SESSION_ID
-        - PDU_SESSION_STATUS_MISMATCH
-        - HO_FAILURE
-        - INSUFFICIENT_UP_RESOURCES
-        - PDU_SESSION_HANDED_OVER
-        - PDU_SESSION_RESUMED
-        - CN_ASSISTED_RAN_PARAMETER_TUNING
-        - ISMF_CONTEXT_TRANSFER
-        - SMF_CONTEXT_TRANSFER
-        - REL_DUE_TO_PS_TO_CS_HO
-        - REL_DUE_TO_SUBSCRIPTION_CHANGE
-        - HO_CANCEL
-        - REL_DUE_TO_SLICE_NOT_AUTHORIZED
-        - PDU_SESSION_HAND_OVER_FAILURE
-        - DDN_FAILURE_STATUS
-        - REL_DUE_TO_CP_ONLY_NOT_APPLICABLE
-        - NOT_SUPPORTED_WITH_ISMF
-        - CHANGED_ANCHOR_SMF
-        - CHANGED_INTERMEDIATE_SMF
-        - TARGET_DNAI_NOTIFICATION
-        - REL_DUE_TO_VPLMN_QOS_FAILURE
-        - REL_DUE_TO_SMF_NOT_SUPPORT_PSETR
-        - REL_DUE_TO_SNPN_SNPN_MOBILITY
-        - REL_DUE_TO_NO_HR_AGREEMENT
-        - REL_DUE_TO_UNSPECIFIED_REASON
-        - REL_DUE_TO_MOB_ACCESS_RESTRICTIONS
-        - REL_DUE_TO_SLICE_INACTIVITY
-        - REL_DUE_TO_NSI_NOT_AVAILABLE
-        - REL_DUE_TO_DNN_DENIED
-        - REL_DUE_TO_PDUTYPE_DENIED
-        - REL_DUE_TO_SSC_DENIED
-        - REL_DUE_TO_SUBSCRIPTION_DENIED
-        - REL_DUE_TO_DNN_NOT_SUPPORTED
-        - REL_DUE_TO_PDUTYPE_NOT_SUPPORTED
-        - REL_DUE_TO_SSC_NOT_SUPPORTED
-        - REL_DUE_TO_INSUFFICIENT_RESOURCES_SLICE
-        - REL_DUE_TO_INSUFFICIENT_RESOURCES_SLICE_DNN
-        - REL_DUE_TO_DNN_CONGESTION
-        - REL_DUE_TO_S_NSSAI_CONGESTION
-        - REL_DUE_TO_PEER_NOT_RESPONDING
-        - REL_DUE_TO_NETWORK_FAILURE
-        - REL_DUE_TO_UPF_NOT_RESPONDING
-        - REL_DUE_TO_NO_EPS_5GS_CONTINUITY
-        - REL_DUE_TO_NOT_SUPPORTED_WITH_ISMF
-        - REL_DUE_TO_EXCEEDED_UE_SLICE_DATA_RATE
-        - REL_DUE_TO_EXCEEDED_SLICE_DATA_RATE
-        - REL_DUE_TO_CONTEXT_NOT_FOUND
-        - REL_DUE_TO_MBSR_NOT_AUTHORIZED
-        - DEACT_DUE_TO_UE_OUT_OF_SLICE_SUPPORT_AREA
-        - REJECT_DUE_TO_N1_SM_ERROR
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Cause information. Possible values are
         - REL_DUE_TO_HO
@@ -16696,18 +16612,67 @@ components:
         - REL_DUE_TO_MBSR_NOT_AUTHORIZED
         - DEACT_DUE_TO_UE_OUT_OF_SLICE_SUPPORT_AREA
         - REJECT_DUE_TO_N1_SM_ERROR
+      enum:
+      - REL_DUE_TO_HO
+      - EPS_FALLBACK
+      - REL_DUE_TO_UP_SEC
+      - DNN_CONGESTION
+      - S_NSSAI_CONGESTION
+      - REL_DUE_TO_REACTIVATION
+      - 5G_AN_NOT_RESPONDING
+      - REL_DUE_TO_SLICE_NOT_AVAILABLE
+      - REL_DUE_TO_DUPLICATE_SESSION_ID
+      - PDU_SESSION_STATUS_MISMATCH
+      - HO_FAILURE
+      - INSUFFICIENT_UP_RESOURCES
+      - PDU_SESSION_HANDED_OVER
+      - PDU_SESSION_RESUMED
+      - CN_ASSISTED_RAN_PARAMETER_TUNING
+      - ISMF_CONTEXT_TRANSFER
+      - SMF_CONTEXT_TRANSFER
+      - REL_DUE_TO_PS_TO_CS_HO
+      - REL_DUE_TO_SUBSCRIPTION_CHANGE
+      - HO_CANCEL
+      - REL_DUE_TO_SLICE_NOT_AUTHORIZED
+      - PDU_SESSION_HAND_OVER_FAILURE
+      - DDN_FAILURE_STATUS
+      - REL_DUE_TO_CP_ONLY_NOT_APPLICABLE
+      - NOT_SUPPORTED_WITH_ISMF
+      - CHANGED_ANCHOR_SMF
+      - CHANGED_INTERMEDIATE_SMF
+      - TARGET_DNAI_NOTIFICATION
+      - REL_DUE_TO_VPLMN_QOS_FAILURE
+      - REL_DUE_TO_SMF_NOT_SUPPORT_PSETR
+      - REL_DUE_TO_SNPN_SNPN_MOBILITY
+      - REL_DUE_TO_NO_HR_AGREEMENT
+      - REL_DUE_TO_UNSPECIFIED_REASON
+      - REL_DUE_TO_MOB_ACCESS_RESTRICTIONS
+      - REL_DUE_TO_SLICE_INACTIVITY
+      - REL_DUE_TO_NSI_NOT_AVAILABLE
+      - REL_DUE_TO_DNN_DENIED
+      - REL_DUE_TO_PDUTYPE_DENIED
+      - REL_DUE_TO_SSC_DENIED
+      - REL_DUE_TO_SUBSCRIPTION_DENIED
+      - REL_DUE_TO_DNN_NOT_SUPPORTED
+      - REL_DUE_TO_PDUTYPE_NOT_SUPPORTED
+      - REL_DUE_TO_SSC_NOT_SUPPORTED
+      - REL_DUE_TO_INSUFFICIENT_RESOURCES_SLICE
+      - REL_DUE_TO_INSUFFICIENT_RESOURCES_SLICE_DNN
+      - REL_DUE_TO_DNN_CONGESTION
+      - REL_DUE_TO_S_NSSAI_CONGESTION
+      - REL_DUE_TO_PEER_NOT_RESPONDING
+      - REL_DUE_TO_NETWORK_FAILURE
+      - REL_DUE_TO_UPF_NOT_RESPONDING
+      - REL_DUE_TO_NO_EPS_5GS_CONTINUITY
+      - REL_DUE_TO_NOT_SUPPORTED_WITH_ISMF
+      - REL_DUE_TO_EXCEEDED_UE_SLICE_DATA_RATE
+      - REL_DUE_TO_EXCEEDED_SLICE_DATA_RATE
+      - REL_DUE_TO_CONTEXT_NOT_FOUND
+      - REL_DUE_TO_MBSR_NOT_AUTHORIZED
+      - DEACT_DUE_TO_UE_OUT_OF_SLICE_SUPPORT_AREA
+      - REJECT_DUE_TO_N1_SM_ERROR
+      type: string
     ResourceStatus:
-      anyOf:
-      - enum:
-        - RELEASED
-        - UNCHANGED
-        - TRANSFERRED
-        - UPDATED
-        - ALT_ANCHOR_SMF
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Status of SM context or PDU session resource. Possible values are
         - RELEASED
@@ -16715,71 +16680,38 @@ components:
         - TRANSFERRED
         - UPDATED
         - ALT_ANCHOR_SMF
+      enum:
+      - RELEASED
+      - UNCHANGED
+      - TRANSFERRED
+      - UPDATED
+      - ALT_ANCHOR_SMF
+      type: string
     DnnSelectionMode:
-      anyOf:
-      - enum:
-        - VERIFIED
-        - UE_DNN_NOT_VERIFIED
-        - NW_DNN_NOT_VERIFIED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         DNN Selection Mode. Possible values are
         - VERIFIED
         - UE_DNN_NOT_VERIFIED
         - NW_DNN_NOT_VERIFIED
+      enum:
+      - VERIFIED
+      - UE_DNN_NOT_VERIFIED
+      - NW_DNN_NOT_VERIFIED
+      type: string
     EpsInterworkingIndication:
-      anyOf:
-      - enum:
-        - NONE
-        - WITH_N26
-        - WITHOUT_N26
-        - IWK_NON_3GPP
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         EPS Interworking Indication. Possible values are
         - NONE
         - WITH_N26
         - WITHOUT_N26
         - IWK_NON_3GPP
+      enum:
+      - NONE
+      - WITH_N26
+      - WITHOUT_N26
+      - IWK_NON_3GPP
+      type: string
     N2SmInfoType:
-      anyOf:
-      - enum:
-        - PDU_RES_SETUP_REQ
-        - PDU_RES_SETUP_RSP
-        - PDU_RES_SETUP_FAIL
-        - PDU_RES_REL_CMD
-        - PDU_RES_REL_RSP
-        - PDU_RES_MOD_REQ
-        - PDU_RES_MOD_RSP
-        - PDU_RES_MOD_FAIL
-        - PDU_RES_NTY
-        - PDU_RES_NTY_REL
-        - PDU_RES_MOD_IND
-        - PDU_RES_MOD_CFM
-        - PATH_SWITCH_REQ
-        - PATH_SWITCH_SETUP_FAIL
-        - PATH_SWITCH_REQ_ACK
-        - PATH_SWITCH_REQ_FAIL
-        - HANDOVER_REQUIRED
-        - HANDOVER_CMD
-        - HANDOVER_PREP_FAIL
-        - HANDOVER_REQ_ACK
-        - HANDOVER_RES_ALLOC_FAIL
-        - SECONDARY_RAT_USAGE
-        - PDU_RES_MOD_IND_FAIL
-        - UE_CONTEXT_RESUME_REQ
-        - UE_CONTEXT_RESUME_RSP
-        - UE_CONTEXT_SUSPEND_REQ
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         N2 SM Information Type. Possible values are
         - PDU_RES_SETUP_REQ
@@ -16808,79 +16740,77 @@ components:
         - UE_CONTEXT_RESUME_REQ
         - UE_CONTEXT_RESUME_RSP
         - UE_CONTEXT_SUSPEND_REQ
+      enum:
+      - PDU_RES_SETUP_REQ
+      - PDU_RES_SETUP_RSP
+      - PDU_RES_SETUP_FAIL
+      - PDU_RES_REL_CMD
+      - PDU_RES_REL_RSP
+      - PDU_RES_MOD_REQ
+      - PDU_RES_MOD_RSP
+      - PDU_RES_MOD_FAIL
+      - PDU_RES_NTY
+      - PDU_RES_NTY_REL
+      - PDU_RES_MOD_IND
+      - PDU_RES_MOD_CFM
+      - PATH_SWITCH_REQ
+      - PATH_SWITCH_SETUP_FAIL
+      - PATH_SWITCH_REQ_ACK
+      - PATH_SWITCH_REQ_FAIL
+      - HANDOVER_REQUIRED
+      - HANDOVER_CMD
+      - HANDOVER_PREP_FAIL
+      - HANDOVER_REQ_ACK
+      - HANDOVER_RES_ALLOC_FAIL
+      - SECONDARY_RAT_USAGE
+      - PDU_RES_MOD_IND_FAIL
+      - UE_CONTEXT_RESUME_REQ
+      - UE_CONTEXT_RESUME_RSP
+      - UE_CONTEXT_SUSPEND_REQ
+      type: string
     MaxIntegrityProtectedDataRate:
-      anyOf:
-      - enum:
-        - 64_KBPS
-        - MAX_UE_RATE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Maximum Integrity Protected Data Rate. Possible values are
           - 64_KBPS
           - MAX_UE_RATE
+      enum:
+      - 64_KBPS
+      - MAX_UE_RATE
+      type: string
     MaReleaseIndication:
-      anyOf:
-      - enum:
-        - REL_MAPDU_OVER_3GPP
-        - REL_MAPDU_OVER_N3GPP
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Multi-Access PDU session release Indication. Possible values are
           - REL_MAPDU_OVER_3GPP
           - REL_MAPDU_OVER_N3GPP
+      enum:
+      - REL_MAPDU_OVER_3GPP
+      - REL_MAPDU_OVER_N3GPP
+      type: string
     SmContextType:
-      anyOf:
-      - enum:
-        - EPS_PDN_CONNECTION
-        - SM_CONTEXT
-        - AF_COORDINATION_INFO
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Type of SM Context information. Possible values are
           - EPS_PDN_CONNECTION
           - SM_CONTEXT
           - AF_COORDINATION_INFO
+      enum:
+      - EPS_PDN_CONNECTION
+      - SM_CONTEXT
+      - AF_COORDINATION_INFO
+      type: string
     PsaIndication:
-      anyOf:
-      - enum:
-        - PSA_INSERTED
-        - PSA_REMOVED
-        - PSA_INSERTED_ONLY
-        - PSA_REMOVED_ONLY
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indication of whether a PSA is inserted or removed. Possible values are
           - PSA_INSERTED
           - PSA_REMOVED
           - PSA_INSERTED_ONLY
           - PSA_REMOVED_ONLY
+      enum:
+      - PSA_INSERTED
+      - PSA_REMOVED
+      - PSA_INSERTED_ONLY
+      - PSA_REMOVED_ONLY
+      type: string
     N4MessageType:
-      anyOf:
-      - enum:
-        - PFCP_SES_EST_REQ
-        - PFCP_SES_EST_RSP
-        - PFCP_SES_MOD_REQ
-        - PFCP_SES_MOD_RSP
-        - PFCP_SES_DEL_REQ
-        - PFCP_SES_DEL_RSP
-        - PFCP_SES_REP_REQ
-        - PFCP_SES_REP_RSP
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         N4 Message Type. Possible values are
           - PFCP_SES_EST_REQ
@@ -16891,115 +16821,86 @@ components:
           - PFCP_SES_DEL_RSP
           - PFCP_SES_REP_REQ
           - PFCP_SES_REP_RSP
+      enum:
+      - PFCP_SES_EST_REQ
+      - PFCP_SES_EST_RSP
+      - PFCP_SES_MOD_REQ
+      - PFCP_SES_MOD_RSP
+      - PFCP_SES_DEL_REQ
+      - PFCP_SES_DEL_RSP
+      - PFCP_SES_REP_REQ
+      - PFCP_SES_REP_RSP
+      type: string
     QosFlowAccessType:
-      anyOf:
-      - enum:
-        - 3GPP
-        - NON_3GPP
-        - 3GPP_AND_NON_3GPP
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Access type associated with a QoS Flow. Possible values are
           - 3GPP
           - NON_3GPP
           - 3GPP_AND_NON_3GPP
+      enum:
+      - 3GPP
+      - NON_3GPP
+      - 3GPP_AND_NON_3GPP
+      type: string
     UnavailableAccessIndication:
-      anyOf:
-      - enum:
-        - 3GA_UNAVAILABLE
-        - N3GA_UNAVAILABLE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the access type of a MA PDU session that is unavailable. Possible values are
           - 3GA_UNAVAILABLE
           - N3GA_UNAVAILABLE
+      enum:
+      - 3GA_UNAVAILABLE
+      - N3GA_UNAVAILABLE
+      type: string
     ProtectionResult:
-      anyOf:
-      - enum:
-        - PERFORMED
-        - NOT_PERFORMED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Protection Result of the security policy indicated as "preferred". Possible values are
           - PERFORMED
           - NOT_PERFORMED
+      enum:
+      - PERFORMED
+      - NOT_PERFORMED
+      type: string
     QosMonitoringReq:
-      anyOf:
-      - enum:
-        - UL
-        - DL
-        - BOTH
-        - NONE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         QoS monitoring request. Possible values are
           - UL
           - DL
           - BOTH
           - NONE
+      enum:
+      - UL
+      - DL
+      - BOTH
+      - NONE
+      type: string
     Rsn:
-      anyOf:
-      - enum:
-        - V1
-        - V2
-        - NONE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Redundancy Sequence Number. Possible values are
           - V1
           - V2
           - NONE
+      enum:
+      - V1
+      - V2
+      - NONE
+      type: string
     SmfSelectionType:
-      anyOf:
-      - enum:
-        - CURRENT_PDU_SESSION
-        - NEXT_PDU_SESSION
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Smf Selection Type. Possible values are
           - CURRENT_PDU_SESSION
           - NEXT_PDU_SESSION
+      enum:
+      - CURRENT_PDU_SESSION
+      - NEXT_PDU_SESSION
+      type: string
     PduSessionContextType:
-      anyOf:
-      - enum:
-        - AF_COORDINATION_INFO
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Type of PDU Session information. Possible values are
           - AF_COORDINATION_INFO
+      enum:
+      - AF_COORDINATION_INFO
+      type: string
     PendingUpdateInfo:
-      anyOf:
-      - enum:
-        - UE_LOCATION
-        - TIMEZONE
-        - ACCESS_TYPE
-        - RAT_TYPE
-        - AMF_ID
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Pending Update Information. Possible values are
           - UE_LOCATION
@@ -17007,64 +16908,55 @@ components:
           - ACCESS_TYPE
           - RAT_TYPE
           - AMF_ID
+      enum:
+      - UE_LOCATION
+      - TIMEZONE
+      - ACCESS_TYPE
+      - RAT_TYPE
+      - AMF_ID
+      type: string
     EstablishmentRejectionCause:
-      anyOf:
-      - enum:
-        - OPERATOR_DETERMINED_BARRING
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         PDU Session Establishment Rejection Cause. Possible values are
           - OPERATOR_DETERMINED_BARRING
+      enum:
+      - OPERATOR_DETERMINED_BARRING
+      type: string
     EcnMarkingReq:
-      anyOf:
-      - enum:
-        - UL
-        - DL
-        - BOTH
-        - STOP
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         ECN Marking Request Type. Possible values are
         - UL
         - DL
         - BOTH
         - STOP
+      enum:
+      - UL
+      - DL
+      - BOTH
+      - STOP
+      type: string
     CongestionInfoReq:
-      anyOf:
-      - enum:
-        - UL
-        - DL
-        - BOTH
-        - STOP
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Congestion Information Request Type. Possible values are
         - UL
         - DL
         - BOTH
         - STOP
+      enum:
+      - UL
+      - DL
+      - BOTH
+      - STOP
+      type: string
     ActivationStatus:
-      anyOf:
-      - enum:
-        - ACTIVE
-        - NOT_ACTIVE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Activation Status. Possible values are
         - ACTIVE
         - NOT_ACTIVE
+      enum:
+      - ACTIVE
+      - NOT_ACTIVE
+      type: string
     RedirectResponse:
       description: |
         The response shall include a Location header field containing a different URI  (pointing to a different URI of an other service instance), or the same URI if a request  is redirected to the same target resource via a different SCP.
@@ -17561,59 +17453,55 @@ components:
       - NON_3GPP_ACCESS
       type: string
     RatType:
-      anyOf:
-      - enum:
-        - NR
-        - EUTRA
-        - WLAN
-        - VIRTUAL
-        - NBIOT
-        - WIRELINE
-        - WIRELINE_CABLE
-        - WIRELINE_BBF
-        - LTE-M
-        - NR_U
-        - EUTRA_U
-        - TRUSTED_N3GA
-        - TRUSTED_WLAN
-        - UTRA
-        - GERA
-        - NR_LEO
-        - NR_MEO
-        - NR_GEO
-        - NR_OTHER_SAT
-        - NR_REDCAP
-        - WB_E_UTRAN_LEO
-        - WB_E_UTRAN_MEO
-        - WB_E_UTRAN_GEO
-        - WB_E_UTRAN_OTHERSAT
-        - NB_IOT_LEO
-        - NB_IOT_MEO
-        - NB_IOT_GEO
-        - NB_IOT_OTHERSAT
-        - LTE_M_LEO
-        - LTE_M_MEO
-        - LTE_M_GEO
-        - LTE_M_OTHERSAT
-        - NR_EREDCAP
-        type: string
-      - type: string
       description: Indicates the radio access used.
+      enum:
+      - NR
+      - EUTRA
+      - WLAN
+      - VIRTUAL
+      - NBIOT
+      - WIRELINE
+      - WIRELINE_CABLE
+      - WIRELINE_BBF
+      - LTE-M
+      - NR_U
+      - EUTRA_U
+      - TRUSTED_N3GA
+      - TRUSTED_WLAN
+      - UTRA
+      - GERA
+      - NR_LEO
+      - NR_MEO
+      - NR_GEO
+      - NR_OTHER_SAT
+      - NR_REDCAP
+      - WB_E_UTRAN_LEO
+      - WB_E_UTRAN_MEO
+      - WB_E_UTRAN_GEO
+      - WB_E_UTRAN_OTHERSAT
+      - NB_IOT_LEO
+      - NB_IOT_MEO
+      - NB_IOT_GEO
+      - NB_IOT_OTHERSAT
+      - LTE_M_LEO
+      - LTE_M_MEO
+      - LTE_M_GEO
+      - LTE_M_OTHERSAT
+      - NR_EREDCAP
+      type: string
     PresenceState:
-      anyOf:
-      - enum:
-        - IN_AREA
-        - OUT_OF_AREA
-        - UNKNOWN
-        - INACTIVE
-        type: string
-      - type: string
       description: "Possible values are:\n-IN_AREA: Indicates that the UE is inside\
         \ or enters the presence reporting area.\n-OUT_OF_AREA: Indicates that the\
         \ UE is outside or leaves the presence reporting area\n-UNKNOW: Indicates\
         \ it is unknown whether the UE is in the presence reporting area or not\n\
         -INACTIVE: Indicates that the presence reporting area is inactive in the serving\
         \ node. \n"
+      enum:
+      - IN_AREA
+      - OUT_OF_AREA
+      - UNKNOWN
+      - INACTIVE
+      type: string
     UserLocation:
       description: |
         At least one of eutraLocation, nrLocation and n3gaLocation shall be present. Several of them may be present.
@@ -18389,17 +18277,12 @@ components:
       minimum: 0
       type: integer
     TransportProtocol:
-      anyOf:
-      - enum:
-        - UDP
-        - TCP
-        type: string
-      - description: "This string provides forward-compatibility with future extensions\
-          \ to the enumeration but is not used to encode content defined in the present\
-          \ version of this API. \n"
-        type: string
       description: "Possible values are:\n- UDP: User Datagram Protocol.\n- TCP: Transmission\
         \ Control Protocol. \n"
+      enum:
+      - UDP
+      - TCP
+      type: string
     TnapId:
       description: Contain the TNAP Identifier see clause5.6.2 of 3GPP TS 23.501.
       example:
@@ -18473,19 +18356,14 @@ components:
     Gli:
       $ref: '#/components/schemas/Bytes'
     LineType:
-      anyOf:
-      - enum:
-        - DSL
-        - PON
-        type: string
-      - description: "This string provides forward-compatibility with future extensions\
-          \ to the enumeration but is not used to encode content defined in the present\
-          \ version of this API. \n"
-        type: string
       description: |
         Possible values are:
         - DSL: Identifies a DSL line
         - PON: Identifies a PON line
+      enum:
+      - DSL
+      - PON
+      type: string
     Gci:
       description: |
         Global Cable Identifier uniquely identifying the connection between the 5G-CRG or FN-CRG to the 5GS. See clause 28.15.4 of 3GPP TS 23.003. This shall be encoded as a string per clause 28.15.4 of 3GPP TS 23.003, and compliant with the syntax specified  in clause 2.2  of IETF RFC 7542 for the username part of a NAI. The GCI value is specified in CableLabs WR-TR-5WWC-ARCH.
@@ -18836,18 +18714,14 @@ components:
       - traceRef
       type: object
     TraceDepth:
-      anyOf:
-      - enum:
-        - MINIMUM
-        - MEDIUM
-        - MAXIMUM
-        - MINIMUM_WO_VENDOR_EXTENSION
-        - MEDIUM_WO_VENDOR_EXTENSION
-        - MAXIMUM_WO_VENDOR_EXTENSION
-        type: string
-      - type: string
-      description: |
-        The enumeration TraceDepth defines how detailed information should be recorded in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.1-1
+      enum:
+      - MINIMUM
+      - MEDIUM
+      - MAXIMUM
+      - MINIMUM_WO_VENDOR_EXTENSION
+      - MEDIUM_WO_VENDOR_EXTENSION
+      - MAXIMUM_WO_VENDOR_EXTENSION
+      type: string
     NgRanTargetId:
       description: Indicates a NG RAN as target of the handover
       example:
@@ -18895,15 +18769,13 @@ components:
         \ an alphabetic character or a digit.\n"
       type: string
     SbiBindingLevel:
-      anyOf:
-      - enum:
-        - NF_INSTANCE_BINDING
-        - NF_SET_BINDING
-        - NF_SERVICE_SET_BINDING
-        - NF_SERVICE_INSTANCE_BINDING
-        type: string
-      - type: string
       description: SBI Binding Level
+      enum:
+      - NF_INSTANCE_BINDING
+      - NF_SET_BINDING
+      - NF_SERVICE_SET_BINDING
+      - NF_SERVICE_INSTANCE_BINDING
+      type: string
     SmallDataRateStatus:
       description: It indicates theSmall Data Rate Control Status
       example:
@@ -19084,20 +18956,18 @@ components:
       - callbackUri
       type: object
     SatelliteBackhaulCategory:
-      anyOf:
-      - enum:
-        - GEO
-        - MEO
-        - LEO
-        - OTHER_SAT
-        - DYNAMIC_GEO
-        - DYNAMIC_MEO
-        - DYNAMIC_LEO
-        - DYNAMIC_OTHER_SAT
-        - NON_SATELLITE
-        type: string
-      - type: string
       description: Indicates the satellite backhaul used.
+      enum:
+      - GEO
+      - MEO
+      - LEO
+      - OTHER_SAT
+      - DYNAMIC_GEO
+      - DYNAMIC_MEO
+      - DYNAMIC_LEO
+      - DYNAMIC_OTHER_SAT
+      - NON_SATELLITE
+      type: string
     GeoSatelliteId:
       description: |
         A string carrying the GEO Satellite ID.
@@ -19563,17 +19433,15 @@ components:
           $ref: '#/components/schemas/Snssai'
       type: object
     PduSessionType:
-      anyOf:
-      - enum:
-        - IPV4
-        - IPV6
-        - IPV4V6
-        - UNSTRUCTURED
-        - ETHERNET
-        type: string
-      - type: string
       description: "PduSessionType indicates the type of a PDU session. It shall comply\
         \ with the provisions defined in table 5.4.3.3-1. \n"
+      enum:
+      - IPV4
+      - IPV6
+      - IPV4V6
+      - UNSTRUCTURED
+      - ETHERNET
+      type: string
     Ambr:
       description: Contains the maximum aggregated uplink and downlink bit rates.
       example:
@@ -19619,26 +19487,22 @@ components:
       - upIntegr
       type: object
     UpIntegrity:
-      anyOf:
-      - enum:
-        - REQUIRED
-        - PREFERRED
-        - NOT_NEEDED
-        type: string
-      - type: string
       description: "indicates whether UP integrity protection is required, preferred\
         \ or not needed for all the traffic on the PDU Session. It shall comply with\
         \ the provisions defined in  table 5.4.3.4-1. \n"
+      enum:
+      - REQUIRED
+      - PREFERRED
+      - NOT_NEEDED
+      type: string
     UpConfidentiality:
-      anyOf:
-      - enum:
-        - REQUIRED
-        - PREFERRED
-        - NOT_NEEDED
-        type: string
-      - type: string
       description: |
         indicates whether UP confidentiality protection is required, preferred or not needed for all the traffic on the PDU Session. It shall comply with the provisions defined in table 5.4.3.5-1.
+      enum:
+      - REQUIRED
+      - PREFERRED
+      - NOT_NEEDED
+      type: string
     IpIndex:
       description: |
         Represents information that identifies which IP pool or external server is used to allocate the IP address.
@@ -19707,23 +19571,19 @@ components:
       nullable: true
       type: integer
     PreemptionCapability:
-      anyOf:
-      - enum:
-        - NOT_PREEMPT
-        - MAY_PREEMPT
-        type: string
-      - type: string
       description: |
         The enumeration PreemptionCapability indicates the pre-emption capability of a request on other QoS flows. See clause 5.7.2.2 of 3GPP TS 23.501. It shall comply with the provisions defined in table 5.5.3.1-1.
+      enum:
+      - NOT_PREEMPT
+      - MAY_PREEMPT
+      type: string
     PreemptionVulnerability:
-      anyOf:
-      - enum:
-        - NOT_PREEMPTABLE
-        - PREEMPTABLE
-        type: string
-      - type: string
       description: |
         The enumeration PreemptionVulnerability indicates the pre-emption vulnerability of the QoS flow to pre-emption from other QoS flows. See clause 5.7.2.2 of 3GPP TS 23.501. It shall comply with the provisions defined in table 5.5.3.2-1
+      enum:
+      - NOT_PREEMPTABLE
+      - PREEMPTABLE
+      type: string
     fiveQi:
       description: |
         Unsigned integer representing a 5G QoS Identifier (see clause 5.7.2.1 of 3GPP TS 23.501, within the range 0 to 255.
@@ -19888,17 +19748,15 @@ components:
       - resourceType
       type: object
     QosResourceType:
-      anyOf:
-      - enum:
-        - NON_GBR
-        - NON_CRITICAL_GBR
-        - CRITICAL_GBR
-        type: string
-      - type: string
       description: "The enumeration QosResourceType indicates whether a QoS Flow is\
         \ non-GBR, delay critical GBR, or non-delay critical GBR (see clauses 5.7.3.4\
         \ and 5.7.3.5 of 3GPP TS 23.501). It shall comply with the provisions defined\
         \ in table 5.5.3.6-1. \n"
+      enum:
+      - NON_GBR
+      - NON_CRITICAL_GBR
+      - CRITICAL_GBR
+      type: string
     PacketDelBudget:
       description: |
         Unsigned integer indicating Packet Delay Budget (see clauses 5.7.3.4 and 5.7.4 of 3GPP TS 23.501), expressed in milliseconds.
@@ -19910,16 +19768,14 @@ components:
       pattern: "^([0-9]E-[0-9])$"
       type: string
     ReflectiveQoSAttribute:
-      anyOf:
-      - enum:
-        - RQOS
-        - NO_RQOS
-        type: string
-      - type: string
       description: "The enumeration ReflectiveQosAttribute indicates whether certain\
         \ traffic of the QoS flow may be subject to Reflective QoS (see clause 5.7.2.3\
         \ of 3GPP TS 23.501). It shall comply with the provisions defined in table\
         \ 5.5.3.3-1. \n"
+      enum:
+      - RQOS
+      - NO_RQOS
+      type: string
     AdditionalQosFlowInfo:
       anyOf:
       - enum:
@@ -19953,30 +19809,24 @@ components:
           $ref: '#/components/schemas/PduSetHandlingInfo'
       type: object
     PduSetHandlingInfo:
-      anyOf:
-      - enum:
-        - ALL_PDUS_NEEDED
-        - ALL_PDUS_NOT_NEEDED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Possible values are:
         - "ALL_PDUS_NEEDED": All PDUs of the PDU Set are needed
         - "ALL_PDUS_NOT_NEEDED": All PDUs of the PDU Set are not needed
+      enum:
+      - ALL_PDUS_NEEDED
+      - ALL_PDUS_NOT_NEEDED
+      type: string
     NotificationControl:
-      anyOf:
-      - enum:
-        - REQUESTED
-        - NOT_REQUESTED
-        type: string
-      - type: string
       description: "The enumeration NotificationControl indicates whether notifications\
         \ are requested from the RAN when the GFBR can no longer  (or again) be fulfilled\
         \ for a QoS Flow during the lifetime of the QoS Flow (see clause 5.7.2.4 of\
         \ 3GPP TS 23.501). It shall comply with the provisions defined in table 5.5.3.5-1.\
         \ \n"
+      enum:
+      - REQUESTED
+      - NOT_REQUESTED
+      type: string
     PacketLossRate:
       description: |
         Unsigned integer indicating Packet Loss Rate (see clauses 5.7.2.8 and 5.7.4 of 3GPP TS 23.501), expressed in tenth of percent.
@@ -20244,19 +20094,17 @@ components:
       - matchingOperator
       type: object
     MatchingOperator:
-      anyOf:
-      - enum:
-        - FULL_MATCH
-        - MATCH_ALL
-        - STARTS_WITH
-        - NOT_START_WITH
-        - ENDS_WITH
-        - NOT_END_WITH
-        - CONTAINS
-        - NOT_CONTAIN
-        type: string
-      - type: string
       description: the matching operation.
+      enum:
+      - FULL_MATCH
+      - MATCH_ALL
+      - STARTS_WITH
+      - NOT_START_WITH
+      - ENDS_WITH
+      - NOT_END_WITH
+      - CONTAINS
+      - NOT_CONTAIN
+      type: string
     Uint16:
       description: |
         Integer where the allowed values correspond to the value range of an unsigned 16-bit integer.
@@ -20264,18 +20112,14 @@ components:
       minimum: 0
       type: integer
     StationaryIndication:
-      anyOf:
-      - enum:
-        - STATIONARY
-        - MOBILE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration but is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Possible values are:
         - STATIONARY: Identifies the UE is stationary
         - MOBILE: Identifies the UE is mobile
+      enum:
+      - STATIONARY
+      - MOBILE
+      type: string
     ScheduledCommunicationTime:
       description: Identifies time and day of the week when the UE is available for
         communication.
@@ -20320,37 +20164,30 @@ components:
         \ UTC). \n"
       type: string
     ScheduledCommunicationType:
-      anyOf:
-      - enum:
-        - DOWNLINK_ONLY
-        - UPLINK_ONLY
-        - BIDIRECTIONAL
-        type: string
-      - type: string
       description: |
         Possible values are:
         -DOWNLINK_ONLY: Downlink only
         -UPLINK_ONLY: Uplink only
         -BIDIRECTIONA: Bi-directional
+      enum:
+      - DOWNLINK_ONLY
+      - UPLINK_ONLY
+      - BIDIRECTIONAL
+      type: string
     TrafficProfile:
-      anyOf:
-      - enum:
-        - SINGLE_TRANS_UL
-        - SINGLE_TRANS_DL
-        - DUAL_TRANS_UL_FIRST
-        - DUAL_TRANS_DL_FIRST
-        - MULTI_TRANS
-        type: string
-      - description: "This string provides forward-compatibility with future extensions\
-          \ to the enumeration but is not used to encode content defined in the present\
-          \ version of this API. \n"
-        type: string
       description: "Possible values are:\n- SINGLE_TRANS_UL: Uplink single packet\
         \ transmission.\n- SINGLE_TRANS_DL: Downlink single packet transmission.\n\
         - DUAL_TRANS_UL_FIRST: Dual packet transmission, firstly uplink packet transmission\n\
         \  with subsequent downlink packet transmission.\n- DUAL_TRANS_DL_FIRST: Dual\
         \ packet transmission, firstly downlink packet transmission\n  with subsequent\
         \ uplink packet transmission. \n"
+      enum:
+      - SINGLE_TRANS_UL
+      - SINGLE_TRANS_DL
+      - DUAL_TRANS_UL_FIRST
+      - DUAL_TRANS_DL_FIRST
+      - MULTI_TRANS
+      type: string
     BatteryIndication:
       description: |
         Parameters "replaceableInd" and "rechargeableInd" are only included if the value of Parameter "batteryInd" is true.
@@ -20648,22 +20485,18 @@ components:
           type: string
       type: object
     RedirectAddressType:
-      anyOf:
-      - enum:
-        - IPV4_ADDR
-        - IPV6_ADDR
-        - URL
-        - SIP_URI
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration and is not used to encode content defined in the present version of this API.
-        type: string
       description: "Indicates the redirect address type.  \nPossible values are\n\
         - IPV4_ADDR: Indicates that the address type is in the form of \"dotted-decimal\"\
         \ IPv4\naddress.\n- IPV6_ADDR: Indicates that the address type is in the form\
         \ of IPv6 address.\n- URL: Indicates that the address type is in the form\
         \ of Uniform Resource Locator.\n- SIP_URI: Indicates that the address type\
         \ is in the form of SIP Uniform Resource\nIdentifier.\n"
+      enum:
+      - IPV4_ADDR
+      - IPV6_ADDR
+      - URL
+      - SIP_URI
+      type: string
     UpPathChgEvent:
       description: Contains the UP path change event subscription from the AF.
       example:
@@ -20690,33 +20523,25 @@ components:
       - notificationUri
       type: object
     SteeringFunctionality:
-      anyOf:
-      - enum:
-        - MPTCP
-        - MPQUIC
-        - ATSSS_LL
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration and is not used to encode content defined in the present version of this API.
-        type: string
       description: "Indicates functionality to support traffic steering, switching\
         \ and splitting determined\nby the PCF.  \nPossible values are\n  - MPTCP:\
         \ Indicates that PCF authorizes the MPTCP functionality to support traffic\n\
         \  steering, switching and splitting.\n  - ATSSS_LL: Indicates that PCF authorizes\
         \ the ATSSS-LL functionality to support traffic\n  steering, switching and\
         \ splitting.\n"
+      enum:
+      - MPTCP
+      - MPQUIC
+      - ATSSS_LL
+      type: string
     TransportMode:
-      anyOf:
-      - enum:
-        - DATAGRAM_MODE_1
-        - DATAGRAM_MODE_2
-        - STREAM_MODE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration and is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates the Transport Mode when the steering functionality is MPQUIC functionality.
+      enum:
+      - DATAGRAM_MODE_1
+      - DATAGRAM_MODE_2
+      - STREAM_MODE
+      type: string
     SteeringMode:
       description: Contains the steering mode value and parameters determined by the
         PCF.
@@ -20755,18 +20580,14 @@ components:
       - steerModeValue
       type: object
     SteerModeValue:
-      anyOf:
-      - enum:
-        - ACTIVE_STANDBY
-        - LOAD_BALANCING
-        - SMALLEST_DELAY
-        - PRIORITY_BASED
-        - REDUNDANT
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration and is not used to encode content defined in the present version of this API.
-        type: string
       description: Indicates the steering mode value determined by the PCF.
+      enum:
+      - ACTIVE_STANDBY
+      - LOAD_BALANCING
+      - SMALLEST_DELAY
+      - PRIORITY_BASED
+      - REDUNDANT
+      type: string
     ThresholdValue:
       description: Indicates the threshold value(s) for RTT and/or Packet Loss Rate.
       example:
@@ -20789,26 +20610,18 @@ components:
           type: integer
       type: object
     SteerModeIndicator:
-      anyOf:
-      - enum:
-        - AUTO_LOAD_BALANCE
-        - UE_ASSISTANCE
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration and is not used to encode content defined in the present version of this API.
-        type: string
       description: Contains Autonomous load-balance indicator or UE-assistance indicator.
+      enum:
+      - AUTO_LOAD_BALANCE
+      - UE_ASSISTANCE
+      type: string
     MulticastAccessControl:
-      anyOf:
-      - enum:
-        - ALLOWED
-        - NOT_ALLOWED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration and is not used to encode content defined in the present version of this API.
-        type: string
       description: |
         Indicates whether the service data flow, corresponding to the service data flow template, is allowed or not allowed.
+      enum:
+      - ALLOWED
+      - NOT_ALLOWED
+      type: string
     FlowInformation:
       description: Contains the flow information.
       example:
@@ -20864,16 +20677,6 @@ components:
     FlowDirectionRm:
       $ref: '#/components/schemas/FlowDirection'
     FlowDirection:
-      anyOf:
-      - enum:
-        - DOWNLINK
-        - UPLINK
-        - BIDIRECTIONAL
-        - UNSPECIFIED
-        type: string
-      - description: |
-          This string provides forward-compatibility with future extensions to the enumeration and is not used to encode content defined in the present version of this API.
-        type: string
       description: "Indicates the direction of the service data flow.  \nPossible\
         \ values are:\n- DOWNLINK: The corresponding filter applies for traffic to\
         \ the UE.\n- UPLINK: The corresponding filter applies for traffic from the\
@@ -20885,6 +20688,12 @@ components:
         \ in filters created by the network in NW-initiated procedures. The PCF shall\
         \ only\ninclude the value UNSPECIFIED in filters in UE-initiated procedures\
         \ if the same value is\nreceived from the SMF.\n"
+      enum:
+      - DOWNLINK
+      - UPLINK
+      - BIDIRECTIONAL
+      - UNSPECIFIED
+      type: string
     AccessTokenErr:
       description: Error returned in the access token response message
       example:
@@ -21089,17 +20898,15 @@ components:
       - reason
       type: object
     NoProfileMatchReason:
-      anyOf:
-      - enum:
-        - REQUESTER_PLMN_NOT_ALLOWED
-        - TARGET_NF_SUSPENDED
-        - TARGET_NF_UNDISCOVERABLE
-        - QUERY_PARAMS_COMBINATION_NO_MATCH
-        - TARGET_NF_TYPE_NOT_SUPPORTED
-        - UNSPECIFIED
-        type: string
-      - type: string
       description: No Profile Match Reason
+      enum:
+      - REQUESTER_PLMN_NOT_ALLOWED
+      - TARGET_NF_SUSPENDED
+      - TARGET_NF_UNDISCOVERABLE
+      - QUERY_PARAMS_COMBINATION_NO_MATCH
+      - TARGET_NF_TYPE_NOT_SUPPORTED
+      - UNSPECIFIED
+      type: string
     QueryParamCombination:
       description: Contains a list of Query Parameters
       example:
@@ -21599,20 +21406,15 @@ components:
         type: string
       description: Indicates that a common DNAI or common EAS should be selected.
     DnaiChangeType:
-      anyOf:
-      - enum:
-        - EARLY
-        - EARLY_LATE
-        - LATE
-        type: string
-      - description: "This string provides forward-compatibility with future extensions\
-          \ to the enumeration but is not used to encode  content defined in the present\
-          \ version of this API. \n"
-        type: string
       description: "Possible values are:\n- EARLY: Early notification of UP path reconfiguration.\n\
         - EARLY_LATE: Early and late notification of UP path reconfiguration. This\
         \ value shall\n  only be present in the subscription to the DNAI change event.\n\
         - LATE: Late notification of UP path reconfiguration. \n"
+      enum:
+      - EARLY
+      - EARLY_LATE
+      - LATE
+      type: string
     AccessTypeRm:
       $ref: '#/components/schemas/AccessType'
     PacketLossRateRm:

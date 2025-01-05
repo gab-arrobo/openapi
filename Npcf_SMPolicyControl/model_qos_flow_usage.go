@@ -24,36 +24,61 @@ import (
 )
 
 // QosFlowUsage Indicates a QoS flow usage information.   Possible values are - GENERAL: Indicate no specific QoS flow usage information is available. - IMS_SIG: Indicate that the QoS flow is used for IMS signalling only.
-type QosFlowUsage struct {
-	String *string
+type QosFlowUsage string
+
+// List of QosFlowUsage
+const (
+	QOSFLOWUSAGE_GENERAL QosFlowUsage = "GENERAL"
+	QOSFLOWUSAGE_IMS_SIG QosFlowUsage = "IMS_SIG"
+)
+
+// All allowed values of QosFlowUsage enum
+var AllowedQosFlowUsageEnumValues = []QosFlowUsage{
+	"GENERAL",
+	"IMS_SIG",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *QosFlowUsage) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *QosFlowUsage) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := QosFlowUsage(value)
+	for _, existing := range AllowedQosFlowUsageEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(QosFlowUsage)")
+	return fmt.Errorf("%+v is not a valid QosFlowUsage", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *QosFlowUsage) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewQosFlowUsageFromValue returns a pointer to a valid QosFlowUsage
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewQosFlowUsageFromValue(v string) (*QosFlowUsage, error) {
+	ev := QosFlowUsage(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for QosFlowUsage: valid values are %v", v, AllowedQosFlowUsageEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v QosFlowUsage) IsValid() bool {
+	for _, existing := range AllowedQosFlowUsageEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to QosFlowUsage value
+func (v QosFlowUsage) Ptr() *QosFlowUsage {
+	return &v
 }
 
 type NullableQosFlowUsage struct {

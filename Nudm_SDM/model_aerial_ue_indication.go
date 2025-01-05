@@ -24,36 +24,61 @@ import (
 )
 
 // AerialUeIndication Indicates the Aerial service for the UE is allowed or not allowed, possible values are - AERIAL_UE_ALLOWED: Aerial service for the UE is allowed. - AERIAL_UE_NOT_ALLOWED: Aerial service for the UE is not allowed.
-type AerialUeIndication struct {
-	String *string
+type AerialUeIndication string
+
+// List of AerialUeIndication
+const (
+	AERIALUEINDICATION_ALLOWED     AerialUeIndication = "AERIAL_UE_ALLOWED"
+	AERIALUEINDICATION_NOT_ALLOWED AerialUeIndication = "AERIAL_UE_NOT_ALLOWED"
+)
+
+// All allowed values of AerialUeIndication enum
+var AllowedAerialUeIndicationEnumValues = []AerialUeIndication{
+	"AERIAL_UE_ALLOWED",
+	"AERIAL_UE_NOT_ALLOWED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *AerialUeIndication) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *AerialUeIndication) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := AerialUeIndication(value)
+	for _, existing := range AllowedAerialUeIndicationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(AerialUeIndication)")
+	return fmt.Errorf("%+v is not a valid AerialUeIndication", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *AerialUeIndication) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewAerialUeIndicationFromValue returns a pointer to a valid AerialUeIndication
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewAerialUeIndicationFromValue(v string) (*AerialUeIndication, error) {
+	ev := AerialUeIndication(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for AerialUeIndication: valid values are %v", v, AllowedAerialUeIndicationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v AerialUeIndication) IsValid() bool {
+	for _, existing := range AllowedAerialUeIndicationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to AerialUeIndication value
+func (v AerialUeIndication) Ptr() *AerialUeIndication {
+	return &v
 }
 
 type NullableAerialUeIndication struct {

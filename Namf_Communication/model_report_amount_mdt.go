@@ -24,36 +24,73 @@ import (
 )
 
 // ReportAmountMdt The enumeration ReportAmountMdt defines Report Amount for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.10-1.
-type ReportAmountMdt struct {
-	String *string
+type ReportAmountMdt string
+
+// List of ReportAmountMdt
+const (
+	REPORTAMOUNTMDT__1       ReportAmountMdt = "1"
+	REPORTAMOUNTMDT__2       ReportAmountMdt = "2"
+	REPORTAMOUNTMDT__4       ReportAmountMdt = "4"
+	REPORTAMOUNTMDT__8       ReportAmountMdt = "8"
+	REPORTAMOUNTMDT__16      ReportAmountMdt = "16"
+	REPORTAMOUNTMDT__32      ReportAmountMdt = "32"
+	REPORTAMOUNTMDT__64      ReportAmountMdt = "64"
+	REPORTAMOUNTMDT_INFINITY ReportAmountMdt = "infinity"
+)
+
+// All allowed values of ReportAmountMdt enum
+var AllowedReportAmountMdtEnumValues = []ReportAmountMdt{
+	"1",
+	"2",
+	"4",
+	"8",
+	"16",
+	"32",
+	"64",
+	"infinity",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ReportAmountMdt) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ReportAmountMdt) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ReportAmountMdt(value)
+	for _, existing := range AllowedReportAmountMdtEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ReportAmountMdt)")
+	return fmt.Errorf("%+v is not a valid ReportAmountMdt", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ReportAmountMdt) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewReportAmountMdtFromValue returns a pointer to a valid ReportAmountMdt
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewReportAmountMdtFromValue(v string) (*ReportAmountMdt, error) {
+	ev := ReportAmountMdt(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ReportAmountMdt: valid values are %v", v, AllowedReportAmountMdtEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ReportAmountMdt) IsValid() bool {
+	for _, existing := range AllowedReportAmountMdtEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ReportAmountMdt value
+func (v ReportAmountMdt) Ptr() *ReportAmountMdt {
+	return &v
 }
 
 type NullableReportAmountMdt struct {

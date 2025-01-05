@@ -24,36 +24,65 @@ import (
 )
 
 // EpsInterworkingIndication EPS Interworking Indication. Possible values are - NONE - WITH_N26 - WITHOUT_N26 - IWK_NON_3GPP
-type EpsInterworkingIndication struct {
-	String *string
+type EpsInterworkingIndication string
+
+// List of EpsInterworkingIndication
+const (
+	EPSINTERWORKINGINDICATION_NONE          EpsInterworkingIndication = "NONE"
+	EPSINTERWORKINGINDICATION_WITH_N26      EpsInterworkingIndication = "WITH_N26"
+	EPSINTERWORKINGINDICATION_WITHOUT_N26   EpsInterworkingIndication = "WITHOUT_N26"
+	EPSINTERWORKINGINDICATION_IWK_NON_3_GPP EpsInterworkingIndication = "IWK_NON_3GPP"
+)
+
+// All allowed values of EpsInterworkingIndication enum
+var AllowedEpsInterworkingIndicationEnumValues = []EpsInterworkingIndication{
+	"NONE",
+	"WITH_N26",
+	"WITHOUT_N26",
+	"IWK_NON_3GPP",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *EpsInterworkingIndication) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *EpsInterworkingIndication) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := EpsInterworkingIndication(value)
+	for _, existing := range AllowedEpsInterworkingIndicationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(EpsInterworkingIndication)")
+	return fmt.Errorf("%+v is not a valid EpsInterworkingIndication", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *EpsInterworkingIndication) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewEpsInterworkingIndicationFromValue returns a pointer to a valid EpsInterworkingIndication
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewEpsInterworkingIndicationFromValue(v string) (*EpsInterworkingIndication, error) {
+	ev := EpsInterworkingIndication(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for EpsInterworkingIndication: valid values are %v", v, AllowedEpsInterworkingIndicationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v EpsInterworkingIndication) IsValid() bool {
+	for _, existing := range AllowedEpsInterworkingIndicationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to EpsInterworkingIndication value
+func (v EpsInterworkingIndication) Ptr() *EpsInterworkingIndication {
+	return &v
 }
 
 type NullableEpsInterworkingIndication struct {

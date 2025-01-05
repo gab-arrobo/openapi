@@ -24,36 +24,63 @@ import (
 )
 
 // SscMode represents the service and session continuity mode It shall comply with the provisions defined in table 5.4.3.6-1.
-type SscMode struct {
-	String *string
+type SscMode string
+
+// List of SscMode
+const (
+	SSCMODE__1 SscMode = "SSC_MODE_1"
+	SSCMODE__2 SscMode = "SSC_MODE_2"
+	SSCMODE__3 SscMode = "SSC_MODE_3"
+)
+
+// All allowed values of SscMode enum
+var AllowedSscModeEnumValues = []SscMode{
+	"SSC_MODE_1",
+	"SSC_MODE_2",
+	"SSC_MODE_3",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *SscMode) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *SscMode) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := SscMode(value)
+	for _, existing := range AllowedSscModeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(SscMode)")
+	return fmt.Errorf("%+v is not a valid SscMode", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *SscMode) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewSscModeFromValue returns a pointer to a valid SscMode
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewSscModeFromValue(v string) (*SscMode, error) {
+	ev := SscMode(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for SscMode: valid values are %v", v, AllowedSscModeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v SscMode) IsValid() bool {
+	for _, existing := range AllowedSscModeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to SscMode value
+func (v SscMode) Ptr() *SscMode {
+	return &v
 }
 
 type NullableSscMode struct {

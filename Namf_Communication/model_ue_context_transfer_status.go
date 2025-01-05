@@ -24,36 +24,61 @@ import (
 )
 
 // UeContextTransferStatus Describes the status of an individual ueContext resource in UE Context Transfer procedures
-type UeContextTransferStatus struct {
-	String *string
+type UeContextTransferStatus string
+
+// List of UeContextTransferStatus
+const (
+	UECONTEXTTRANSFERSTATUS_TRANSFERRED     UeContextTransferStatus = "TRANSFERRED"
+	UECONTEXTTRANSFERSTATUS_NOT_TRANSFERRED UeContextTransferStatus = "NOT_TRANSFERRED"
+)
+
+// All allowed values of UeContextTransferStatus enum
+var AllowedUeContextTransferStatusEnumValues = []UeContextTransferStatus{
+	"TRANSFERRED",
+	"NOT_TRANSFERRED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *UeContextTransferStatus) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *UeContextTransferStatus) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := UeContextTransferStatus(value)
+	for _, existing := range AllowedUeContextTransferStatusEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(UeContextTransferStatus)")
+	return fmt.Errorf("%+v is not a valid UeContextTransferStatus", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *UeContextTransferStatus) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewUeContextTransferStatusFromValue returns a pointer to a valid UeContextTransferStatus
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewUeContextTransferStatusFromValue(v string) (*UeContextTransferStatus, error) {
+	ev := UeContextTransferStatus(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for UeContextTransferStatus: valid values are %v", v, AllowedUeContextTransferStatusEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v UeContextTransferStatus) IsValid() bool {
+	for _, existing := range AllowedUeContextTransferStatusEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to UeContextTransferStatus value
+func (v UeContextTransferStatus) Ptr() *UeContextTransferStatus {
+	return &v
 }
 
 type NullableUeContextTransferStatus struct {

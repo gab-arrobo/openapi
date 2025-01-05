@@ -24,36 +24,65 @@ import (
 )
 
 // CongestionInfoReq Congestion Information Request Type. Possible values are - UL - DL - BOTH - STOP
-type CongestionInfoReq struct {
-	String *string
+type CongestionInfoReq string
+
+// List of CongestionInfoReq
+const (
+	CONGESTIONINFOREQ_UL   CongestionInfoReq = "UL"
+	CONGESTIONINFOREQ_DL   CongestionInfoReq = "DL"
+	CONGESTIONINFOREQ_BOTH CongestionInfoReq = "BOTH"
+	CONGESTIONINFOREQ_STOP CongestionInfoReq = "STOP"
+)
+
+// All allowed values of CongestionInfoReq enum
+var AllowedCongestionInfoReqEnumValues = []CongestionInfoReq{
+	"UL",
+	"DL",
+	"BOTH",
+	"STOP",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *CongestionInfoReq) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *CongestionInfoReq) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := CongestionInfoReq(value)
+	for _, existing := range AllowedCongestionInfoReqEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(CongestionInfoReq)")
+	return fmt.Errorf("%+v is not a valid CongestionInfoReq", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *CongestionInfoReq) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewCongestionInfoReqFromValue returns a pointer to a valid CongestionInfoReq
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewCongestionInfoReqFromValue(v string) (*CongestionInfoReq, error) {
+	ev := CongestionInfoReq(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for CongestionInfoReq: valid values are %v", v, AllowedCongestionInfoReqEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v CongestionInfoReq) IsValid() bool {
+	for _, existing := range AllowedCongestionInfoReqEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to CongestionInfoReq value
+func (v CongestionInfoReq) Ptr() *CongestionInfoReq {
+	return &v
 }
 
 type NullableCongestionInfoReq struct {

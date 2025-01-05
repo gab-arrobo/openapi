@@ -24,36 +24,61 @@ import (
 )
 
 // NotificationControlIndication Indicates that the notification of DDD Status is requested and/or that the notification of DDN Failure is requested.
-type NotificationControlIndication struct {
-	String *string
+type NotificationControlIndication string
+
+// List of NotificationControlIndication
+const (
+	NOTIFICATIONCONTROLINDICATION_DDN_FAILURE NotificationControlIndication = "DDN_FAILURE"
+	NOTIFICATIONCONTROLINDICATION_DDD_STATUS  NotificationControlIndication = "DDD_STATUS"
+)
+
+// All allowed values of NotificationControlIndication enum
+var AllowedNotificationControlIndicationEnumValues = []NotificationControlIndication{
+	"DDN_FAILURE",
+	"DDD_STATUS",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *NotificationControlIndication) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *NotificationControlIndication) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := NotificationControlIndication(value)
+	for _, existing := range AllowedNotificationControlIndicationEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(NotificationControlIndication)")
+	return fmt.Errorf("%+v is not a valid NotificationControlIndication", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *NotificationControlIndication) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewNotificationControlIndicationFromValue returns a pointer to a valid NotificationControlIndication
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewNotificationControlIndicationFromValue(v string) (*NotificationControlIndication, error) {
+	ev := NotificationControlIndication(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for NotificationControlIndication: valid values are %v", v, AllowedNotificationControlIndicationEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v NotificationControlIndication) IsValid() bool {
+	for _, existing := range AllowedNotificationControlIndicationEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to NotificationControlIndication value
+func (v NotificationControlIndication) Ptr() *NotificationControlIndication {
+	return &v
 }
 
 type NullableNotificationControlIndication struct {

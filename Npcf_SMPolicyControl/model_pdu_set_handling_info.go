@@ -24,36 +24,61 @@ import (
 )
 
 // PduSetHandlingInfo Possible values are: - \"ALL_PDUS_NEEDED\": All PDUs of the PDU Set are needed - \"ALL_PDUS_NOT_NEEDED\": All PDUs of the PDU Set are not needed
-type PduSetHandlingInfo struct {
-	String *string
+type PduSetHandlingInfo string
+
+// List of PduSetHandlingInfo
+const (
+	PDUSETHANDLINGINFO_NEEDED     PduSetHandlingInfo = "ALL_PDUS_NEEDED"
+	PDUSETHANDLINGINFO_NOT_NEEDED PduSetHandlingInfo = "ALL_PDUS_NOT_NEEDED"
+)
+
+// All allowed values of PduSetHandlingInfo enum
+var AllowedPduSetHandlingInfoEnumValues = []PduSetHandlingInfo{
+	"ALL_PDUS_NEEDED",
+	"ALL_PDUS_NOT_NEEDED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *PduSetHandlingInfo) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *PduSetHandlingInfo) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := PduSetHandlingInfo(value)
+	for _, existing := range AllowedPduSetHandlingInfoEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(PduSetHandlingInfo)")
+	return fmt.Errorf("%+v is not a valid PduSetHandlingInfo", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *PduSetHandlingInfo) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewPduSetHandlingInfoFromValue returns a pointer to a valid PduSetHandlingInfo
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewPduSetHandlingInfoFromValue(v string) (*PduSetHandlingInfo, error) {
+	ev := PduSetHandlingInfo(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for PduSetHandlingInfo: valid values are %v", v, AllowedPduSetHandlingInfoEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v PduSetHandlingInfo) IsValid() bool {
+	for _, existing := range AllowedPduSetHandlingInfoEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to PduSetHandlingInfo value
+func (v PduSetHandlingInfo) Ptr() *PduSetHandlingInfo {
+	return &v
 }
 
 type NullablePduSetHandlingInfo struct {

@@ -24,36 +24,65 @@ import (
 )
 
 // FlowDirection Indicates the direction of the service data flow.   Possible values are: - DOWNLINK: The corresponding filter applies for traffic to the UE. - UPLINK: The corresponding filter applies for traffic from the UE. - BIDIRECTIONAL: The corresponding filter applies for traffic both to and from the UE. - UNSPECIFIED: The corresponding filter applies for traffic to the UE (downlink), but has no specific direction declared. The service data flow detection shall apply the filter for uplink traffic as if the filter was bidirectional. The PCF shall not use the value UNSPECIFIED in filters created by the network in NW-initiated procedures. The PCF shall only include the value UNSPECIFIED in filters in UE-initiated procedures if the same value is received from the SMF.
-type FlowDirection struct {
-	String *string
+type FlowDirection string
+
+// List of FlowDirection
+const (
+	FLOWDIRECTION_DOWNLINK      FlowDirection = "DOWNLINK"
+	FLOWDIRECTION_UPLINK        FlowDirection = "UPLINK"
+	FLOWDIRECTION_BIDIRECTIONAL FlowDirection = "BIDIRECTIONAL"
+	FLOWDIRECTION_UNSPECIFIED   FlowDirection = "UNSPECIFIED"
+)
+
+// All allowed values of FlowDirection enum
+var AllowedFlowDirectionEnumValues = []FlowDirection{
+	"DOWNLINK",
+	"UPLINK",
+	"BIDIRECTIONAL",
+	"UNSPECIFIED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *FlowDirection) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *FlowDirection) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := FlowDirection(value)
+	for _, existing := range AllowedFlowDirectionEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(FlowDirection)")
+	return fmt.Errorf("%+v is not a valid FlowDirection", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *FlowDirection) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewFlowDirectionFromValue returns a pointer to a valid FlowDirection
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewFlowDirectionFromValue(v string) (*FlowDirection, error) {
+	ev := FlowDirection(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for FlowDirection: valid values are %v", v, AllowedFlowDirectionEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v FlowDirection) IsValid() bool {
+	for _, existing := range AllowedFlowDirectionEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to FlowDirection value
+func (v FlowDirection) Ptr() *FlowDirection {
+	return &v
 }
 
 type NullableFlowDirection struct {

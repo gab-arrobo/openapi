@@ -24,36 +24,63 @@ import (
 )
 
 // NotificationFlag Possible values are: - ACTIVATE: The event notification is activated. - DEACTIVATE: The event notification is deactivated and shall be muted. The available    event(s) shall be stored. - RETRIEVAL: The event notification shall be sent to the NF service consumer(s),   after that, is muted again.
-type NotificationFlag struct {
-	String *string
+type NotificationFlag string
+
+// List of NotificationFlag
+const (
+	NOTIFICATIONFLAG_ACTIVATE   NotificationFlag = "ACTIVATE"
+	NOTIFICATIONFLAG_DEACTIVATE NotificationFlag = "DEACTIVATE"
+	NOTIFICATIONFLAG_RETRIEVAL  NotificationFlag = "RETRIEVAL"
+)
+
+// All allowed values of NotificationFlag enum
+var AllowedNotificationFlagEnumValues = []NotificationFlag{
+	"ACTIVATE",
+	"DEACTIVATE",
+	"RETRIEVAL",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *NotificationFlag) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *NotificationFlag) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := NotificationFlag(value)
+	for _, existing := range AllowedNotificationFlagEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(NotificationFlag)")
+	return fmt.Errorf("%+v is not a valid NotificationFlag", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *NotificationFlag) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewNotificationFlagFromValue returns a pointer to a valid NotificationFlag
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewNotificationFlagFromValue(v string) (*NotificationFlag, error) {
+	ev := NotificationFlag(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for NotificationFlag: valid values are %v", v, AllowedNotificationFlagEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v NotificationFlag) IsValid() bool {
+	for _, existing := range AllowedNotificationFlagEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to NotificationFlag value
+func (v NotificationFlag) Ptr() *NotificationFlag {
+	return &v
 }
 
 type NullableNotificationFlag struct {

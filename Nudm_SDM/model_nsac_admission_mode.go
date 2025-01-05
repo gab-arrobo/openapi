@@ -24,36 +24,63 @@ import (
 )
 
 // NsacAdmissionMode Indicates the NSAC admission mode applied in roaming case.
-type NsacAdmissionMode struct {
-	String *string
+type NsacAdmissionMode string
+
+// List of NsacAdmissionMode
+const (
+	NSACADMISSIONMODE_VPLMN_ADMISSION             NsacAdmissionMode = "VPLMN_ADMISSION"
+	NSACADMISSIONMODE_VPLMN_WITH_HPLMN_ASSISTANCE NsacAdmissionMode = "VPLMN_WITH_HPLMN_ASSISTANCE"
+	NSACADMISSIONMODE_HPLMN_ADMISSION             NsacAdmissionMode = "HPLMN_ADMISSION"
+)
+
+// All allowed values of NsacAdmissionMode enum
+var AllowedNsacAdmissionModeEnumValues = []NsacAdmissionMode{
+	"VPLMN_ADMISSION",
+	"VPLMN_WITH_HPLMN_ASSISTANCE",
+	"HPLMN_ADMISSION",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *NsacAdmissionMode) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *NsacAdmissionMode) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := NsacAdmissionMode(value)
+	for _, existing := range AllowedNsacAdmissionModeEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(NsacAdmissionMode)")
+	return fmt.Errorf("%+v is not a valid NsacAdmissionMode", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *NsacAdmissionMode) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewNsacAdmissionModeFromValue returns a pointer to a valid NsacAdmissionMode
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewNsacAdmissionModeFromValue(v string) (*NsacAdmissionMode, error) {
+	ev := NsacAdmissionMode(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for NsacAdmissionMode: valid values are %v", v, AllowedNsacAdmissionModeEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v NsacAdmissionMode) IsValid() bool {
+	for _, existing := range AllowedNsacAdmissionModeEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to NsacAdmissionMode value
+func (v NsacAdmissionMode) Ptr() *NsacAdmissionMode {
+	return &v
 }
 
 type NullableNsacAdmissionMode struct {

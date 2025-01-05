@@ -24,36 +24,87 @@ import (
 )
 
 // ReportIntervalNrMdt The enumeration ReportIntervalNrMdt defines Report Interval in NR for MDT in the trace. See 3GPP TS 32.422 for further description of the values. It shall comply with the provisions defined in table 5.6.3.17-1.
-type ReportIntervalNrMdt struct {
-	String *string
+type ReportIntervalNrMdt string
+
+// List of ReportIntervalNrMdt
+const (
+	REPORTINTERVALNRMDT__120     ReportIntervalNrMdt = "120"
+	REPORTINTERVALNRMDT__240     ReportIntervalNrMdt = "240"
+	REPORTINTERVALNRMDT__480     ReportIntervalNrMdt = "480"
+	REPORTINTERVALNRMDT__640     ReportIntervalNrMdt = "640"
+	REPORTINTERVALNRMDT__1024    ReportIntervalNrMdt = "1024"
+	REPORTINTERVALNRMDT__2048    ReportIntervalNrMdt = "2048"
+	REPORTINTERVALNRMDT__5120    ReportIntervalNrMdt = "5120"
+	REPORTINTERVALNRMDT__10240   ReportIntervalNrMdt = "10240"
+	REPORTINTERVALNRMDT__20480   ReportIntervalNrMdt = "20480"
+	REPORTINTERVALNRMDT__40960   ReportIntervalNrMdt = "40960"
+	REPORTINTERVALNRMDT__60000   ReportIntervalNrMdt = "60000"
+	REPORTINTERVALNRMDT__360000  ReportIntervalNrMdt = "360000"
+	REPORTINTERVALNRMDT__720000  ReportIntervalNrMdt = "720000"
+	REPORTINTERVALNRMDT__1800000 ReportIntervalNrMdt = "1800000"
+	REPORTINTERVALNRMDT__3600000 ReportIntervalNrMdt = "3600000"
+)
+
+// All allowed values of ReportIntervalNrMdt enum
+var AllowedReportIntervalNrMdtEnumValues = []ReportIntervalNrMdt{
+	"120",
+	"240",
+	"480",
+	"640",
+	"1024",
+	"2048",
+	"5120",
+	"10240",
+	"20480",
+	"40960",
+	"60000",
+	"360000",
+	"720000",
+	"1800000",
+	"3600000",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *ReportIntervalNrMdt) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *ReportIntervalNrMdt) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := ReportIntervalNrMdt(value)
+	for _, existing := range AllowedReportIntervalNrMdtEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(ReportIntervalNrMdt)")
+	return fmt.Errorf("%+v is not a valid ReportIntervalNrMdt", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *ReportIntervalNrMdt) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewReportIntervalNrMdtFromValue returns a pointer to a valid ReportIntervalNrMdt
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewReportIntervalNrMdtFromValue(v string) (*ReportIntervalNrMdt, error) {
+	ev := ReportIntervalNrMdt(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for ReportIntervalNrMdt: valid values are %v", v, AllowedReportIntervalNrMdtEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v ReportIntervalNrMdt) IsValid() bool {
+	for _, existing := range AllowedReportIntervalNrMdtEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to ReportIntervalNrMdt value
+func (v ReportIntervalNrMdt) Ptr() *ReportIntervalNrMdt {
+	return &v
 }
 
 type NullableReportIntervalNrMdt struct {

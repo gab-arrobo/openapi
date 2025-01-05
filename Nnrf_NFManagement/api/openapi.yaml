@@ -33493,17 +33493,15 @@ components:
       - path
       type: object
     PatchOperation:
-      anyOf:
-      - enum:
-        - add
-        - copy
-        - move
-        - remove
-        - replace
-        - test
-        type: string
-      - type: string
       description: Operations as defined in IETF RFC 6902.
+      enum:
+      - add
+      - copy
+      - move
+      - remove
+      - replace
+      - test
+      type: string
     PlmnId:
       description: |
         When PlmnId needs to be converted to string (e.g. when used in maps as key), the string  shall be composed of three digits "mcc" followed by "-" and two or three digits "mnc".
@@ -33676,13 +33674,11 @@ components:
         \ alphabetic character or a digit. \n"
       type: string
     UriScheme:
-      anyOf:
-      - enum:
-        - http
-        - https
-        type: string
-      - type: string
       description: HTTP and HTTPS URI scheme.
+      enum:
+      - http
+      - https
+      type: string
     NfServiceSetId:
       description: "NF Service Set Identifier (see clause 28.12 of 3GPP TS 23.003)\
         \ formatted as the following  string \"set<Set ID>.sn<Service Name>.nfi<NF\
@@ -33834,17 +33830,15 @@ components:
         \ TS 23.501."
       type: string
     PduSessionType:
-      anyOf:
-      - enum:
-        - IPV4
-        - IPV6
-        - IPV4V6
-        - UNSTRUCTURED
-        - ETHERNET
-        type: string
-      - type: string
       description: "PduSessionType indicates the type of a PDU session. It shall comply\
         \ with the provisions defined in table 5.4.3.3-1. \n"
+      enum:
+      - IPV4
+      - IPV6
+      - IPV4V6
+      - UNSTRUCTURED
+      - ETHERNET
+      type: string
     AtsssCapability:
       description: |
         Containes Capability to support procedures related to Access Traffic Steering, Switching, Splitting.
@@ -33894,35 +33888,31 @@ components:
     DiameterIdentity:
       $ref: '#/components/schemas/Fqdn'
     N1MessageClass:
-      anyOf:
-      - enum:
-        - 5GMM
-        - SM
-        - LPP
-        - SMS
-        - UPDP
-        - LCS
-        - UPP-CM
-        type: string
-      - type: string
       description: Enumeration for N1 Message Class
+      enum:
+      - 5GMM
+      - SM
+      - LPP
+      - SMS
+      - UPDP
+      - LCS
+      - UPP-CM
+      type: string
     N2InformationClass:
-      anyOf:
-      - enum:
-        - SM
-        - NRPPa
-        - PWS
-        - PWS-BCAL
-        - PWS-RF
-        - RAN
-        - V2X
-        - PROSE
-        - TSS
-        - RSPP
-        - A2X
-        type: string
-      - type: string
       description: Enumeration for N2 Information Class
+      enum:
+      - SM
+      - NRPPa
+      - PWS
+      - PWS-BCAL
+      - PWS-RF
+      - RAN
+      - V2X
+      - PROSE
+      - TSS
+      - RSPP
+      - A2X
+      type: string
     AfEvent:
       anyOf:
       - enum:
@@ -33991,15 +33981,13 @@ components:
       - path
       type: object
     ChangeType:
-      anyOf:
-      - enum:
-        - ADD
-        - MOVE
-        - REMOVE
-        - REPLACE
-        type: string
-      - type: string
       description: Indicates the type of change to be performed.
+      enum:
+      - ADD
+      - MOVE
+      - REMOVE
+      - REPLACE
+      type: string
     AmfName:
       $ref: '#/components/schemas/Fqdn'
     EmptyObject:
@@ -34142,44 +34130,42 @@ components:
       description: LMF identification.
       type: string
     RatType:
-      anyOf:
-      - enum:
-        - NR
-        - EUTRA
-        - WLAN
-        - VIRTUAL
-        - NBIOT
-        - WIRELINE
-        - WIRELINE_CABLE
-        - WIRELINE_BBF
-        - LTE-M
-        - NR_U
-        - EUTRA_U
-        - TRUSTED_N3GA
-        - TRUSTED_WLAN
-        - UTRA
-        - GERA
-        - NR_LEO
-        - NR_MEO
-        - NR_GEO
-        - NR_OTHER_SAT
-        - NR_REDCAP
-        - WB_E_UTRAN_LEO
-        - WB_E_UTRAN_MEO
-        - WB_E_UTRAN_GEO
-        - WB_E_UTRAN_OTHERSAT
-        - NB_IOT_LEO
-        - NB_IOT_MEO
-        - NB_IOT_GEO
-        - NB_IOT_OTHERSAT
-        - LTE_M_LEO
-        - LTE_M_MEO
-        - LTE_M_GEO
-        - LTE_M_OTHERSAT
-        - NR_EREDCAP
-        type: string
-      - type: string
       description: Indicates the radio access used.
+      enum:
+      - NR
+      - EUTRA
+      - WLAN
+      - VIRTUAL
+      - NBIOT
+      - WIRELINE
+      - WIRELINE_CABLE
+      - WIRELINE_BBF
+      - LTE-M
+      - NR_U
+      - EUTRA_U
+      - TRUSTED_N3GA
+      - TRUSTED_WLAN
+      - UTRA
+      - GERA
+      - NR_LEO
+      - NR_MEO
+      - NR_GEO
+      - NR_OTHER_SAT
+      - NR_REDCAP
+      - WB_E_UTRAN_LEO
+      - WB_E_UTRAN_MEO
+      - WB_E_UTRAN_GEO
+      - WB_E_UTRAN_OTHERSAT
+      - NB_IOT_LEO
+      - NB_IOT_MEO
+      - NB_IOT_GEO
+      - NB_IOT_OTHERSAT
+      - LTE_M_LEO
+      - LTE_M_MEO
+      - LTE_M_GEO
+      - LTE_M_OTHERSAT
+      - NR_EREDCAP
+      type: string
     SupportedGADShapes:
       anyOf:
       - enum:
@@ -34690,17 +34676,15 @@ components:
       - reason
       type: object
     NoProfileMatchReason:
-      anyOf:
-      - enum:
-        - REQUESTER_PLMN_NOT_ALLOWED
-        - TARGET_NF_SUSPENDED
-        - TARGET_NF_UNDISCOVERABLE
-        - QUERY_PARAMS_COMBINATION_NO_MATCH
-        - TARGET_NF_TYPE_NOT_SUPPORTED
-        - UNSPECIFIED
-        type: string
-      - type: string
       description: No Profile Match Reason
+      enum:
+      - REQUESTER_PLMN_NOT_ALLOWED
+      - TARGET_NF_SUSPENDED
+      - TARGET_NF_UNDISCOVERABLE
+      - QUERY_PARAMS_COMBINATION_NO_MATCH
+      - TARGET_NF_TYPE_NOT_SUPPORTED
+      - UNSPECIFIED
+      type: string
     QueryParamCombination:
       description: Contains a list of Query Parameters
       properties:

@@ -24,36 +24,63 @@ import (
 )
 
 // UpIntegrity indicates whether UP integrity protection is required, preferred or not needed for all the traffic on the PDU Session. It shall comply with the provisions defined in  table 5.4.3.4-1.
-type UpIntegrity struct {
-	String *string
+type UpIntegrity string
+
+// List of UpIntegrity
+const (
+	UPINTEGRITY_REQUIRED   UpIntegrity = "REQUIRED"
+	UPINTEGRITY_PREFERRED  UpIntegrity = "PREFERRED"
+	UPINTEGRITY_NOT_NEEDED UpIntegrity = "NOT_NEEDED"
+)
+
+// All allowed values of UpIntegrity enum
+var AllowedUpIntegrityEnumValues = []UpIntegrity{
+	"REQUIRED",
+	"PREFERRED",
+	"NOT_NEEDED",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *UpIntegrity) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *UpIntegrity) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := UpIntegrity(value)
+	for _, existing := range AllowedUpIntegrityEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(UpIntegrity)")
+	return fmt.Errorf("%+v is not a valid UpIntegrity", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *UpIntegrity) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewUpIntegrityFromValue returns a pointer to a valid UpIntegrity
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewUpIntegrityFromValue(v string) (*UpIntegrity, error) {
+	ev := UpIntegrity(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for UpIntegrity: valid values are %v", v, AllowedUpIntegrityEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v UpIntegrity) IsValid() bool {
+	for _, existing := range AllowedUpIntegrityEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to UpIntegrity value
+func (v UpIntegrity) Ptr() *UpIntegrity {
+	return &v
 }
 
 type NullableUpIntegrity struct {

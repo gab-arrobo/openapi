@@ -39,9 +39,9 @@ type SharedData struct {
 	// A map(list of key-value pairs) where GroupId serves as key of VnGroupData
 	SharedVnGroupDatas *map[string]VnGroupData `json:"sharedVnGroupDatas,omitempty"`
 	// A map(list of key-value pairs) where JSON pointer pointing to an attribute within the SharedData serves as key of SharedDataTreatmentInstruction
-	TreatmentInstructions   map[string]SharedDataTreatmentInstruction `json:"treatmentInstructions,omitempty"`
-	SharedSmSubsData        *SessionManagementSubscriptionData        `json:"sharedSmSubsData,omitempty"`
-	SharedEcsAddrConfigInfo NullableEcsAddrConfigInfo                 `json:"sharedEcsAddrConfigInfo,omitempty"`
+	TreatmentInstructions   *map[string]SharedDataTreatmentInstruction `json:"treatmentInstructions,omitempty"`
+	SharedSmSubsData        *SessionManagementSubscriptionData         `json:"sharedSmSubsData,omitempty"`
+	SharedEcsAddrConfigInfo NullableEcsAddrConfigInfo                  `json:"sharedEcsAddrConfigInfo,omitempty"`
 	AdditionalProperties    map[string]interface{}
 }
 
@@ -330,14 +330,14 @@ func (o *SharedData) GetTreatmentInstructions() map[string]SharedDataTreatmentIn
 		var ret map[string]SharedDataTreatmentInstruction
 		return ret
 	}
-	return o.TreatmentInstructions
+	return *o.TreatmentInstructions
 }
 
 // GetTreatmentInstructionsOk returns a tuple with the TreatmentInstructions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SharedData) GetTreatmentInstructionsOk() (map[string]SharedDataTreatmentInstruction, bool) {
+func (o *SharedData) GetTreatmentInstructionsOk() (*map[string]SharedDataTreatmentInstruction, bool) {
 	if o == nil || IsNil(o.TreatmentInstructions) {
-		return map[string]SharedDataTreatmentInstruction{}, false
+		return nil, false
 	}
 	return o.TreatmentInstructions, true
 }
@@ -353,7 +353,7 @@ func (o *SharedData) HasTreatmentInstructions() bool {
 
 // SetTreatmentInstructions gets a reference to the given map[string]SharedDataTreatmentInstruction and assigns it to the TreatmentInstructions field.
 func (o *SharedData) SetTreatmentInstructions(v map[string]SharedDataTreatmentInstruction) {
-	o.TreatmentInstructions = v
+	o.TreatmentInstructions = &v
 }
 
 // GetSharedSmSubsData returns the SharedSmSubsData field value if set, zero value otherwise.

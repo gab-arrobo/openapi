@@ -24,36 +24,63 @@ import (
 )
 
 // AuthStatus Possible values are: - \"EAP_SUCCESS\": The NSSAA status is EAP-Success. - \"EAP_FAILURE\": The NSSAA status is EAP-Failure. - \"PENDING\": The NSSAA status is Pending.
-type AuthStatus struct {
-	String *string
+type AuthStatus string
+
+// List of AuthStatus
+const (
+	AUTHSTATUS_EAP_SUCCESS AuthStatus = "EAP_SUCCESS"
+	AUTHSTATUS_EAP_FAILURE AuthStatus = "EAP_FAILURE"
+	AUTHSTATUS_PENDING     AuthStatus = "PENDING"
+)
+
+// All allowed values of AuthStatus enum
+var AllowedAuthStatusEnumValues = []AuthStatus{
+	"EAP_SUCCESS",
+	"EAP_FAILURE",
+	"PENDING",
 }
 
-// Unmarshal JSON data into any of the pointers in the struct
-func (dst *AuthStatus) UnmarshalJSON(data []byte) error {
-	var err error
-	// try to unmarshal JSON data into String
-	err = json.Unmarshal(data, &dst.String)
-	if err == nil {
-		jsonString, _ := json.Marshal(dst.String)
-		if string(jsonString) == "{}" { // empty struct
-			dst.String = nil
-		} else {
-			return nil // data stored in dst.String, return on the first match
+func (v *AuthStatus) UnmarshalJSON(src []byte) error {
+	var value string
+	err := json.Unmarshal(src, &value)
+	if err != nil {
+		return err
+	}
+	enumTypeValue := AuthStatus(value)
+	for _, existing := range AllowedAuthStatusEnumValues {
+		if existing == enumTypeValue {
+			*v = enumTypeValue
+			return nil
 		}
-	} else {
-		dst.String = nil
 	}
 
-	return fmt.Errorf("data failed to match schemas in anyOf(AuthStatus)")
+	return fmt.Errorf("%+v is not a valid AuthStatus", value)
 }
 
-// Marshal data from the first non-nil pointers in the struct to JSON
-func (src *AuthStatus) MarshalJSON() ([]byte, error) {
-	if src.String != nil {
-		return json.Marshal(&src.String)
+// NewAuthStatusFromValue returns a pointer to a valid AuthStatus
+// for the value passed as argument, or an error if the value passed is not allowed by the enum
+func NewAuthStatusFromValue(v string) (*AuthStatus, error) {
+	ev := AuthStatus(v)
+	if ev.IsValid() {
+		return &ev, nil
+	} else {
+		return nil, fmt.Errorf("invalid value '%v' for AuthStatus: valid values are %v", v, AllowedAuthStatusEnumValues)
 	}
+}
 
-	return nil, nil // no data in anyOf schemas
+// IsValid return true if the value is valid for the enum, false otherwise
+func (v AuthStatus) IsValid() bool {
+	for _, existing := range AllowedAuthStatusEnumValues {
+		if existing == v {
+			return true
+		}
+	}
+	return false
+}
+
+// Ptr returns reference to AuthStatus value
+func (v AuthStatus) Ptr() *AuthStatus {
+	return &v
 }
 
 type NullableAuthStatus struct {
