@@ -496,7 +496,7 @@ func nrfDbCallback(nrfUri string, targetNfType, requestNfType Nnrf_NFDiscovery.N
 }
 
 func TestCacheMissAndHits(t *testing.T) {
-	var result Nnrf_NFDiscovery.SearchResult
+	var result *Nnrf_NFDiscovery.SearchResult
 	var err error
 
 	expectedCallCount := nrfDbCallbackCallCount
@@ -579,7 +579,7 @@ func TestCacheMissAndHits(t *testing.T) {
 }
 
 func TestCacheMissOnTTlExpiry(t *testing.T) {
-	var result Nnrf_NFDiscovery.SearchResult
+	var result *Nnrf_NFDiscovery.SearchResult
 	var err error
 
 	expectedCallCount := nrfDbCallbackCallCount
@@ -641,7 +641,7 @@ func TestCacheMissOnTTlExpiry(t *testing.T) {
 }
 
 func TestCacheEviction(t *testing.T) {
-	var result Nnrf_NFDiscovery.SearchResult
+	var result *Nnrf_NFDiscovery.SearchResult
 	var err error
 
 	evictionTimerVal := time.Duration(evictionInterval)
@@ -659,6 +659,10 @@ func TestCacheEviction(t *testing.T) {
 		t.Errorf("test failed, %s", err.Error())
 	}
 
+	if len(result.NfInstances) == 0 {
+		t.Errorf("nf instances len 0")
+	}
+
 	validityPeriod = 30
 	param = Nnrf_NFDiscovery.ApiSearchNFInstancesRequest{}
 	param.Dnn("ims")
@@ -667,6 +671,10 @@ func TestCacheEviction(t *testing.T) {
 	result, err = SearchNFInstances("testNrf", Nnrf_NFDiscovery.NFTYPE_SMF, Nnrf_NFDiscovery.NFTYPE_AMF, &param)
 	if err != nil {
 		t.Errorf("test failed, %s", err.Error())
+	}
+
+	if len(result.NfInstances) == 0 {
+		t.Errorf("nf instances len 0")
 	}
 
 	validityPeriod = 90

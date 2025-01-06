@@ -326,41 +326,41 @@ func disableNrfCaching() {
 	masterCache = nil
 }
 
-func SearchNFInstances(nrfUri string, targetNfType, requestNfType Nnrf_NFDiscovery.NFType, param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (Nnrf_NFDiscovery.SearchResult, error) {
+func SearchNFInstances(nrfUri string, targetNfType, requestNfType Nnrf_NFDiscovery.NFType, param *Nnrf_NFDiscovery.ApiSearchNFInstancesRequest) (*Nnrf_NFDiscovery.SearchResult, error) {
 	if !targetNfType.IsValid() {
-		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("invalid NFType: %v", targetNfType)
+		return nil, fmt.Errorf("invalid NFType: %v", targetNfType)
 	}
 	if param == nil {
-		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("param is nil")
+		return nil, fmt.Errorf("param is nil")
 	}
 	var searchResult Nnrf_NFDiscovery.SearchResult
 
 	if masterCache == nil {
-		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("masterCache is not initialized")
+		return nil, fmt.Errorf("masterCache is not initialized")
 	}
 
 	cache := masterCache.getNrfCacheInstance(targetNfType)
 	if cache == nil {
 		logger.NrfcacheLog.Errorf("failed to find/create cache for nfType: %v", targetNfType)
-		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("unable to find/create cache for NF type: %v", targetNfType)
+		return nil, fmt.Errorf("unable to find/create cache for NF type: %v", targetNfType)
 	}
 
 	searchResult, err := cache.handleLookup(nrfUri, targetNfType, requestNfType, param)
 	if err != nil {
 		logger.NrfcacheLog.With("nfType", targetNfType, "param", param).Errorln("handleLookup failed:", err)
-		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("handleLookup for nfType %v failed: %w", targetNfType, err)
+		return nil, fmt.Errorf("handleLookup for nfType %v failed: %w", targetNfType, err)
 	}
 
 	if len(searchResult.NfInstances) == 0 {
 		logger.NrfcacheLog.Debugln("No NF instances found in search result")
-		return Nnrf_NFDiscovery.SearchResult{}, fmt.Errorf("no NF instances found for NF type: %v", targetNfType)
+		return nil, fmt.Errorf("no NF instances found for NF type: %v", targetNfType)
 	}
 
 	for _, np := range searchResult.NfInstances {
 		logger.NrfcacheLog.Infof("%v", np)
 	}
 
-	return searchResult, err
+	return &searchResult, err
 }
 
 func RemoveNfProfileFromNrfCache(nfInstanceId string) bool {
