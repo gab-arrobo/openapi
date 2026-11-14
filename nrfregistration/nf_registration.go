@@ -176,8 +176,13 @@ func (s *Service[C]) StartStatic(ctx context.Context, cfg C) {
 	s.Start(ctx, cfgChan)
 }
 
-// Deregister cancels the registration in progress, stops the heartbeat, prevents it from being
-// re-armed until Start is called again, and sends a DeregisterNFInstance. It is meant for NF termination.
+// Deregister cancels the registration in progress, stops the heartbeat, and sends a DeregisterNFInstance. It is
+// meant for NF termination and is terminal: until Start is called again, a Start loop that is still running
+// registers nothing, so that a configuration received after the deregistration cannot register the NF again
+// without a heartbeat to keep it registered.
+//
+// A registration that is in flight is waited for, and the wait ends when ctx does: give ctx a deadline, so that
+// a request to the NRF that does not return cannot hold up the shutdown of the NF.
 func (s *Service[C]) Deregister(ctx context.Context) {
 	s.shutdownKeepAliveTimer()
 	s.cancelRegistrationAndWait(ctx)
@@ -185,11 +190,16 @@ func (s *Service[C]) Deregister(ctx context.Context) {
 }
 
 // deregister is Deregister for an empty config: Start stays able to register a later config.
+//
+// The registration work is cancelled, and waited for, before the timer is stopped. The other way round, a
+// registration or heartbeat that completes after the stop but before its context is cancelled would arm a
+// new timer, which then stays armed after the deregistration and sends heartbeats for an NF that is gone.
+// Once the context is cancelled nothing can arm a timer, so the stop is final.
 func (s *Service[C]) deregister(ctx context.Context) {
+	s.cancelRegistrationAndWait(ctx)
 	s.keepAliveTimerMutex.Lock()
 	s.stopKeepAliveTimer()
 	s.keepAliveTimerMutex.Unlock()
-	s.cancelRegistrationAndWait(ctx)
 	s.sendDeregister(ctx)
 }
 
@@ -244,14 +254,23 @@ func (s *Service[C]) registerNF(registerCtx context.Context, cfg C) {
 	defer s.registerCtxMutex.Unlock()
 	interval := 0 * time.Millisecond
 	for {
+		// a timer that is stopped when the context ends, where time.After would stay until it fired
+		timer := time.NewTimer(interval)
 		select {
 		case <-registerCtx.Done():
+			timer.Stop()
 			s.log.Infoln("no-op. Registration context was cancelled")
 			return
-		case <-time.After(interval):
+		case <-timer.C:
 			// select picks randomly when both cases are ready, so check cancellation first
 			if registerCtx.Err() != nil {
 				s.log.Infoln("no-op. Registration context was cancelled")
+				return
+			}
+			// Checked here, with registerCtxMutex held: Deregister waits for this mutex after setting the
+			// flag, so a registration is either already in flight, and waited for, or sees the flag.
+			if s.isShutdown() {
+				s.log.Infoln("NF registration service is shut down, the NF will not be registered")
 				return
 			}
 			nfProfile, err := s.cfg.Register(registerCtx, cfg)
@@ -285,6 +304,10 @@ func (s *Service[C]) heartbeatNF(registerCtx context.Context, cfg C, interval in
 		return
 	}
 	s.keepAliveTimerMutex.Unlock()
+	if registerCtx.Err() != nil {
+		s.log.Infoln("registration was cancelled, heartbeat will not be sent to NRF")
+		return
+	}
 
 	patchItem := []models.PatchItem{
 		{
@@ -335,6 +358,14 @@ func (s *Service[C]) startKeepAliveTimer(registerCtx context.Context, profileHea
 	// AfterFunc starts a timer and waits for keepAliveTimer to elapse and then calls heartbeatNF function
 	s.keepAliveTimer = s.afterFunc(time.Duration(heartbeatTimer)*time.Second, heartbeatFunction)
 	s.log.Debugf("started heartbeat timer: %d sec", heartbeatTimer)
+}
+
+// isShutdown reports whether the service was shut down, by Deregister or by the end of Start, and not
+// started again.
+func (s *Service[C]) isShutdown() bool {
+	s.keepAliveTimerMutex.Lock()
+	defer s.keepAliveTimerMutex.Unlock()
+	return s.keepAliveShutdown
 }
 
 // stopKeepAliveTimer must be called with keepAliveTimerMutex held.
