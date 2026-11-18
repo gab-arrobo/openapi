@@ -28,10 +28,11 @@ var _ openapi.MappedNullable = &PccRule{}
 
 // PccRule struct for PccRule
 type PccRule struct {
-	RuleId               string    `json:"ruleId" yaml:"ruleId"`
-	Flows                []PccFlow `json:"flows" yaml:"flows"`
-	Qos                  PccQos    `json:"qos" yaml:"qos"`
-	Precedence           int32     `json:"precedence" yaml:"precedence"`
+	RuleId               string        `json:"ruleId" yaml:"ruleId"`
+	Flows                []PccFlow     `json:"flows" yaml:"flows"`
+	Qos                  PccQos        `json:"qos" yaml:"qos"`
+	Precedence           int32         `json:"precedence" yaml:"precedence"`
+	ChargingData         *ChargingData `json:"chargingData,omitempty" yaml:"chargingData,omitempty"`
 	AdditionalProperties map[string]any
 }
 
@@ -154,6 +155,38 @@ func (o *PccRule) SetPrecedence(v int32) {
 	o.Precedence = v
 }
 
+// GetChargingData returns the ChargingData field value if set, zero value otherwise.
+func (o *PccRule) GetChargingData() ChargingData {
+	if o == nil || openapi.IsNil(o.ChargingData) {
+		var ret ChargingData
+		return ret
+	}
+	return *o.ChargingData
+}
+
+// GetChargingDataOk returns a tuple with the ChargingData field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PccRule) GetChargingDataOk() (*ChargingData, bool) {
+	if o == nil || openapi.IsNil(o.ChargingData) {
+		return nil, false
+	}
+	return o.ChargingData, true
+}
+
+// HasChargingData returns a boolean if a field has been set.
+func (o *PccRule) HasChargingData() bool {
+	if o != nil && !openapi.IsNil(o.ChargingData) {
+		return true
+	}
+
+	return false
+}
+
+// SetChargingData gets a reference to the given ChargingData and assigns it to the ChargingData field.
+func (o *PccRule) SetChargingData(v ChargingData) {
+	o.ChargingData = &v
+}
+
 func (o PccRule) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -171,6 +204,9 @@ func (o PccRule) ToMap() (map[string]any, error) {
 	toSerialize["flows"] = o.Flows
 	toSerialize["qos"] = o.Qos
 	toSerialize["precedence"] = o.Precedence
+	if !openapi.IsNil(o.ChargingData) {
+		toSerialize["chargingData"] = o.ChargingData
+	}
 	return toSerialize, nil
 }
 
@@ -216,6 +252,7 @@ func (o *PccRule) UnmarshalJSON(data []byte) (err error) {
 		delete(additionalProperties, "flows")
 		delete(additionalProperties, "qos")
 		delete(additionalProperties, "precedence")
+		delete(additionalProperties, "chargingData")
 		o.AdditionalProperties = additionalProperties
 	}
 

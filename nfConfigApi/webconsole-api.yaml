@@ -203,6 +203,8 @@ components:
           $ref: '#/components/schemas/PccQos'
         precedence:
           type: integer
+        chargingData:
+          $ref: '#/components/schemas/ChargingData'
     PccFlow:
       type: object
       required:
@@ -323,6 +325,32 @@ components:
         - ENABLED
         - DISABLED
         - REMOVED
+    ChargingData:
+      type: object
+      description: >-
+        Charging attributes of a rule, as the PCF puts them in a ChargingData decision (3GPP TS 29.512). A field left unset is absent: the consuming NF applies its own default.
+      properties:
+        ratingGroup:
+          type: integer
+          minimum: 0
+        serviceId:
+          type: integer
+          minimum: 0
+        online:
+          type: boolean
+          description: Online charging applies. Absent when the operator did not choose.
+        offline:
+          type: boolean
+          description: Offline charging applies. Absent when the operator did not choose.
+        meteringMethod:
+          $ref: '#/components/schemas/MeteringMethod'
+    MeteringMethod:
+      type: string
+      enum:
+        - DURATION
+        - VOLUME
+        - DURATION_VOLUME
+        - EVENT
     Direction:
       type: string
       enum:
